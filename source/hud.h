@@ -4,6 +4,7 @@
 
 #ifndef MSHARP_HUD_H
 #define MSHARP_HUD_H
-extern char hudType;
-void battleHudInit();
+//extern char hudType;
+int battleHudInit();
+void hudRender(char hudType, void *arg);
 #endif //MSHARP_HUD_H

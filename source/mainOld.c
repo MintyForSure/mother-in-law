@@ -15,9 +15,9 @@ s16 hudPos=8;
 int menuState=0; //0:menupick 1:fightpick
 int8 members=1;
 
-int main() {
+int mainOld() {
     consoleDemoInit();
-    printf("msharp \n");
+    printf("mdelta \n");
     ulInit(UL_INIT_ALL);
     ulInitGfx();
     ulInitText();
