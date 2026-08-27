@@ -15,7 +15,7 @@ ARM_NONE_EABI_PATH	?= $(WONDERFUL_TOOLCHAIN)/toolchain/gcc-arm-none-eabi/bin/
 # ===========
 
 NAME		:= $(shell basename $(CURDIR))
-GAME_TITLE	:= msharp
+GAME_TITLE	:= Mother: DELTA
 GAME_SUBTITLE	:= made using µLIb
 GAME_AUTHOR	:= mintyforsure
 GAME_ICON	:= $(BLOCKSDS)/sys/icon.bmp
@@ -33,6 +33,7 @@ SDIMAGE		:= image.bin
 
 SOURCEDIRS	:= source
 INCLUDEDIRS	:=
+INCLUDEDIRS += $(BLOCKSDSEXT)/ulibrary
 GFXDIRS		:=
 BINDIRS		:= data
 AUDIODIRS	:= audio
@@ -139,6 +140,8 @@ ASFLAGS		+= -x assembler-with-cpp $(DEFINES) $(INCLUDEFLAGS) \
 CFLAGS		+= -std=gnu17 $(WARNFLAGS) $(DEFINES) $(INCLUDEFLAGS) \
 		   $(ARCH) -O2 -ffunction-sections -fdata-sections \
 		   -specs=$(SPECS)
+
+# CFLAGS		+= $(BLOCKSDSEXT)/ulibrary
 
 CXXFLAGS	+= -std=gnu++17 $(WARNFLAGS) $(DEFINES) $(INCLUDEFLAGS) \
 		   $(ARCH) -O2 -ffunction-sections -fdata-sections \

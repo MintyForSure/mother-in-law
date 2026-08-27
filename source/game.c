@@ -1,0 +1,46 @@
+//
+// Created by tailofhell on 8/26/26.
+//
+
+#include "game.h"
+
+#include <stdbool.h>
+#include <ulib/ulib.h>
+
+#include "hud.h"
+#include "../../../../../opt/wonderful/thirdparty/blocksds/core/libs/libnds/include/nds/arm9/console.h"
+#include "../../../../../opt/wonderful/thirdparty/blocksds/external/ulibrary/include/ulib/ulib.h"
+int partyMembers=1;
+char gameState;
+bool debug;
+
+bool initSwitch_b=false;
+
+void gameInit() {
+    // Initialization of µlibrary
+    ulInit(UL_INIT_ALL);
+    ulInitGfx();
+    ulInitText();
+    ulSetMainLcd(1);
+    ulSetTransparentColor(RGB15(31,0,31));
+}
+void gameLogic() { //checks where the game is :)
+    if (gameState=='o') {
+
+    }
+    else if (gameState=='b') {
+        if (initSwitch_b==false){
+            battleHudInit();
+            initSwitch_b=true;
+            printf("initSwitch_b=true");
+        }
+        else {
+            hudRender('b');
+        }
+    }
+    if (ul_keys.held.L) {
+        debug=true;
+        consoleDemoInit();
+        printf("debug enabled, probably");
+    }
+}

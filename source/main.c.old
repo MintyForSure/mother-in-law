@@ -1,0 +1,112 @@
+#include <nds.h>
+#include <stdio.h>
+#include <ulib/ulib.h>
+
+#include "menus.h"
+
+#include "battleIcons_png.h"
+#include "battleTab_png.h"
+#include "cheesyRat_png.h"
+#include "bg_png.h"
+//char16_t selected=*"fight";
+int menuState=0; //0:menupick 1:fightpick
+int8 members=1;
+
+int mainOld() {
+    consoleDemoInit();
+    printf("mdelta \n");
+    ulInit(UL_INIT_ALL);
+    ulInitGfx();
+    ulInitText();
+    ulSetMainLcd(1);
+    ulSetTransparentColor(RGB15(31,0,31));
+
+    UL_IMAGE *b_iconsFight=ulLoadImageFilePNG((void*)battleIcons_png,(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    UL_IMAGE *b_iconsSkill=ulLoadImageFilePNG((void*)battleIcons_png,(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    UL_IMAGE *b_iconsItem=ulLoadImageFilePNG((void*)battleIcons_png,(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    UL_IMAGE *b_iconsDefend=ulLoadImageFilePNG((void*)battleIcons_png,(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    UL_IMAGE *b_rat=ulLoadImageFilePNG((void*)cheesyRat_png,(int)cheesyRat_png_size,UL_IN_VRAM,UL_PF_PAL4);
+
+    UL_IMAGE *b_battleTab0=ulLoadImageFilePNG((void*)battleTab_png,(int)battleTab_png_size,UL_IN_VRAM,UL_PF_PAL4);
+
+    UL_IMAGE *battleBack=ulLoadImageFilePNG((void*)bg_png,(int)bg_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    //ulSetImageTileSize(b_iconsFight,0,0,16,16);
+    while (1) {
+        ulReadKeys(0);
+        ulStartDrawing2D();
+        //ulDrawGradientRect(0, 0, 256, 192, RGB15(24, 0, 0), RGB15(0, 0, 0),RGB15(0, 0, 0), RGB15(0, 0, 24));
+        ulDrawImage(battleBack);
+        ulDrawFillRect(0,0,256,30,RGB15(0,0,0));
+        ulDrawFillRect(0,162,256,192,RGB15(0,0,0));
+        ulDrawImageXY(b_battleTab0,64,192-64);
+        ulDrawImageXY(b_battleTab0,128,192-64);//we can instance the same sprite as many times as we want with this :O
+        ulSetTextColor(RGB15(0,0,0));
+        ulDrawString(140,154,"Ashton");
+        ulSetTextColor(RGB15(0,0,0));
+        ulDrawString(80,154,"Maple");
+        ulSetImageTileSize(b_iconsFight,0,16,16,16); //static positions... for now
+        ulSetImageTileSize(b_iconsItem,16,16,16,16);
+        ulSetImageTileSize(b_iconsSkill,32,16,16,16);
+        ulSetImageTileSize(b_iconsDefend,48,16,16,16);
+
+        if (ul_keys.pressed.B && menuState == 0){
+            hSelected=0;
+        }
+        if (menuState == 0){ //in battle menu
+            ulDrawImageXY(b_iconsFight,16,hudPos);
+            ulDrawImageXY(b_iconsItem,32,hudPos);
+            ulDrawImageXY(b_iconsSkill,48,hudPos);
+            ulDrawImageXY(b_iconsDefend,64,hudPos);
+            switch (hSelected) {
+                case 0: //fight
+                    ulSetImageTileSize(b_iconsFight,0,0,16,16); //focus
+                    ulDrawImageXY(b_iconsFight,16,hudPos); //draw own sprite
+                    menuInput(true,false);
+                    ulSetTextColor(RGB15(31,31,31));
+                    ulDrawString(16,36,"Fight");
+                    if (ul_keys.pressed.left) {
+                        hSelected=3;
+                    }
+                    else if (ul_keys.pressed.A) {
+                        menuState=1; //fight
+                    }
+                    break;
+                case 1: //item
+                    ulSetImageTileSize(b_iconsItem,16,0,16,16); //focus
+                    ulDrawImageXY(b_iconsItem,32,hudPos);
+                    menuInput(false,false);
+                    ulSetTextColor(RGB15(31,31,31));
+                    ulDrawString(16,36,"Item");
+                    break;
+                case 2: //skill/psi
+                    ulSetImageTileSize(b_iconsSkill,32,0,16,16); //focus
+                    ulDrawImageXY(b_iconsSkill,48,hudPos);
+                    menuInput(false,false);
+                    ulSetTextColor(RGB15(31,31,31));
+                    ulDrawString(16,36,"Skill");
+                    break;
+                case 3: //guard/defend
+                    ulSetImageTileSize(b_iconsDefend,48,0,16,16);
+                    ulDrawImageXY(b_iconsDefend,64,hudPos);
+                    menuInput(false,true);
+                    ulSetTextColor(RGB15(31,31,31));
+                    ulDrawString(16,36,"Defend");
+                    if (ul_keys.pressed.right) {
+                        hSelected=0;
+                    }
+                    break;
+                default:
+                    hSelected=0;
+                    printf("fallback \n");
+            }
+        }
+        else if (menuState == 1) {
+
+        }
+        ulImageSetRotCenter(b_rat);
+        ulDrawImageXY(b_rat,128,192/2);
+        ulEndDrawing();
+        swiWaitForVBlank();
+    }
+    return 0;
+}
