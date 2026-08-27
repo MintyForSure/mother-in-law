@@ -21,6 +21,7 @@ void gameInit() {
     ulInit(UL_INIT_ALL);
     ulInitGfx();
     ulInitText();
+    ulSetMainLcd(1);
     ulSetTransparentColor(RGB15(31,0,31));
 }
 void gameLogic() { //checks where the game is :)
@@ -34,7 +35,7 @@ void gameLogic() { //checks where the game is :)
             printf("initSwitch_b=true");
         }
         else {
-            hudRender('b',NULL);
+            hudRender('b');
         }
     }
     if (ul_keys.held.L) {

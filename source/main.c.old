@@ -9,9 +9,6 @@
 #include "cheesyRat_png.h"
 #include "bg_png.h"
 //char16_t selected=*"fight";
-int hSelected=0; //0:fight 1:item 2:skill 3:whatever
-int vSelected=0;
-s16 hudPos=8;
 int menuState=0; //0:menupick 1:fightpick
 int8 members=1;
 
