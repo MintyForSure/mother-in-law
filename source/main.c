@@ -6,7 +6,7 @@
 int main(int argc, char *argv[])
 {
     gameInit();
-    consoleDemoInit();
+    //consoleDemoInit();
     gameState='b';
     while (1)
     {
@@ -16,6 +16,5 @@ int main(int argc, char *argv[])
         ulEndDrawing();
         ulSyncFrame();
     }
-
     return 0;
 }

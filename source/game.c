@@ -13,6 +13,7 @@
 int partyMembers=1;
 char gameState;
 bool debug;
+int mapleHP[]={40,40,40}; //Target HP, Current HP, Max HP
 
 bool initSwitch_b=false;
 
@@ -36,11 +37,19 @@ void gameLogic() { //checks where the game is :)
         }
         else {
             hudRender('b');
+            if (ul_keys.pressed.X && mapleHP[1]!=30) {
+                printf("Lowering Maple's HP to 30. \n");
+                mapleHP[0]=30;
+            }
+            else if (ul_keys.pressed.X && mapleHP[1]==30) {
+                printf("Raising Maple's HP to 40. \n");
+                mapleHP[0]=40;
+            }
         }
     }
-    if (ul_keys.held.L) {
+    if (ul_keys.held.L && ul_keys.held.R) {
         debug=true;
         consoleDemoInit();
-        printf("debug enabled, probably");
+        //printf("debug enabled, probably");
     }
 }
