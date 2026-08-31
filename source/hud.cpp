@@ -10,11 +10,12 @@
 #include "battleTab_png.h"
 #include "game.h"
 #include "numbers_png.h"
+#include "battle.h"
 
-extern "C"{
-    #include "hud.h"
-    #include "menus.h"
-}
+
+#include "hud.h"
+#include "menus.h"
+
 using namespace std;
 
 int hSelected=0; //0:fight 1:item 2:skill 3:whatever
@@ -36,6 +37,7 @@ static struct battleElem bHUD;
 
 void battleHudInit() {
     printf("battle hud initializing\n");
+    ulDrawGradientRect(0, 0, 256, 192, RGB15(24, 0, 0), RGB15(0, 0, 0),RGB15(0, 0, 0), RGB15(0, 0, 24));
     //Load battle hud elements
     bHUD.b_iconsFight=ulLoadImageFilePNG(static_cast<const char *>((void*)battleIcons_png),(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
     bHUD.b_iconsSkill=ulLoadImageFilePNG(static_cast<const char *>((void*)battleIcons_png),(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
@@ -51,34 +53,36 @@ void battleHudInit() {
     ulImageSetRotCenter(bHUD.b_battleTab);
 }
 
+int mTics = 0;
+int mapleHPTicker[]={0,0,0};
+int animSpeed=2;
 int hpHandler(char member) {
-    int mTics = 0;
     //cout<<(mapleHP[1]/10)%10<<endl;
     if (member=='m') {
         ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/100)%10)*8),6,8);
-        ulDrawImageXY(bHUD.b_numbers,124,167);
+        ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x-4,167);
         ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/10)%10)*8),6,8);
-        ulDrawImageXY(bHUD.b_numbers,124+8,167);
+        ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x+4,167);
         ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/1)%10)*8),6,8);
-        ulDrawImageXY(bHUD.b_numbers,124+16,167);
+        ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x+12,167);
+        mTics++;
+        //cout << mTics <<endl;
         if (mapleHP[0] < mapleHP[1]) {
-            cout<<(mapleHP[1]/10)%10<<endl;
+            //cout<<(mapleHP[1]/10)%10<<endl;
             //ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/10)%10)*8),6,8);
-            mTics++;
-            if (mTics % 16==1) {
-                cout << mapleHP[1] << "\n";
+            if (mTics % 6==1) {
+                //cout << mapleHP[1] << "\n";
                 mapleHP[1]--;
-            }
-            else {
-                cout << mTics % 8 << endl;
             }
         }
         else if (mapleHP[0]>mapleHP[1]) {
-            mTics++;
-            if (mTics % 16==1) {
-                cout << mapleHP[1] << "\n";
+            if (mTics % 4==1) {
+                //cout << mapleHP[1] << "\n";
                 mapleHP[1]++;
             }
+        }
+        else {
+            mTics=0;
         }
     }
     else if (member=='a') {
@@ -88,8 +92,10 @@ int hpHandler(char member) {
 }
 
 void hudRender(char hudType) {
+    ulDrawGradientRect(0, 0, 256, 192, RGB15(24, 0, 28), RGB15(0, 0, 0),RGB15(0, 0, 0), RGB15(0, 0, 24));
     switch (hudType) { //i love switch cases
         case 'b':
+            //ulDrawFillRect(0,0,256,30,RGB15(0,0,0));
             ulDrawFillRect(0,0,256,30,RGB15(0,0,0));
             ulDrawFillRect(0,162,256,192,RGB15(0,0,0));
             ulSetImageTileSize(bHUD.b_iconsFight,0,16,16,16);
