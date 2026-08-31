@@ -1,19 +1,18 @@
 //
 // Created by tailofhell on 8/26/26.
 //
-
-#include "game.h"
-
 #include <stdbool.h>
 #include <ulib/ulib.h>
-
+#include "game.h"
+#include "data/enemyData.h"
 #include "hud.h"
-#include "../../../../../opt/wonderful/thirdparty/blocksds/core/libs/libnds/include/nds/arm9/console.h"
-#include "../../../../../opt/wonderful/thirdparty/blocksds/external/ulibrary/include/ulib/ulib.h"
+#include <iostream>
+using namespace std;
+
 int partyMembers=1;
 char gameState;
 bool debug;
-int mapleHP[]={40,40,40}; //Target HP, Current HP, Max HP
+int mapleHP[]={40,40,120}; //Target HP, Current HP, Max HP
 
 bool initSwitch_b=false;
 
@@ -31,19 +30,22 @@ void gameLogic() { //checks where the game is :)
     }
     else if (gameState=='b') {
         if (initSwitch_b==false){
+            consoleDemoInit();
             battleHudInit();
+            getEnemyData("cheesyRat");
+            //battleInit();
             initSwitch_b=true;
-            printf("initSwitch_b=true");
+            cout << "initSwitch_b=true" << endl;
         }
         else {
             hudRender('b');
-            if (ul_keys.pressed.X && mapleHP[1]!=30) {
-                printf("Lowering Maple's HP to 30. \n");
-                mapleHP[0]=30;
+            if (ul_keys.pressed.X) {
+                cout << "Lowering Maple's HP to 12." << endl;
+                mapleHP[0]=12;
             }
-            else if (ul_keys.pressed.X && mapleHP[1]==30) {
-                printf("Raising Maple's HP to 40. \n");
-                mapleHP[0]=40;
+            else if (ul_keys.pressed.Y) {
+                cout << "Setting Maple's HP to max" << endl;
+                mapleHP[0]=mapleHP[2];
             }
         }
     }

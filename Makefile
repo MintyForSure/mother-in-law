@@ -18,7 +18,7 @@ NAME		:= $(shell basename $(CURDIR))
 GAME_TITLE	:= Mother: DELTA
 GAME_SUBTITLE	:= made using µLIb
 GAME_AUTHOR	:= mintyforsure
-GAME_ICON	:= $(BLOCKSDS)/sys/icon.bmp
+GAME_ICON	:= icon.bmp
 
 # DLDI and internal SD slot of DSi
 # --------------------------------
