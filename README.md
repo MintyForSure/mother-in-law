@@ -1,4 +1,7 @@
 Work in progress... something involving MOTHER on the DS, codenamed Mother Delta
+Required libraries:
+[BlocksDS](https://github.com/blocksds/sdk)
+[µLibrary](https://codeberg.org/blocksds/ulibrary)
 
 ```
 make
