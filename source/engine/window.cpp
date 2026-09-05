@@ -66,15 +66,15 @@ void drawWindow(std::string text,int X,int Y) {
     //std::cout<<window.window01->stretchX<<std::endl;
     ulDrawImageXY(window.window00,X,Y);
     ulDrawImageXY(window.window01,window.window00->x+8,Y);
-    ulDrawImageXY(window.window02,window.window01->stretchX+24,window.window01->y);
+    ulDrawImageXY(window.window02,window.window01->stretchX+window.window01->x,window.window01->y);
 
     ulDrawImageXY(window.window10,X,Y+8);
     ulDrawImageXY(window.window11,window.window01->x,Y+8);
-    ulDrawImageXY(window.window12,window.window11->stretchX+24,Y+8);
+    ulDrawImageXY(window.window12,window.window11->stretchX+window.window11->x,Y+8);
 
     ulDrawImageXY(window.window20,X,window.window10->stretchY+Y+8);
     ulDrawImageXY(window.window21,window.window20->x+8,window.window10->stretchY+Y+8);
-    ulDrawImageXY(window.window22,window.window21->stretchX+24,window.window10->stretchY+Y+8);
+    ulDrawImageXY(window.window22,window.window21->stretchX+window.window21->x,window.window10->stretchY+Y+8);
 
     ulDrawString(window.window00->x+8,window.window00->y+8,text.c_str());
 }

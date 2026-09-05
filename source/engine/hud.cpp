@@ -171,7 +171,7 @@ void hudRender(char hudType) {
                         ulDrawImageXY(bHUD.b_iconsFight,16,hudPos);
                         ulSetTextColor(RGB15(31,31,31));
                         menuInput(true,false);
-                        ulDrawString(160,hudPos+6,"Fight");
+                        //ulDrawString(160,hudPos+6,"Fight");
                         if (ul_keys.pressed.left) {
                             hSelected=3;
                         }
@@ -180,27 +180,30 @@ void hudRender(char hudType) {
                             cout << "fight selected\n";
                             break;
                         }
+                        drawWindow("Fight",156,10);
                         break;
                     case 1:
                         ulSetImageTileSize(bHUD.b_iconsItem,16,0,16,16); //focus
                         ulDrawImageXY(bHUD.b_iconsItem,32,hudPos);
                         menuInput(false,false);
                         ulSetTextColor(RGB15(31,31,31));
-                        ulDrawString(160,hudPos+6,"Item");
+                        //ulDrawString(160,hudPos+6,"Item");
+                        drawWindow("Item",156,10);
                         break;
                     case 2: //skill/psi
                         ulSetImageTileSize(bHUD.b_iconsSkill,32,0,16,16); //focus
                         ulDrawImageXY(bHUD.b_iconsSkill,48,hudPos);
                         menuInput(false,false);
                         ulSetTextColor(RGB15(31,31,31));
-                        ulDrawString(160,hudPos+6,"Skill");
+                        //ulDrawString(160,hudPos+6,"Skill");
+                        drawWindow("Skill",156,10);
                         break;
                     case 3: //guard/defend
                         ulSetImageTileSize(bHUD.b_iconsDefend,48,0,16,16);
                         ulDrawImageXY(bHUD.b_iconsDefend,64,hudPos);
                         menuInput(false,true);
                         ulSetTextColor(RGB15(31,31,31));
-                        ulDrawString(160,hudPos+6,"Defend");
+                        //ulDrawString(160,hudPos+6,"Defend");
                         if (ul_keys.pressed.right) {
                             hSelected=0;
                         }
