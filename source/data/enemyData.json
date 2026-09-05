@@ -1,0 +1,15 @@
+{
+  "cheesyRat": {
+    "maxHp": 36,
+    "maxPp": 0,
+    "atk": 3,
+    "def": 2,
+    "speed": 1,
+    "hypnosis": true,
+    "paralyze": false,
+    "phys": "weak",
+    "fire": "neutral",
+    "freeze": "neutral",
+    "lightning": "null"
+  }
+}

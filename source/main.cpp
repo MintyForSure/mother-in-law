@@ -1,11 +1,14 @@
 #include <ulib/ulib.h> // Include for µLibrary
 #include <nds.h>
-#include "hud.h"
-#include "menus.h"
-#include "game.h"
+#include "engine/hud.h"
+#include "engine/menus.h"
+#include "engine/game.h"
+#include "engine/window.h"
+
 int main(int argc, char *argv[])
 {
     gameInit();
+    windowInit(48,8,32,32);
     //consoleDemoInit();
     gameState='b';
     while (1)

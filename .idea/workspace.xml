@@ -3,6 +3,9 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+  <component name="BackendCodeEditorMiscSettings">
+    <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
+  </component>
   <component name="CMakeProjectFlavorService">
     <option name="flavorId" value="CMakePlainProjectFlavor" />
   </component>
@@ -20,24 +23,31 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="34164469-3f22-4dd4-b668-194b925439dd" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/source/battle.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/battle.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/data/enemyData.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/data/enemyData.h" afterDir="false" />
+    <list default="true" id="0abe47e5-6d1f-437f-9551-1cc5b93cbed3" name="Changes" comment="">
       <change afterPath="$PROJECT_DIR$/source/data/enemyData.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/source/data/formations.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/engine/battle.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/engine/game.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/engine/window.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/engine/window.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/engine/windowAlt.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/engine/windowAlt.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/numbers.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/numbers.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/game.c" beforeDir="false" afterPath="$PROJECT_DIR$/source/game.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/hud.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/hud.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/source/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/menus.c" beforeDir="false" afterPath="$PROJECT_DIR$/source/menus.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/battleIcons.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/battleIcons.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/battleTab.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/battleTab.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/cursor.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/cursor.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/battle.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/battle.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/battle.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/game.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/game.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/game.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/hud.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/hud.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/hud.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/hud.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/menus.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/menus.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/menus.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/menus.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,20 +65,8 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "MintyForSure"
-  }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/MintyForSure/msharp.git",
-    "accountId": "57505b89-6b88-4221-9de8-74080b3a30ab"
-  }
-}]]></component>
   <component name="MacroExpansionManager">
-    <option name="directoryName" value="r1d1txSo" />
+    <option name="directoryName" value="BF0TbiO7" />
   </component>
   <component name="MakefileLocalSettings">
     <option name="availableProjects">
@@ -104,9 +102,10 @@
     <option name="productBranch" value="Classic" />
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
+  "customColor": "",
+  "associatedIndex": 4
 }]]></component>
-  <component name="ProjectId" id="3IfE7NZyeeKzKS1U6UOErqn2LPu" />
+  <component name="ProjectId" id="3Ipv1SF6XKYJw3irOWq8izgOBna" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -124,7 +123,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "cplusplus",
+    "git-widget-placeholder": "master",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -172,11 +171,11 @@
 }]]></component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="34164469-3f22-4dd4-b668-194b925439dd" name="Changes" comment="" />
-      <created>1788147054197</created>
+      <changelist id="0abe47e5-6d1f-437f-9551-1cc5b93cbed3" name="Changes" comment="" />
+      <created>1788474110934</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1788147054197</updated>
+      <updated>1788474110934</updated>
     </task>
     <servers />
   </component>

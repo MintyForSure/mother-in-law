@@ -6,22 +6,25 @@
 #include <nds.h>
 #include <nds/arm9/video.h>
 #include <ulib/ulib.h>
+#include "battle.h"
 #include "battleIcons_png.h"
 #include "battleTab_png.h"
 #include "game.h"
 #include "numbers_png.h"
-#include "battle.h"
 
 
 #include "hud.h"
 #include "menus.h"
+#include "window.h"
 
 using namespace std;
 
 int hSelected=0; //0:fight 1:item 2:skill 3:whatever
 int vSelected=0;
-int battleMenuState=0; //0:menupick 1:fightpick
+int battleMenuState=0; //2: window 0:menupick 1:fightpick
 s16 hudPos=8;
+int partyMemberCount=1;
+bool doDrawing;
 
 struct battleElem{
     UL_IMAGE *b_iconsFight;
@@ -37,7 +40,7 @@ static struct battleElem bHUD;
 
 void battleHudInit() {
     printf("battle hud initializing\n");
-    ulDrawGradientRect(0, 0, 256, 192, RGB15(24, 0, 0), RGB15(0, 0, 0),RGB15(0, 0, 0), RGB15(0, 0, 24));
+    //ulDrawGradientRect(0, 0, 256, 192, RGB15(24, 0, 0), RGB15(0, 0, 0),RGB15(0, 0, 0), RGB15(0, 0, 24));
     //Load battle hud elements
     bHUD.b_iconsFight=ulLoadImageFilePNG(static_cast<const char *>((void*)battleIcons_png),(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
     bHUD.b_iconsSkill=ulLoadImageFilePNG(static_cast<const char *>((void*)battleIcons_png),(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
@@ -53,10 +56,12 @@ void battleHudInit() {
     ulImageSetRotCenter(bHUD.b_battleTab);
 }
 
-int mTics = 0;
-int mapleHPTicker[]={0,0,0};
+static int mHPTics = 0;
+static int mPPTics = 0;
+//static int mapleHPTicker[]={0,0,0};
 int animSpeed=2;
-int hpHandler(char member) {
+
+static int hpHandler(char member) {
     //cout<<(mapleHP[1]/10)%10<<endl;
     if (member=='m') {
         ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/100)%10)*8),6,8);
@@ -65,24 +70,59 @@ int hpHandler(char member) {
         ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x+4,167);
         ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/1)%10)*8),6,8);
         ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x+12,167);
-        mTics++;
+        mHPTics++;
         //cout << mTics <<endl;
         if (mapleHP[0] < mapleHP[1]) {
             //cout<<(mapleHP[1]/10)%10<<endl;
             //ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/10)%10)*8),6,8);
-            if (mTics % 6==1) {
+            if (mHPTics % 6==1) {
                 //cout << mapleHP[1] << "\n";
                 mapleHP[1]--;
             }
         }
         else if (mapleHP[0]>mapleHP[1]) {
-            if (mTics % 4==1) {
+            if (mHPTics % 4==1) {
                 //cout << mapleHP[1] << "\n";
                 mapleHP[1]++;
             }
         }
         else {
-            mTics=0;
+            mHPTics=0;
+        }
+    }
+    else if (member=='a') {
+        cout << "ehhh whatever";
+    }
+    return 0;
+}
+
+static int ppHandler(char member) {
+    //cout<<(mapleHP[1]/10)%10<<endl;
+    if (member=='m') {
+        ulSetImageTileSize(bHUD.b_numbers,0,(((maplePP[1]/100)%10)*8),6,8);
+        ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x-4,167+11);
+        ulSetImageTileSize(bHUD.b_numbers,0,(((maplePP[1]/10)%10)*8),6,8);
+        ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x+4,167+11);
+        ulSetImageTileSize(bHUD.b_numbers,0,(((maplePP[1]/1)%10)*8),6,8);
+        ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x+12,167+11);
+        mPPTics++;
+        //cout << mTics <<endl;
+        if (maplePP[0] < maplePP[1]) {
+            //cout<<(mapleHP[1]/10)%10<<endl;
+            //ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/10)%10)*8),6,8);
+            if (mPPTics % 6==1) {
+                //cout << mapleHP[1] << "\n";
+                maplePP[1]--;
+            }
+        }
+        else if (maplePP[0]>maplePP[1]) {
+            if (mPPTics % 4==1) {
+                //cout << mapleHP[1] << "\n";
+                maplePP[1]++;
+            }
+        }
+        else {
+            mPPTics=0;
         }
     }
     else if (member=='a') {
@@ -92,7 +132,7 @@ int hpHandler(char member) {
 }
 
 void hudRender(char hudType) {
-    ulDrawGradientRect(0, 0, 256, 192, RGB15(24, 0, 28), RGB15(0, 0, 0),RGB15(0, 0, 0), RGB15(0, 0, 24));
+    //ulDrawGradientRect(0, 0, 256, 192, RGB15(24, 0, 28), RGB15(0, 0, 0),RGB15(0, 0, 0), RGB15(0, 0, 24));
     switch (hudType) { //i love switch cases
         case 'b':
             //ulDrawFillRect(0,0,256,30,RGB15(0,0,0));
@@ -102,12 +142,13 @@ void hudRender(char hudType) {
             ulSetImageTileSize(bHUD.b_iconsItem,16,16,16,16);
             ulSetImageTileSize(bHUD.b_iconsSkill,32,16,16,16);
             ulSetImageTileSize(bHUD.b_iconsDefend,48,16,16,16);
-            switch (partyMembers) {
+            switch (partyMemberCount) {
                 case 1:
                     ulSetTextColor(RGB15(0,0,0));
                     ulDrawImageXY(bHUD.b_battleTab,128,192-32);
                     ulDrawString(112,154,"Maple");
                     hpHandler('m');
+                    ppHandler('m');
                     //ulSetImageTileSize(bHUD.b_numbers,0,0,6,8);
                     //ulDrawString(124,167,reinterpret_cast<const char *>(mapleHP[1]));
                     break;
@@ -163,6 +204,7 @@ void hudRender(char hudType) {
                         if (ul_keys.pressed.right) {
                             hSelected=0;
                         }
+                        drawWindow("Guard",156,10);
                         break;
                     default:
                         hSelected=0;
