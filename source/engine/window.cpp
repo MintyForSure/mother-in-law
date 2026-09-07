@@ -30,17 +30,17 @@ static int windowWidth;
 static int windowHeight;
 
 void windowInit(int width,int height,int X,int Y,bool quickWindow) {
-    window.window00=ulLoadImageFilePNG(window_png,int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
-    window.window01=ulLoadImageFilePNG(window_png,int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
-    window.window02=ulLoadImageFilePNG(window_png,int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
+    window.window00=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
+    window.window01=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
+    window.window02=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
 
-    window.window10=ulLoadImageFilePNG(window_png,int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
-    window.window11=ulLoadImageFilePNG(window_png,int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
-    window.window12=ulLoadImageFilePNG(window_png,int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
+    window.window10=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
+    window.window11=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
+    window.window12=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
 
-    window.window20=ulLoadImageFilePNG(window_png,int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
-    window.window21=ulLoadImageFilePNG(window_png,int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
-    window.window22=ulLoadImageFilePNG(window_png,int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
+    window.window20=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
+    window.window21=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
+    window.window22=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
     windowWidth=width;
     windowHeight=height;
     ulSetImageTileSize(window.window00,0,0,8,8);
@@ -76,5 +76,5 @@ void drawWindow(std::string text,int X,int Y) {
     ulDrawImageXY(window.window21,window.window20->x+8,window.window10->stretchY+Y+8);
     ulDrawImageXY(window.window22,window.window21->stretchX+window.window21->x,window.window10->stretchY+Y+8);
 
-    ulDrawString(window.window00->x+8,window.window00->y+8,text.c_str());
+    ulDrawString(window.window00->x+4,window.window00->y+6,text.c_str());
 }

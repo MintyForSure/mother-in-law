@@ -4,11 +4,22 @@
 #include "engine/menus.h"
 #include "engine/game.h"
 #include "engine/window.h"
+#include "engine/sound.h"
+#include <maxmod9.h>
+#include <nf_lib.h>
+
+#include "soundbank.h"
+#include "soundbank_bin.h"
 
 int main(int argc, char *argv[])
 {
     gameInit();
-    windowInit(48,8,32,32);
+    audioInit();
+    NF_Set2D(1,0);
+    NF_SetRootFolder("NITROFS");
+    NF_InitSpriteBuffers();
+    NF_InitSpriteSys(1);
+    windowInit(128,4,64,32);
     //consoleDemoInit();
     gameState='b';
     while (1)

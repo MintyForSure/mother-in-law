@@ -11,11 +11,14 @@
 #include "battleTab_png.h"
 #include "game.h"
 #include "numbers_png.h"
-
-
+#include <nf_lib.h>
+#include <maxmod9.h>
+#include "soundbank.h"
+#include "soundbank_bin.h"
 #include "hud.h"
 #include "menus.h"
 #include "window.h"
+#include "sound.h"
 
 using namespace std;
 
@@ -169,45 +172,44 @@ void hudRender(char hudType) {
                     case 0:
                         ulSetImageTileSize(bHUD.b_iconsFight,0,0,16,16); //focus
                         ulDrawImageXY(bHUD.b_iconsFight,16,hudPos);
-                        ulSetTextColor(RGB15(31,31,31));
                         menuInput(true,false);
                         //ulDrawString(160,hudPos+6,"Fight");
                         if (ul_keys.pressed.left) {
+                            mmEffect(SFX_HSELECT);
                             hSelected=3;
                         }
                         else if (ul_keys.pressed.A) {
+                            mmEffect(SFX_SELECT);
                             battleMenuState=1; //fight
                             cout << "fight selected\n";
                             break;
                         }
-                        drawWindow("Fight",156,10);
+                        drawWindow("Fight",156,18);
                         break;
                     case 1:
                         ulSetImageTileSize(bHUD.b_iconsItem,16,0,16,16); //focus
                         ulDrawImageXY(bHUD.b_iconsItem,32,hudPos);
                         menuInput(false,false);
-                        ulSetTextColor(RGB15(31,31,31));
                         //ulDrawString(160,hudPos+6,"Item");
-                        drawWindow("Item",156,10);
+                        drawWindow("Goods",156,18);
                         break;
                     case 2: //skill/psi
                         ulSetImageTileSize(bHUD.b_iconsSkill,32,0,16,16); //focus
                         ulDrawImageXY(bHUD.b_iconsSkill,48,hudPos);
                         menuInput(false,false);
-                        ulSetTextColor(RGB15(31,31,31));
                         //ulDrawString(160,hudPos+6,"Skill");
-                        drawWindow("Skill",156,10);
+                        drawWindow("Skill",156,18);
                         break;
                     case 3: //guard/defend
                         ulSetImageTileSize(bHUD.b_iconsDefend,48,0,16,16);
                         ulDrawImageXY(bHUD.b_iconsDefend,64,hudPos);
                         menuInput(false,true);
-                        ulSetTextColor(RGB15(31,31,31));
                         //ulDrawString(160,hudPos+6,"Defend");
                         if (ul_keys.pressed.right) {
+                            mmEffect(SFX_HSELECT);
                             hSelected=0;
                         }
-                        drawWindow("Guard",156,10);
+                        drawWindow("Guard",156,18);
                         break;
                     default:
                         hSelected=0;
@@ -216,6 +218,7 @@ void hudRender(char hudType) {
             }
             else if (battleMenuState==1) {
                 if (ul_keys.pressed.B) {
+                    mmEffect(SFX_DESELECT);
                     battleMenuState=0;
                 }
             }

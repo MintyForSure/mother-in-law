@@ -14,6 +14,10 @@
 #include "hud.h"
 #include "window.h"
 #include "windowAlt.h"
+#include <maxmod9.h>
+
+#include "soundbank.h"
+#include "soundbank_bin.h"
 
 using namespace std;
 
@@ -35,8 +39,8 @@ static struct battleElements bElem;
 
 void battleInit(const char *enemy0, const char *enemy1, const char *enemy2) {
     //std::string turnOrder[]={mapleStats[4]};
-    bElem.battleBack=ulLoadImageFilePNG((bg_png),(int)bg_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    bElem.cursor=ulLoadImageFilePNG(cursor_png,(int)cursor_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    bElem.battleBack=ulLoadImageFilePNG(reinterpret_cast<const char *>(bg_png),(int)bg_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    bElem.cursor=ulLoadImageFilePNG(reinterpret_cast<const char *>(cursor_png),(int)cursor_png_size,UL_IN_VRAM,UL_PF_PAL4);
     ulSetImageTileSize(bElem.cursor,0,0,8,8);
     string enemies[]={enemy0,enemy1,enemy2};
     //std::cout << enemies[0] << std::endl;
