@@ -4,9 +4,6 @@
 
 export BLOCKSDS			?= /opt/blocksds/core
 export BLOCKSDSEXT		?= /opt/blocksds/external
-LIBS    += -lul -lpng -lz -lmm9 -lnds9
-LIBDIRS += $(BLOCKSDSEXT)/ulibrary
-LIBDIRS += $(BLOCKSDS)/libs/maxmod/include
 
 export WONDERFUL_TOOLCHAIN	?= /opt/wonderful
 ARM_NONE_EABI_PATH	?= $(WONDERFUL_TOOLCHAIN)/toolchain/gcc-arm-none-eabi/bin/
@@ -15,8 +12,8 @@ ARM_NONE_EABI_PATH	?= $(WONDERFUL_TOOLCHAIN)/toolchain/gcc-arm-none-eabi/bin/
 # ===========
 
 NAME		:= $(shell basename $(CURDIR))
-GAME_TITLE	:= Mother: DELTA
-GAME_SUBTITLE	:= made using µLIb
+GAME_TITLE	:= Mother: Delta
+GAME_SUBTITLE	:= using µLIb
 GAME_AUTHOR	:= mintyforsure
 GAME_ICON	:= icon.bmp
 
@@ -33,7 +30,6 @@ SDIMAGE		:= image.bin
 
 SOURCEDIRS	:= source
 INCLUDEDIRS	:=
-INCLUDEDIRS += $(BLOCKSDSEXT)/ulibrary
 GFXDIRS		:=
 BINDIRS		:= data
 AUDIODIRS	:= audio
@@ -51,6 +47,12 @@ DEFINES		:=
 LIBS		:= -lul -lnds9 -lpng -lz
 LIBDIRS		:= $(BLOCKSDS)/libs/libnds \
 		   $(BLOCKSDSEXT)/ulibrary
+
+LIBS    += -lnflib
+LIBDIRS += $(BLOCKSDSEXT)/nflib
+
+LIBS		+= -lnds9 -lmm9
+LIBDIRS		+= $(BLOCKSDS)/libs/maxmod
 
 # Build artifacts
 # ---------------
@@ -141,14 +143,10 @@ CFLAGS		+= -std=gnu17 $(WARNFLAGS) $(DEFINES) $(INCLUDEFLAGS) \
 		   $(ARCH) -O2 -ffunction-sections -fdata-sections \
 		   -specs=$(SPECS)
 
-# CFLAGS		+= $(BLOCKSDSEXT)/ulibrary
-
 CXXFLAGS	+= -std=gnu++17 $(WARNFLAGS) $(DEFINES) $(INCLUDEFLAGS) \
 		   $(ARCH) -O2 -ffunction-sections -fdata-sections \
 		   -fno-exceptions -fno-rtti \
 		   -specs=$(SPECS)
-
-CXXFLAGS += -std=gnu++17 $(BLOCKSDS)/libs/maxmod/include/
 
 LDFLAGS		:= $(ARCH) $(LIBDIRSFLAGS) -Wl,-Map,$(MAP) $(DEFINES) \
 		   -Wl,--start-group $(LIBS) -Wl,--end-group -specs=$(SPECS)
