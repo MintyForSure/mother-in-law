@@ -13,6 +13,7 @@
 #include "windowAlt.h"
 
 #include "battle.h"
+#include "player.h"
 #include "world.h"
 
 using namespace std;
@@ -57,10 +58,12 @@ void gameLogic() { //checks where the game is :)
     if (gameState=='o') {
         if (initSwitch_m==false) {
             mapLoad("debugRoom");
+            partyInit();
             initSwitch_m=true;
         }
-        else if (initSwitch_m) {
+        else if (initSwitch_m==true) {
             mapRender();
+            partyRender();
         }
     }
     else if (gameState=='b') {

@@ -24,36 +24,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="341b5b14-4693-4d05-b2a2-52d3c1d4d75d" name="Changes" comment="forgot the makefile and audio">
-      <change afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Makefile.Old" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/data/battlebacks/ratBattleback.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/data/battlebacks/ratBattleback.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/data/maps/debugRoom.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/data/maps/debugRoom.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/engine/battlebacks.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/engine/battlebacks.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/engine/moves.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/engine/moves.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/engine/world.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/engine/world.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="341b5b14-4693-4d05-b2a2-52d3c1d4d75d" name="Changes" comment="this repo is a mess im so sorry">
+      <change afterPath="$PROJECT_DIR$/source/engine/player.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/engine/player.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compile_commands.json" beforeDir="false" afterPath="$PROJECT_DIR$/compile_commands.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/battleTab.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/battleTab.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/numbers.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/numbers.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/data/enemyData.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/data/enemyData.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/data/enemyData.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/data/enemyData.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/data/maps/debugRoom.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/data/maps/debugRoom.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/engine/battle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/battle.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/engine/battle.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/battle.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/engine/game.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/game.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/engine/game.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/game.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/engine/hud.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/hud.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/engine/window.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/window.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/engine/window.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/window.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/engine/windowAlt.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/windowAlt.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/engine/windowAlt.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/windowAlt.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -217,7 +194,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="updated makefile, introduced sound" />
     <MESSAGE value="forgot the makefile and audio" />
-    <option name="LAST_COMMIT_MESSAGE" value="forgot the makefile and audio" />
+    <MESSAGE value="this repo is a mess im so sorry" />
+    <option name="LAST_COMMIT_MESSAGE" value="this repo is a mess im so sorry" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
