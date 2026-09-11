@@ -49,8 +49,8 @@ class cheesyRat {
 
 };
 
-extern int getEnemyData(const char *enemy) {
-    if (__builtin_strcmp(enemy,"cheesyRat")==0) {
+extern int getEnemyData(const string &enemy) {
+    if (enemy == "cheesyRat") {
         cheesyRat cheesyRatObj{};
         cout << cheesyRatObj.name << endl;
         cheesyRatObj.name=*"Cheesy Rat";
@@ -66,6 +66,5 @@ extern int getEnemyData(const char *enemy) {
         cheesyRatObj.ice='n';
         cheesyRatObj.elec='i';
     }
-
-    return 0;
+    return 1;
 }

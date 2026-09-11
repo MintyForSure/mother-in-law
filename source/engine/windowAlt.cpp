@@ -14,7 +14,7 @@ struct windowElements {
 
 static struct windowElements window;
 
-void windowSysInit() { //run once only
+void windowSysInit0() { //run once only
     window.cursor=ulLoadImageFilePNG(reinterpret_cast<const char *>(cursor_png),int(cursor_png_size),UL_IN_VRAM,UL_PF_PAL4);
     ulSetImageTileSize(window.cursor,0,0,8,8);
 }

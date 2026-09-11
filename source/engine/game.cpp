@@ -7,16 +7,20 @@
 #include "../data/enemyData.h"
 #include "hud.h"
 #include <iostream>
+#include <ctime>
 #include <nds/arm9/video.h>
 
 #include "windowAlt.h"
 
 #include "battle.h"
+#include "world.h"
+
 using namespace std;
 
 string partyMembers[]={"maple","ashton"};
 char gameState;
 bool debug;
+bool inWindow;
 int mapleLevel[]={1,0,5}; //level,xp,xp to next level
 int mapleStats[]={25,12,5,2,4}; //maxHP,maxPP,atk,def,speed
 int mapleHP[]={mapleStats[0],mapleStats[0],mapleStats[0]}; //Target HP, Current HP, Max HP
@@ -24,6 +28,7 @@ int maplePP[]={mapleStats[1],mapleStats[1],mapleStats[1]}; //Target PP, Current 
 
 
 bool initSwitch_b=false;
+bool initSwitch_m=false;
 
 static int getPartyStats(const string& member,int stat=0) {
     int stats[]={};
@@ -38,7 +43,8 @@ static int getPartyStats(const string& member,int stat=0) {
 }
 
 void gameInit() {
-    getPartyStats("maple");
+    srand(time(0));
+    //getPartyStats("maple");
     // Initialization of µlibrary
     ulInit(UL_INIT_ALL);
     ulInitGfx();
@@ -49,7 +55,13 @@ void gameInit() {
 
 void gameLogic() { //checks where the game is :)
     if (gameState=='o') {
-
+        if (initSwitch_m==false) {
+            mapLoad("debugRoom");
+            initSwitch_m=true;
+        }
+        else if (initSwitch_m) {
+            mapRender();
+        }
     }
     else if (gameState=='b') {
         if (initSwitch_b==false){
@@ -78,5 +90,8 @@ void gameLogic() { //checks where the game is :)
         cout << "Maple level:"<< mapleLevel[0] << endl;
         cout << "Maple HP: " << mapleHP[0] << endl;
         //printf("debug enabled, probably");
+    }
+    if (ul_keys.pressed.L) {
+        mapleHP[2]=125;
     }
 }

@@ -24,7 +24,7 @@ using namespace std;
 
 int hSelected=0; //0:fight 1:item 2:skill 3:whatever
 int vSelected=0;
-int battleMenuState=0; //2: window 0:menupick 1:fightpick
+int battleMenuState=2; //2: starting window 0:menupick 1:fightpick
 s16 hudPos=8;
 int partyMemberCount=1;
 bool doDrawing;
@@ -67,9 +67,14 @@ int animSpeed=2;
 static int hpHandler(char member) {
     //cout<<(mapleHP[1]/10)%10<<endl;
     if (member=='m') {
-        ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/100)%10)*8),6,8);
-        ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x-4,167);
-        ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/10)%10)*8),6,8);
+        if (((mapleHP[2]/100)%10)*8==0) {
+            ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/100)%10)*8),6,8);
+        }
+        else {
+            ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/100)%10)*8),6,8);
+            ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x-4,167);
+        }
+        ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/10)%10)*8),6,8); //Max HP will never be in the single digits, lol.
         ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x+4,167);
         ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/1)%10)*8),6,8);
         ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x+12,167);
@@ -102,9 +107,14 @@ static int hpHandler(char member) {
 static int ppHandler(char member) {
     //cout<<(mapleHP[1]/10)%10<<endl;
     if (member=='m') {
-        ulSetImageTileSize(bHUD.b_numbers,0,(((maplePP[1]/100)%10)*8),6,8);
-        ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x-4,167+11);
-        ulSetImageTileSize(bHUD.b_numbers,0,(((maplePP[1]/10)%10)*8),6,8);
+        if (((maplePP[2]/100)%10)*8==0) {
+            ulSetImageTileSize(bHUD.b_numbers,0,(((maplePP[1]/100)%10)*8),6,8);
+        }
+        else {
+            ulSetImageTileSize(bHUD.b_numbers,0,(((maplePP[1]/100)%10)*8),6,8);
+            ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x-4,167+11);
+        }
+        ulSetImageTileSize(bHUD.b_numbers,0,(((maplePP[1]/10)%10)*8),6,8); //ditto
         ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x+4,167+11);
         ulSetImageTileSize(bHUD.b_numbers,0,(((maplePP[1]/1)%10)*8),6,8);
         ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x+12,167+11);
@@ -135,12 +145,9 @@ static int ppHandler(char member) {
 }
 
 void hudRender(char hudType) {
-    //ulDrawGradientRect(0, 0, 256, 192, RGB15(24, 0, 28), RGB15(0, 0, 0),RGB15(0, 0, 0), RGB15(0, 0, 24));
     switch (hudType) { //i love switch cases
         case 'b':
-            //ulDrawFillRect(0,0,256,30,RGB15(0,0,0));
-            ulDrawFillRect(0,0,256,30,RGB15(0,0,0));
-            ulDrawFillRect(0,162,256,192,RGB15(0,0,0));
+
             ulSetImageTileSize(bHUD.b_iconsFight,0,16,16,16);
             ulSetImageTileSize(bHUD.b_iconsItem,16,16,16,16);
             ulSetImageTileSize(bHUD.b_iconsSkill,32,16,16,16);
@@ -184,21 +191,24 @@ void hudRender(char hudType) {
                             cout << "fight selected\n";
                             break;
                         }
-                        drawWindow("Fight",156,18);
+                        drawWindow("Fight",156,18,128,4,true);
+                        windowDisplayText("Fight");
                         break;
                     case 1:
                         ulSetImageTileSize(bHUD.b_iconsItem,16,0,16,16); //focus
                         ulDrawImageXY(bHUD.b_iconsItem,32,hudPos);
                         menuInput(false,false);
                         //ulDrawString(160,hudPos+6,"Item");
-                        drawWindow("Goods",156,18);
+                        drawWindow("Goods",156,18,128,4,true);
+                        windowDisplayText("Goods");
                         break;
                     case 2: //skill/psi
                         ulSetImageTileSize(bHUD.b_iconsSkill,32,0,16,16); //focus
                         ulDrawImageXY(bHUD.b_iconsSkill,48,hudPos);
                         menuInput(false,false);
                         //ulDrawString(160,hudPos+6,"Skill");
-                        drawWindow("Skill",156,18);
+                        drawWindow("Skill",156,18,128,4,true);
+                        windowDisplayText("PSI");
                         break;
                     case 3: //guard/defend
                         ulSetImageTileSize(bHUD.b_iconsDefend,48,0,16,16);
@@ -209,7 +219,8 @@ void hudRender(char hudType) {
                             mmEffect(SFX_HSELECT);
                             hSelected=0;
                         }
-                        drawWindow("Guard",156,18);
+                        drawWindow("Guard",156,18,128,4,true);
+                        windowDisplayText("Guard");
                         break;
                     default:
                         hSelected=0;
@@ -221,6 +232,18 @@ void hudRender(char hudType) {
                     mmEffect(SFX_DESELECT);
                     battleMenuState=0;
                 }
+                else if (ul_keys.pressed.A) {
+                    mmEffect(SFX_SELECT);
+                    mapleAction[0]="maple";
+                    mapleAction[1]="enemy0";
+                    mapleAction[2]="bash";
+                    battlePhase=1;
+                    battleMenuState=3;
+                }
+            }
+            else if (battleMenuState==2) {
+                drawWindow("enemyAppear",8,8,252-32,16,false);
+                windowDisplayText("The Cheesy Rat appeared!");
             }
     }
 }

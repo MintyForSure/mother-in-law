@@ -5,7 +5,8 @@
 #ifndef MDELTA_WINDOW_H
 #define MDELTA_WINDOW_H
 #include <string>
-void windowInit(int width,int height,int X,int Y,bool quickWindow=false);
-void drawWindow(std::string text,int X,int Y);
+void windowSysInit();
+void drawWindow(std::string windowID,int X,int Y,int width,int height,bool popup=false);
+void windowDisplayText(const std::string& line1="",const std::string& line2="");
 
 #endif //MDELTA_WINDOW_H

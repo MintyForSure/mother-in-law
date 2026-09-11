@@ -7,8 +7,14 @@
 #include <string>
 #include <iostream>
 #include "window_png.h"
+#include "cursor_png.h"
 #include <ulib/ulib.h>
 #include <nds.h>
+
+#include "game.h"
+#include "hud.h"
+
+using namespace std;
 
 struct windowElements {
     UL_IMAGE *window00;
@@ -22,14 +28,27 @@ struct windowElements {
     UL_IMAGE *window20;
     UL_IMAGE *window21;
     UL_IMAGE *window22;
+
+    UL_IMAGE *indicator;
 };
 
 static struct windowElements window;
+static string currentText;
+static string windowMessages[]={};
 
 static int windowWidth;
 static int windowHeight;
+static s8 tics=0;
 
-void windowInit(int width,int height,int X,int Y,bool quickWindow) {
+void flushMessages() {
+    windowMessages[0]={};
+    windowMessages[1]={};
+    windowMessages[2]={};
+    windowMessages[3]={};
+    windowMessages[4]={};
+}
+
+void windowSysInit() {
     window.window00=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
     window.window01=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
     window.window02=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
@@ -41,8 +60,9 @@ void windowInit(int width,int height,int X,int Y,bool quickWindow) {
     window.window20=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
     window.window21=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
     window.window22=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
-    windowWidth=width;
-    windowHeight=height;
+
+    window.indicator=ulLoadImageFilePNG(cursor_png,cursor_png_size,UL_IN_VRAM,UL_PF_PAL4);
+
     ulSetImageTileSize(window.window00,0,0,8,8);
     ulSetImageTileSize(window.window01,8,0,8,8);
     ulSetImageTileSize(window.window02,16,0,8,8);
@@ -52,17 +72,25 @@ void windowInit(int width,int height,int X,int Y,bool quickWindow) {
     ulSetImageTileSize(window.window20,0,16,8,8);
     ulSetImageTileSize(window.window21,8,16,8,8);
     ulSetImageTileSize(window.window22,16,16,8,8);
+    ulSetImageTileSize(window.indicator,0,0,8,8);
 
     //window.window01->centerX=width;
+}
+
+void windowDisplayText(const string& line1,const string& line2) {
+    ulDrawString(window.window00->x+4,window.window00->y+6,line1.c_str());
+    ulDrawString(window.window01->x+4,window.window01->y+12,line2.c_str());
+}
+
+void drawWindow(string windowID,int X,int Y,int width,int height,bool popup) {
+    windowWidth=width;
+    windowHeight=height;
     window.window01->stretchX=width;
     window.window10->stretchY=height;
     window.window11->stretchX=width;
     window.window11->stretchY=height;
     window.window12->stretchY=height;
     window.window21->stretchX=width;
-}
-
-void drawWindow(std::string text,int X,int Y) {
     //std::cout<<window.window01->stretchX<<std::endl;
     ulDrawImageXY(window.window00,X,Y);
     ulDrawImageXY(window.window01,window.window00->x+8,Y);
@@ -75,6 +103,22 @@ void drawWindow(std::string text,int X,int Y) {
     ulDrawImageXY(window.window20,X,window.window10->stretchY+Y+8);
     ulDrawImageXY(window.window21,window.window20->x+8,window.window10->stretchY+Y+8);
     ulDrawImageXY(window.window22,window.window21->stretchX+window.window21->x,window.window10->stretchY+Y+8);
+    if (popup==false) {
+        inWindow=true;
+        ulDrawImageXY(window.indicator,window.window22->x-4,window.window22->y-4);
+        if (ul_keys.pressed.A && gameState=='b') {
 
-    ulDrawString(window.window00->x+4,window.window00->y+6,text.c_str());
+            //battleMenuState=0;
+        }
+        tics++;
+        if (tics>29) {
+            ulSetImageTileSize(window.indicator,0,0,8,8);
+        }
+        else {
+            ulSetImageTileSize(window.indicator,8,0,8,8);
+        }
+        if (tics==60) {
+            tics=0; //reset
+        }
+    }
 }

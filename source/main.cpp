@@ -19,9 +19,9 @@ int main(int argc, char *argv[])
     NF_SetRootFolder("NITROFS");
     NF_InitSpriteBuffers();
     NF_InitSpriteSys(1);
-    windowInit(128,4,64,32);
+    windowSysInit();
     //consoleDemoInit();
-    gameState='b';
+    gameState='o';
     while (1)
     {
         ulStartDrawing2D();

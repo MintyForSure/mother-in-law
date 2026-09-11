@@ -1,1 +1,8 @@
-[]
+[
+{
+  "directory": "/home/tailofhell/CLionProjects/mdelta",
+  "command": "/usr/bin/c++ -I/opt/wonderful/thirdparty/blocksds/core/libs/libnds/include -I/opt/wonderful/thirdparty/blocksds/core/libs/maxmod/include -I/opt/wonderful/thirdparty/blocksds/external/ulibrary/include -g -fdiagnostics-color=always -o CMakeFiles/mdelta.dir/source/main.cpp.o -c /home/tailofhell/CLionProjects/mdelta/source/main.cpp",
+  "file": "/home/tailofhell/CLionProjects/mdelta/source/main.cpp",
+  "output": "/home/tailofhell/CLionProjects/mdelta/CMakeFiles/mdelta.dir/source/main.cpp.o"
+}
+]

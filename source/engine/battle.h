@@ -9,4 +9,8 @@
 void battleInit(const char *enemy0, const char *enemy1 = "empty", const char *enemy2 = "empty");
 void battleProcess();
 
+extern int battlePhase;
+extern std::string mapleAction[];
+extern std::string aaronAction[];
+
 #endif //MDELTA_BATTLE_H

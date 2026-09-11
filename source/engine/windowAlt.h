@@ -5,7 +5,7 @@
 #ifndef MDELTA_WINDOW2_H
 #define MDELTA_WINDOW2_H
 #include <string>
-void windowSysInit();
+void windowSysInit0();
 void spawnWindow(std::string text,bool top=true);
 
 extern bool doDrawing;
