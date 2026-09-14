@@ -31,19 +31,19 @@ void partyRender() {
         ulDrawImage(party.maple);
         cout<<01<<endl;
     }
-    if (ul_keys.held.left) {
-        ulSetImageTileSize(party.maple,16,0,16,28);
-        xPos--;
-    }
     if (ul_keys.held.up) {
         ulSetImageTileSize(party.maple,32,0,16,28);
         yPos--;
     }
-    if (ul_keys.held.down) {
+    else if (ul_keys.held.down) {
         ulSetImageTileSize(party.maple,0,0,16,28);
         yPos++;
     }
-    if (ul_keys.held.right) {
+    if (ul_keys.held.left) {
+        ulSetImageTileSize(party.maple,16,0,16,28);
+        xPos--;
+    }
+    else if (ul_keys.held.right) {
         ulSetImageTileSize(party.maple,48,0,16,28);
         xPos++;
     }

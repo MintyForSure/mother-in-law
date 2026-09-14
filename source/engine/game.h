@@ -12,7 +12,7 @@ extern int partyMemberCount;
 extern char gameState;
 extern bool debug;
 extern bool inWindow;
-extern int mapleHP[];
+extern int mapleHP[]; //Target HP, Current HP, Max HP
 extern int maplePP[];
 extern int mapleStats[]; //maxHP,maxPP,atk,def,speed
 extern int ashtonHP[];

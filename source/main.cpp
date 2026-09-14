@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     NF_InitSpriteSys(1);
     windowSysInit();
     //consoleDemoInit();
-    gameState='o';
+    gameState='b';
     while (1)
     {
         ulStartDrawing2D();

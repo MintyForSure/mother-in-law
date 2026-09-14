@@ -60,12 +60,13 @@ void battleHudInit() {
 }
 
 static int mHPTics = 0;
+static int mHPVis=mapleHP[1];
 static int mPPTics = 0;
 //static int mapleHPTicker[]={0,0,0};
 int animSpeed=2;
 
 static int hpHandler(char member) {
-    //cout<<(mapleHP[1]/10)%10<<endl;
+    cout<<mHPVis<<endl;
     if (member=='m') {
         if (((mapleHP[2]/100)%10)*8==0) {
             ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/100)%10)*8),6,8);
@@ -81,8 +82,6 @@ static int hpHandler(char member) {
         mHPTics++;
         //cout << mTics <<endl;
         if (mapleHP[0] < mapleHP[1]) {
-            //cout<<(mapleHP[1]/10)%10<<endl;
-            //ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/10)%10)*8),6,8);
             if (mHPTics % 6==1) {
                 //cout << mapleHP[1] << "\n";
                 mapleHP[1]--;
@@ -95,6 +94,9 @@ static int hpHandler(char member) {
             }
         }
         else {
+            mHPTics=0;
+        }
+        if (mHPTics==80) {
             mHPTics=0;
         }
     }
@@ -243,7 +245,10 @@ void hudRender(char hudType) {
             }
             else if (battleMenuState==2) {
                 drawWindow("enemyAppear",8,8,252-32,16,false);
-                windowDisplayText("The Cheesy Rat appeared!");
+                windowDisplayText("The Cheesy Rat appeared!","This is a test line! Buenos dias!");
+                // if (ul_keys.pressed.A) {
+                //     battleMenuState=0;
+                // }
             }
     }
 }
