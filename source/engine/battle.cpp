@@ -21,12 +21,12 @@
 using namespace std;
 
 static s8 tics=0;
+static int damagePosXY[]={252/2,192/2};
 
 string mapleAction[]={"null","null","null"};
 string aaronAction[]={};
 
-int battlePhase=0; //0-select 1-start combat phase 2-combat phase 3-extra turn
-string turnOrder[]={};
+int battlePhase=0; //0-select 1-start combat phase 2-player move phase 3-enemy move phase 4-ex turn
 namespace {
     struct battleElements { //one magic variable wont hurt
         UL_MAP *battleBack;
@@ -77,6 +77,13 @@ void battleInit(const char *enemy0, const char *enemy1, const char *enemy2) {
     }
     //bElem.battleBack = ulCreateMap(battleBG,bg_map);
 }
+
+// int *getTurnOrder() {
+//
+//     int turnOrder[]={maple.spd};
+//     return turnOrder;
+// }
+
 int damageCalc(string user,string target,string action) {
     int damage=0;
     if (action=="bash") {
@@ -89,7 +96,6 @@ int damageCalc(string user,string target,string action) {
     return damage;
 }
 void damageRender(int dmg) {
-    int pos;
     ulSetImageTileSize(bElem.numbers,0,((dmg/100)%10)*9,9,9);
     ulDrawImageXY(bElem.numbers,bElem.cursor->x,bElem.cursor->y);
     ulSetImageTileSize(bElem.numbers,0,((dmg/10)%10)*9,9,9);
@@ -99,17 +105,19 @@ void damageRender(int dmg) {
 }
 void playerMove(string actor) {
     if (actor=="maple" && mapleAction[2]=="bash") {
-        drawWindow("mapleAttack",8,8,252-32,16,false);
-        windowDisplayText("Maple attacks!");
+        drawWindow("mapleAttack",8,8,252-32,16,"normal");
+        windowDisplayText("Maple attacks!","");
         int damageOutput = damageCalc(mapleAction[0], mapleAction[1],mapleAction[2]);
-        cout<<"maple gives damage: "<<damageCalc(mapleAction[0], mapleAction[1],mapleAction[2])<<endl;
+        //cout<<"maple gives damage: "<<damageCalc(mapleAction[0], mapleAction[1],mapleAction[2])<<endl;
         //cout<<"maple atk: "<<mapleStats[2]<<endl;
         damageRender(damageOutput);
+    }
+    else if (actor=="maple"&& mapleAction[2]=="PSI") {
+
     }
 }
 
 void battleProcess() {
-
     //ulDrawGradientRect(0, 0, 256, 192, RGB15(24, 0, 28), RGB15(0, 0, 0),RGB15(0, 0, 0), RGB15(0, 0, 24));
     //ulDrawImage(bElem.battleBack);
     renderBattleback("rat");
@@ -149,14 +157,18 @@ void battleProcess() {
         case 0:
             break;
         case 1:
-            //getTurnOrder();
-            cout<<"time for maple"<<endl;
+            // getTurnOrder();
             playerMove("maple");
-            if (ul_keys.pressed.A) {
-                
+            if (doWindowDrawing==false) {
+                battlePhase=0;
+                doWindowDrawing=true;
             }
             break;
         case 2:
+            break;
+        case 3:
+            break;
+        case 4:
             break;
         default:
             break;

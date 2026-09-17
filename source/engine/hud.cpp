@@ -193,7 +193,7 @@ void hudRender(char hudType) {
                             cout << "fight selected\n";
                             break;
                         }
-                        drawWindow("Fight",156,18,128,4,true);
+                        drawWindow("Fight",156,18,128,4,"popup");
                         windowDisplayText("Fight");
                         break;
                     case 1:
@@ -201,15 +201,19 @@ void hudRender(char hudType) {
                         ulDrawImageXY(bHUD.b_iconsItem,32,hudPos);
                         menuInput(false,false);
                         //ulDrawString(160,hudPos+6,"Item");
-                        drawWindow("Goods",156,18,128,4,true);
+                        drawWindow("Goods",156,18,128,4,"popup");
                         windowDisplayText("Goods");
+                        if (ul_keys.pressed.A) {
+                            mmEffect(SFX_SELECT);
+
+                        }
                         break;
                     case 2: //skill/psi
                         ulSetImageTileSize(bHUD.b_iconsSkill,32,0,16,16); //focus
                         ulDrawImageXY(bHUD.b_iconsSkill,48,hudPos);
                         menuInput(false,false);
                         //ulDrawString(160,hudPos+6,"Skill");
-                        drawWindow("Skill",156,18,128,4,true);
+                        drawWindow("Skill",156,18,128,4,"popup");
                         windowDisplayText("PSI");
                         break;
                     case 3: //guard/defend
@@ -221,7 +225,7 @@ void hudRender(char hudType) {
                             mmEffect(SFX_HSELECT);
                             hSelected=0;
                         }
-                        drawWindow("Guard",156,18,128,4,true);
+                        drawWindow("Guard",156,18,128,4,"popup");
                         windowDisplayText("Guard");
                         break;
                     default:
@@ -244,11 +248,12 @@ void hudRender(char hudType) {
                 }
             }
             else if (battleMenuState==2) {
-                drawWindow("enemyAppear",8,8,252-32,16,false);
+                drawWindow("enemyAppear",8,8,252-32,16,"normal");
                 windowDisplayText("The Cheesy Rat appeared!","This is a test line! Buenos dias!");
-                // if (ul_keys.pressed.A) {
-                //     battleMenuState=0;
-                // }
+                 if (doWindowDrawing==false) {
+                     battleMenuState=0;
+                     doWindowDrawing=true;
+                }
             }
     }
 }

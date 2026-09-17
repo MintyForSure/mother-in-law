@@ -24,13 +24,17 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="341b5b14-4693-4d05-b2a2-52d3c1d4d75d" name="Changes" comment="this repo is a mess im so sorry">
-      <change afterPath="$PROJECT_DIR$/source/engine/player.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/engine/player.h" afterDir="false" />
+    <list default="true" id="341b5b14-4693-4d05-b2a2-52d3c1d4d75d" name="Changes" comment="begin window rewrite">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/data/maps/debugRoom.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/data/maps/debugRoom.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/characters/maple.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/characters/maple.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/pkbeam0.aseprite" beforeDir="false" afterPath="$PROJECT_DIR$/data/pkbeam0.aseprite" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/engine/battle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/battle.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/engine/game.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/game.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/engine/game.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/game.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/engine/hud.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/hud.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/engine/window.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/window.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/engine/window.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/window.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,11 +140,6 @@
   }
 }</component>
   <component name="RunManager" selected="Native Application.all">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Makefile" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="mdelta" TARGET_NAME="Makefile" CONFIG_NAME="Makefile" version="1" RUN_TARGET_PROJECT_NAME="mdelta" RUN_TARGET_NAME="Makefile">
       <method v="2">
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
@@ -176,7 +175,7 @@
   </component>
   <component name="SelectedDebugProfileService"><![CDATA[{
   "profileIdByStamp": [],
-  "modificationCount": 26
+  "modificationCount": 42
 }]]></component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -195,7 +194,9 @@
     <MESSAGE value="updated makefile, introduced sound" />
     <MESSAGE value="forgot the makefile and audio" />
     <MESSAGE value="this repo is a mess im so sorry" />
-    <option name="LAST_COMMIT_MESSAGE" value="this repo is a mess im so sorry" />
+    <MESSAGE value="start on overworld movement" />
+    <MESSAGE value="begin window rewrite" />
+    <option name="LAST_COMMIT_MESSAGE" value="begin window rewrite" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

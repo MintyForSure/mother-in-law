@@ -18,6 +18,7 @@ extern int mapleStats[]; //maxHP,maxPP,atk,def,speed
 extern int ashtonHP[];
 extern int ashtonPP[];
 extern int ashtonStats[];
+extern std::string inventory[];
 void gameInit();
 void gameLogic();
 void battleLogic();

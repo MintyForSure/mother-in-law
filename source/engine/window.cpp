@@ -32,6 +32,19 @@ struct windowElements {
     UL_IMAGE *indicator;
 };
 
+class Window {
+    public:
+    string windowID;
+    int width{};
+    int height{};
+    int X{};
+    int Y{};
+    bool popup{};
+    bool doDrawing{};
+    string line1;
+    string line2;
+};
+
 static struct windowElements window;
 static string currentText;
 static string windowMessages[]={};
@@ -43,15 +56,15 @@ int visibleCharactersLine1=0;
 int visibleCharactersLine2=0;
 bool doWindowDrawing=true;
 
-void flushMessages() {
-    visibleCharactersLine1=0;
-    visibleCharactersLine2=0;
-    windowMessages[0]={};
-    windowMessages[1]={};
-    windowMessages[2]={};
-    windowMessages[3]={};
-    windowMessages[4]={};
-}
+// void flushMessages() {
+//     visibleCharactersLine1=0;
+//     visibleCharactersLine2=0;
+//     windowMessages[0]={};
+//     windowMessages[1]={};
+//     windowMessages[2]={};
+//     windowMessages[3]={};
+//     windowMessages[4]={};
+// }
 
 void windowSysInit() {
     window.window00=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
@@ -82,6 +95,10 @@ void windowSysInit() {
     //window.window01->centerX=width;
 }
 
+void windowInstance(int X, int Y, int width, int height, bool popup=false) {
+
+}
+
 void windowDisplayText(const string& line1,const string& line2) {
     // for (int i=0;i<line1.length();i++) {
     //     visibleCharactersLine1++;
@@ -94,7 +111,7 @@ void windowDisplayText(const string& line1,const string& line2) {
     }
 }
 
-void drawWindow(string windowID,int X,int Y,int width,int height,bool popup) {
+void drawWindow(string windowID,int X,int Y,int width,int height,string type) {
     windowWidth=width;
     windowHeight=height;
     window.window01->stretchX=width;
@@ -116,11 +133,12 @@ void drawWindow(string windowID,int X,int Y,int width,int height,bool popup) {
         ulDrawImageXY(window.window20,X,window.window10->stretchY+Y+8);
         ulDrawImageXY(window.window21,window.window20->x+8,window.window10->stretchY+Y+8);
         ulDrawImageXY(window.window22,window.window21->stretchX+window.window21->x,window.window10->stretchY+Y+8);
-        if (popup==false) {
+        if (type=="normal") {
             inWindow=true;
             ulDrawImageXY(window.indicator,window.window22->x-4,window.window22->y-4);
             if (ul_keys.pressed.A && gameState=='b') {
                 doWindowDrawing=false;
+                inWindow=false;
             }
             tics++;
             if (tics>29) {
@@ -134,4 +152,30 @@ void drawWindow(string windowID,int X,int Y,int width,int height,bool popup) {
             }
         }
     }
+}
+
+void drawMenu(int entries,bool allowReturn, int X,int Y,int width,int height) {
+    windowWidth=width;
+    windowHeight=height;
+    window.window01->stretchX=width;
+    window.window10->stretchY=height;
+    window.window11->stretchX=width;
+    window.window11->stretchY=height;
+    window.window12->stretchY=height;
+    window.window21->stretchX=width;
+    if (doWindowDrawing==true) {
+        //std::cout<<window.window01->stretchX<<std::endl;
+        ulDrawImageXY(window.window00,X,Y);
+        ulDrawImageXY(window.window01,window.window00->x+8,Y);
+        ulDrawImageXY(window.window02,window.window01->stretchX+window.window01->x,window.window01->y);
+
+        ulDrawImageXY(window.window10,X,Y+8);
+        ulDrawImageXY(window.window11,window.window01->x,Y+8);
+        ulDrawImageXY(window.window12,window.window11->stretchX+window.window11->x,Y+8);
+
+        ulDrawImageXY(window.window20,X,window.window10->stretchY+Y+8);
+        ulDrawImageXY(window.window21,window.window20->x+8,window.window10->stretchY+Y+8);
+        ulDrawImageXY(window.window22,window.window21->stretchX+window.window21->x,window.window10->stretchY+Y+8);
+    }
+
 }

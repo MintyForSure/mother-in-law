@@ -5,3 +5,7 @@
 /main.c.old
 /.cache/
 /Testing/
+/.directory
+/.ninja_log
+/.ninja_deps
+/build.ninja
