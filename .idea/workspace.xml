@@ -24,17 +24,25 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="341b5b14-4693-4d05-b2a2-52d3c1d4d75d" name="Changes" comment="begin window rewrite">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="341b5b14-4693-4d05-b2a2-52d3c1d4d75d" name="Changes" comment="begin menu window type">
+      <change afterPath="$PROJECT_DIR$/source/data/items.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/data/items.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/characters/maple.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/characters/maple.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/pkbeam0.aseprite" beforeDir="false" afterPath="$PROJECT_DIR$/data/pkbeam0.aseprite" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/window.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/window.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/engine/battle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/battle.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/engine/battlebacks.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/battlebacks.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/engine/game.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/game.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/engine/game.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/game.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/engine/hud.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/hud.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/engine/menus.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/menus.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/engine/player.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/player.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/engine/window.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/window.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/engine/window.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/window.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/engine/world.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/world.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,6 +127,7 @@
   &quot;keyToString&quot;: {
     &quot;CidrDebugProfileConversion&quot;: &quot;true&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Native Application.all.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
@@ -129,6 +138,7 @@
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/tailofhell/landfill/mdelta3ds&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -145,7 +155,7 @@
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration name="all" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="mdelta" TARGET_NAME="all" CONFIG_NAME="all" version="1" RUN_TARGET_PROJECT_NAME="mdelta" RUN_TARGET_NAME="all">
+    <configuration name="all" type="CLionNativeAppRunConfigurationType" PROGRAM_PARAMS="$PROJECT_DIR$/mdelta.nds" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="mdelta" TARGET_NAME="all" CONFIG_NAME="all" version="1" RUN_PATH="/bin/melonDS">
       <method v="2">
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
@@ -166,17 +176,17 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Native Application.Makefile" />
       <item itemvalue="Native Application.all" />
       <item itemvalue="Native Application.dldipatch" />
       <item itemvalue="Native Application.dump" />
       <item itemvalue="Native Application.sdimage" />
-      <item itemvalue="Native Application.Makefile" />
     </list>
   </component>
-  <component name="SelectedDebugProfileService"><![CDATA[{
-  "profileIdByStamp": [],
-  "modificationCount": 42
-}]]></component>
+  <component name="SelectedDebugProfileService">{
+  &quot;profileIdByStamp&quot;: [],
+  &quot;modificationCount&quot;: 78
+}</component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="341b5b14-4693-4d05-b2a2-52d3c1d4d75d" name="Changes" comment="" />
@@ -196,7 +206,8 @@
     <MESSAGE value="this repo is a mess im so sorry" />
     <MESSAGE value="start on overworld movement" />
     <MESSAGE value="begin window rewrite" />
-    <option name="LAST_COMMIT_MESSAGE" value="begin window rewrite" />
+    <MESSAGE value="begin menu window type" />
+    <option name="LAST_COMMIT_MESSAGE" value="begin menu window type" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -210,6 +221,11 @@
           <url>file://$PROJECT_DIR$/source/engine/game.cpp</url>
           <line>3</line>
           <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/source/engine/sound.cpp</url>
+          <line>11</line>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -6,7 +6,6 @@
 #include "sound.h"
 #include <ulib/ulib.h>
 #include "soundbank.h"
-#include "soundbank_bin.h"
 
 void menuInput(const bool fallbackL, const bool fallbackR) {
     if (ul_keys.pressed.left && fallbackL == false) {

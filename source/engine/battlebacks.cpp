@@ -15,6 +15,7 @@
 #define MAP_HEIGHT  6
 
 static UL_MAP *ratMap;
+static int tics;
 
 void battlebackInit(std::string enemy) {
     if (enemy=="rat") {
@@ -24,8 +25,17 @@ void battlebackInit(std::string enemy) {
 }
 
 void renderBattleback(std::string enemy) {
+    if (tics>59) {
+        tics=0;
+    }
+    else {
+        tics++;
+    }
     if (enemy=="rat") {
         ulDrawMap(ratMap);
-        ratMap->scrollX+=1;
+        if (tics%2!=1) {
+            ratMap->scrollX+=1;
+            ratMap->scrollY+=1;
+        }
     }
 }

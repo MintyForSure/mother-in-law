@@ -66,7 +66,7 @@ static int mPPTics = 0;
 int animSpeed=2;
 
 static int hpHandler(char member) {
-    cout<<mHPVis<<endl;
+    //cout<<mHPVis<<endl;
     if (member=='m') {
         if (((mapleHP[2]/100)%10)*8==0) {
             ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/100)%10)*8),6,8);

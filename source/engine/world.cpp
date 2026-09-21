@@ -6,6 +6,7 @@
 #include <ulib/ulib.h>
 #include "window.h"
 #include "game.h"
+#include "window.h"
 #include "../data/maps/debugRoom.h"
 #include "tiles/debugRoom_png.h"
 
@@ -25,4 +26,5 @@ void mapInit(const std::string& mapName) { //british people when i talk about th
 
 void mapRender() {
     ulDrawMap(map);
+    //drawMenu(4,false,16,16,128,32);
 }

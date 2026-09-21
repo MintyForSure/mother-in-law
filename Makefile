@@ -12,8 +12,8 @@ ARM_NONE_EABI_PATH	?= $(WONDERFUL_TOOLCHAIN)/toolchain/gcc-arm-none-eabi/bin/
 # ===========
 
 NAME		:= $(shell basename $(CURDIR))
-GAME_TITLE	:= Mother: Delta
-GAME_SUBTITLE	:= using µLIb
+GAME_TITLE	:= Mother: In Law
+GAME_SUBTITLE	:= indev
 GAME_AUTHOR	:= mintyforsure
 GAME_ICON	:= icon.bmp
 

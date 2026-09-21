@@ -8,7 +8,7 @@
 void windowSysInit();
 void drawWindow(std::string windowID,int X,int Y,int width,int height,std::string type);
 void windowDisplayText(const std::string& line1="",const std::string& line2="");
-void drawMenu();
+void drawMenu(int entries,bool allowReturn, int X,int Y,int width,int height);
 extern bool doWindowDrawing;
 
 #endif //MDELTA_WINDOW_H

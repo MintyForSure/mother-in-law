@@ -16,16 +16,15 @@
 #include "battlebacks.h"
 #include "numbers_png.h"
 #include "soundbank.h"
-#include "soundbank_bin.h"
 
 using namespace std;
 
 static s8 tics=0;
 static int damagePosXY[]={252/2,192/2};
-
+static s8 yPos;
 string mapleAction[]={"null","null","null"};
 string aaronAction[]={};
-
+int selectedEnemy=0;
 int battlePhase=0; //0-select 1-start combat phase 2-player move phase 3-enemy move phase 4-ex turn
 namespace {
     struct battleElements { //one magic variable wont hurt
@@ -75,6 +74,12 @@ void battleInit(const char *enemy0, const char *enemy1, const char *enemy2) {
         bElem.enemy0=ulLoadImageFilePNG(cheesyRat_png,(int)cheesyRat_png_size,UL_IN_VRAM,UL_PF_PAL4);
         battlebackInit("rat");
     }
+    if (enemies[1]=="rat") {
+        bElem.enemy1=ulLoadImageFilePNG(cheesyRat_png,(int)cheesyRat_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    }
+    if (enemies[2]=="rat") {
+        bElem.enemy2=ulLoadImageFilePNG(cheesyRat_png,(int)cheesyRat_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    }
     //bElem.battleBack = ulCreateMap(battleBG,bg_map);
 }
 
@@ -96,6 +101,7 @@ int damageCalc(string user,string target,string action) {
     return damage;
 }
 void damageRender(int dmg) {
+
     ulSetImageTileSize(bElem.numbers,0,((dmg/100)%10)*9,9,9);
     ulDrawImageXY(bElem.numbers,bElem.cursor->x,bElem.cursor->y);
     ulSetImageTileSize(bElem.numbers,0,((dmg/10)%10)*9,9,9);
@@ -125,7 +131,11 @@ void battleProcess() {
     ulDrawFillRect(0,162,256,192,RGB15(0,0,0)); //layering troubles, so im rendering it here.
     ulImageSetRotCenter(bElem.enemy0);
 
-    ulDrawImageXY(bElem.enemy0,128,192/2);
+    ulDrawImageXY(bElem.enemy0,256/2,192/2);
+    //ulDrawImageXY(bElem.enemy1,128,64);
+    //ulDrawImageXY(bElem.enemy2,64,192/2); //fuck it bro its your life
+
+
     if (battleMenuState==1) {
         tics++;
         if (tics>29) {
@@ -137,11 +147,60 @@ void battleProcess() {
         if (tics==60) {
             tics=0; //reset
         }
-        ulSetImageTint(bElem.enemy0,RGB15(31,31,31));
-        ulDrawImageXY(bElem.cursor,bElem.enemy0->x-24,bElem.enemy0->y-24);
-        if (bElem.enemy1!=nullptr && ul_keys.pressed.left) {
-            cout << "meow" << endl;
-            ulDrawImageXY(bElem.cursor,bElem.enemy1->x-24,bElem.enemy1->y-24);
+        //ulSetImageTint(bElem.enemy0,RGB15(31,31,31));
+        cout<<"enemy2 nullptr "<<(bElem.enemy2==nullptr)<<endl;
+        if (ul_keys.pressed.left) {
+            if (bElem.enemy1==nullptr && bElem.enemy2==nullptr) {
+
+            }
+            else if (selectedEnemy!=0) {
+                selectedEnemy--;
+                mmEffect(SFX_HSELECT);
+            }
+            else if (selectedEnemy==0) {
+                if (bElem.enemy2!=nullptr) {
+                    selectedEnemy=2;
+                    mmEffect(SFX_HSELECT);
+                }
+                else {
+                    selectedEnemy=1;
+                    mmEffect(SFX_HSELECT);
+                }
+            }
+
+        }
+        else if (ul_keys.pressed.right) {
+            if (bElem.enemy1==nullptr && bElem.enemy2==nullptr) {
+
+            }
+            else if (selectedEnemy!=2) {
+                selectedEnemy++;
+                mmEffect(SFX_HSELECT);
+            }
+            else if (selectedEnemy==1) {
+                if (bElem.enemy2==nullptr) {
+                    selectedEnemy=0;
+                    mmEffect(SFX_HSELECT);
+                }
+                else {
+                    selectedEnemy=2;
+                    mmEffect(SFX_HSELECT);
+                }
+            }
+            else {
+                selectedEnemy=0;
+                mmEffect(SFX_HSELECT);
+            }
+        }
+
+        if (selectedEnemy==0) {
+            ulDrawImageXY(bElem.cursor,bElem.enemy0->x-24,bElem.enemy0->y-16);
+        }
+        else if (selectedEnemy==1) {
+            ulDrawImageXY(bElem.cursor,bElem.enemy1->x,bElem.enemy1->y);
+        }
+        else if (selectedEnemy==2) {
+            ulDrawImageXY(bElem.cursor,bElem.enemy2->x,bElem.enemy2->y);
         }
         else if (ul_keys.pressed.B) {
             ulSetImageTint(bElem.enemy0,RGB15(31,31,31));

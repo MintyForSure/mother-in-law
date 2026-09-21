@@ -6,6 +6,7 @@
 #define MDELTA_GAME_H
 #include <stdbool.h>
 #include <string>
+#include <vector>
 
 extern std::string partyMembers[];
 extern int partyMemberCount;
@@ -18,7 +19,7 @@ extern int mapleStats[]; //maxHP,maxPP,atk,def,speed
 extern int ashtonHP[];
 extern int ashtonPP[];
 extern int ashtonStats[];
-extern std::string inventory[];
+extern std::vector<std::string> mapleInv;
 void gameInit();
 void gameLogic();
 void battleLogic();

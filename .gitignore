@@ -9,3 +9,5 @@
 /.ninja_log
 /.ninja_deps
 /build.ninja
+*.ase
+*.aseprite

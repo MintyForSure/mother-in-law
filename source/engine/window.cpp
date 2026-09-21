@@ -9,7 +9,9 @@
 #include "window_png.h"
 #include "cursor_png.h"
 #include <ulib/ulib.h>
+#include <nf_lib.h>
 #include <nds.h>
+#include <nds/arm9/video.h>
 
 #include "game.h"
 #include "hud.h"
@@ -67,6 +69,7 @@ bool doWindowDrawing=true;
 // }
 
 void windowSysInit() {
+    //ulib side
     window.window00=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
     window.window01=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
     window.window02=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
@@ -92,7 +95,8 @@ void windowSysInit() {
     ulSetImageTileSize(window.window22,16,16,8,8);
     ulSetImageTileSize(window.indicator,0,0,8,8);
 
-    //window.window01->centerX=width;
+    //NFLib side
+    
 }
 
 void windowInstance(int X, int Y, int width, int height, bool popup=false) {
@@ -106,6 +110,7 @@ void windowDisplayText(const string& line1,const string& line2) {
     //     cout<<line1[i]<<endl;
     //}
     if (doWindowDrawing==true) {
+        ulSetTextColor(RGB15(31,31,31));
         ulDrawString(window.window00->x+4,window.window00->y+6,line1.c_str());
         ulDrawString(window.window00->x+4,window.window01->y+16,line2.c_str());
     }
@@ -177,5 +182,14 @@ void drawMenu(int entries,bool allowReturn, int X,int Y,int width,int height) {
         ulDrawImageXY(window.window21,window.window20->x+8,window.window10->stretchY+Y+8);
         ulDrawImageXY(window.window22,window.window21->stretchX+window.window21->x,window.window10->stretchY+Y+8);
     }
+    for (int i=0;i<entries;i++) {
+        if (entries) {
+            ulDrawString(window.window00->x+6,window.window00->y+6,mapleInv[0].c_str());
+            ulDrawString(window.window00->x+6,window.window00->y+16,"entry");
+        }
+    }
+}
+
+void NFdrawWindow() {
 
 }
