@@ -16,8 +16,12 @@
 #include "soundbank.h"
 //#include "soundbank_bin.h"
 #include "hud.h"
+
+#include <cmath>
+
 #include "menus.h"
 #include "window.h"
+#include "characters/maple_png.h"
 #include "sound.h"
 
 using namespace std;
@@ -26,6 +30,7 @@ int hSelected=0; //0:fight 1:item 2:skill 3:whatever
 int vSelected=0;
 int battleMenuState=2; //2: starting window 0:menupick 1:fightpick
 s16 hudPos=8;
+s16 mapleBustPos=192;
 int partyMemberCount=1;
 bool doDrawing;
 
@@ -37,6 +42,7 @@ struct battleElem{
 
     UL_IMAGE *b_battleTab;
     UL_IMAGE *b_numbers;
+    UL_IMAGE *maple;
 };
 
 static struct battleElem bHUD;
@@ -52,6 +58,11 @@ void battleHudInit() {
 
     bHUD.b_battleTab=ulLoadImageFilePNG(static_cast<const char *>((void*)battleTab_png),(int)battleTab_png_size,UL_IN_VRAM,UL_PF_PAL4);
     bHUD.b_numbers=ulLoadImageFilePNG(static_cast<const char *>((void*)numbers_png),numbers_png_size,UL_IN_VRAM,UL_PF_PAL4);
+
+    bHUD.maple=ulLoadImageFilePNG(maple_png,static_cast<int>(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
+    ulSetImageTileSize(bHUD.maple,16,0,16,32);
+    ulImageSetRotCenter(bHUD.maple);
+
     ulSetImageTileSize(bHUD.b_iconsFight,0,16,16,16);
     ulSetImageTileSize(bHUD.b_iconsItem,16,16,16,16);
     ulSetImageTileSize(bHUD.b_iconsSkill,32,16,16,16);
@@ -173,6 +184,7 @@ void hudRender(char hudType) {
             switch (partyMemberCount) {
                 case 1:
                     ulSetTextColor(RGB15(0,0,0));
+                    ulDrawImageXY(bHUD.maple,128,mapleBustPos);
                     ulDrawImageXY(bHUD.b_battleTab,128,192-32);
                     ulDrawString(112,154,"Maple");
                     hpHandler('m');
@@ -192,6 +204,13 @@ void hudRender(char hudType) {
                 ulDrawImageXY(bHUD.b_iconsDefend,64,hudPos);
                 if (ul_keys.pressed.B) {
                     hSelected=0;
+                }
+                if (selectingPartyMember=="maple") {
+                    cout<<mapleBustPos<<endl;
+                    mapleBustPos=lerp(mapleBustPos,192-(64-16),0.5f);
+                } //192-(64-16)
+                else {
+                    mapleBustPos=192;
                 }
                 switch (hSelected) {
                     case 0:

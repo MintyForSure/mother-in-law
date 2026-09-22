@@ -138,7 +138,7 @@ void gameLogic() { //checks where the game is :)
         else {
             battleProcess();
             hudRender('b');
-            hudRenderSub("battle");
+           //hudRenderSub("battle");
             if (ul_keys.pressed.X) {
                 cout << "Setting Maple's HP to 12." << endl;
                 mapleHP[0]=12;

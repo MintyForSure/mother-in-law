@@ -25,7 +25,7 @@ static int damagePosXY[]={252/2,192/2};
 static s8 yPos;
 string mapleAction[]={"null","null","null"};
 string aaronAction[]={};
-static string selectingPartyMember;
+string selectingPartyMember;
 int selectedEnemy=0;
 int battlePhase=0; //0-select 1-start combat phase 2-player move phase 3-enemy move phase 4-ex turn
 namespace {
@@ -37,7 +37,6 @@ namespace {
         UL_IMAGE *enemy2;
         UL_IMAGE *cursor;
         UL_IMAGE *numbers;
-        UL_IMAGE *maple;
     };
 }
 
@@ -63,10 +62,9 @@ void battleInit(const char *enemy0, const char *enemy1, const char *enemy2) {
     //bElem.battleBack=ulLoadImageFilePNG(reinterpret_cast<const char *>(bg_png),(int)bg_png_size,UL_IN_VRAM,UL_PF_PAL4);
     bElem.cursor=ulLoadImageFilePNG((cursor_png),(int)cursor_png_size,UL_IN_VRAM,UL_PF_PAL4);
     bElem.numbers=ulLoadImageFilePNG(numbers1_png,(int)numbers1_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    bElem.maple=ulLoadImageFilePNG(maple_png,static_cast<int>(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
+
     ulSetImageTileSize(bElem.cursor,0,0,8,8);
     ulSetImageTileSize(bElem.numbers,0,0,9,9);
-    ulSetImageTileSize(bElem.maple,16,0,16,32);
 
     string enemies[]={enemy0,enemy1,enemy2};
     //std::cout << enemies[0] << std::endl;
@@ -136,8 +134,7 @@ void battleProcess() {
     ulDrawFillRect(0,0,256,30,RGB15(0,0,0));
     ulDrawFillRect(0,162,256,192,RGB15(0,0,0)); //layering troubles, so im rendering it here.
     ulImageSetRotCenter(bElem.enemy0);
-    ulImageSetRotCenter(bElem.maple);
-    ulDrawImageXY(bElem.maple,128,192-32);
+
     ulDrawImageXY(bElem.enemy0,256/2,192/2);
     //ulDrawImageXY(bElem.enemy1,128,64);
     //ulDrawImageXY(bElem.enemy2,64,192/2); //fuck it bro its your life
@@ -221,6 +218,7 @@ void battleProcess() {
     }
     switch (battlePhase) {
         case 0:
+            selectingPartyMember="maple";
             break;
         case 1:
             // getTurnOrder();
