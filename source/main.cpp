@@ -1,8 +1,6 @@
+#include <filesystem.h>
 #include <ulib/ulib.h> // Include for µLibrary
 #include <nds.h>
-#include <maxmod9.h>
-#include "engine/hud.h"
-#include "engine/menus.h"
 #include "engine/game.h"
 #include "engine/window.h"
 #include "engine/sound.h"
@@ -12,6 +10,8 @@
 
 int main(int argc, char *argv[])
 {
+    NF_SetRootFolder("NITROFS");
+    nitroFSInit(NULL);
     gameInit();
     audioInit();
     windowSysInit();
@@ -23,6 +23,8 @@ int main(int argc, char *argv[])
         gameLogic();
         ulReadKeys(0);
         NF_UpdateTextLayers();
+        NF_SpriteOamSet(1);
+        oamUpdate(&oamSub);
         ulEndDrawing();
         ulSyncFrame();
     }

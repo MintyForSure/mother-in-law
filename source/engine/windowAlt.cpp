@@ -6,7 +6,7 @@
 #include <nds/arm9/video.h>
 #include <nds.h>
 #include <ulib/ulib.h>
-#include "cursor_png.h"
+#include "ui/cursor_png.h"
 static bool doDrawing;
 struct windowElements {
     UL_IMAGE *cursor;

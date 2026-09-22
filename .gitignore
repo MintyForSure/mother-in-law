@@ -11,3 +11,4 @@
 /build.ninja
 *.ase
 *.aseprite
+/build.py

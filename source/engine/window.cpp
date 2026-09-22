@@ -6,8 +6,8 @@
 
 #include <string>
 #include <iostream>
-#include "window_png.h"
-#include "cursor_png.h"
+#include "ui/window_png.h"
+#include "ui/cursor_png.h"
 #include <ulib/ulib.h>
 #include <nf_lib.h>
 #include <nds.h>
@@ -96,7 +96,26 @@ void windowSysInit() {
     ulSetImageTileSize(window.indicator,0,0,8,8);
 
     //NFLib side
-    
+    NF_LoadSpriteGfx("gfx/window",0,8,8);
+    NF_LoadSpritePal("gfx/window",0);
+
+    NF_VramSpriteGfx(1,0,0,false);
+    NF_VramSpritePal(1,0,0);
+
+
+    for (int i=0;i<9;i++) {
+        NF_CreateSprite(1,i,0,0,-32,0);
+    }
+    NF_SpriteFrame(1,0,0);
+    NF_SpriteFrame(1,1,1);
+    NF_SpriteFrame(1,2,2);
+    NF_SpriteFrame(1,3,4);
+    NF_SpriteFrame(1,4,5);
+    NF_SpriteFrame(1,5,6);
+    NF_SpriteFrame(1,6,8);
+    NF_SpriteFrame(1,7,9);
+    NF_SpriteFrame(1,8,10);
+
 }
 
 void windowInstance(int X, int Y, int width, int height, bool popup=false) {
@@ -190,6 +209,20 @@ void drawMenu(int entries,bool allowReturn, int X,int Y,int width,int height) {
     }
 }
 
-void NFdrawWindow() {
+void NFdrawWindow(int X,int Y,int width,int height,string type) {
+    windowWidth=width;
+    windowHeight=height;
+
+    NF_MoveSprite(1,0,X,Y);
+    NF_MoveSprite(1,1,X+8,Y);
+    NF_MoveSprite(1,2,X+16,Y);
+
+    NF_MoveSprite(1,3,X,Y+8);
+    NF_MoveSprite(1,4,X+8,Y+8);
+    NF_MoveSprite(1,5,X+16,Y+8);
+
+    NF_MoveSprite(1,6,X,Y+16);
+    NF_MoveSprite(1,7,X+8,Y+16);
+    NF_MoveSprite(1,8,X+16,Y+16);
 
 }

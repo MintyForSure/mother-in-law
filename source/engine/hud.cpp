@@ -7,14 +7,14 @@
 #include <nds/arm9/video.h>
 #include <ulib/ulib.h>
 #include "battle.h"
-#include "battleIcons_png.h"
-#include "battleTab_png.h"
+#include "ui/battleIcons_png.h"
+#include "ui/battleTab_png.h"
 #include "game.h"
-#include "numbers_png.h"
+#include "ui/numbers_png.h"
 #include <nf_lib.h>
 #include <maxmod9.h>
 #include "soundbank.h"
-#include "soundbank_bin.h"
+//#include "soundbank_bin.h"
 #include "hud.h"
 #include "menus.h"
 #include "window.h"
@@ -56,6 +56,20 @@ void battleHudInit() {
     ulSetImageTileSize(bHUD.b_iconsItem,16,16,16,16);
     ulSetImageTileSize(bHUD.b_iconsSkill,32,16,16,16);
     ulSetImageTileSize(bHUD.b_iconsDefend,48,16,16,16);
+
+    NF_LoadSpriteGfx("gfx/battleOptions",1,64,32);
+    NF_LoadSpritePal("gfx/battleOptions",1);
+
+    NF_VramSpriteGfx(1,1,1,false);
+    NF_VramSpritePal(1,1,1);
+
+    NF_CreateSprite(1,9,1,1,192*2,16);
+    NF_CreateSprite(1,10,1,1,192*2,16);
+    NF_CreateSprite(1,11,1,1,192*2,16);
+    NF_CreateSprite(1,12,1,1,192*2,16);
+
+    NF_LoadTextFont16("fnt/font16","down",256,256,0);
+    NF_CreateTextLayer16(1,0,0,"down");
     ulImageSetRotCenter(bHUD.b_battleTab);
 }
 
@@ -149,11 +163,13 @@ static int ppHandler(char member) {
 void hudRender(char hudType) {
     switch (hudType) { //i love switch cases
         case 'b':
-
+            //NFdrawWindow(64,64,32,32,"popup");
+            //NFdrawWindow(32,32,32,32,"popup");
             ulSetImageTileSize(bHUD.b_iconsFight,0,16,16,16);
             ulSetImageTileSize(bHUD.b_iconsItem,16,16,16,16);
             ulSetImageTileSize(bHUD.b_iconsSkill,32,16,16,16);
             ulSetImageTileSize(bHUD.b_iconsDefend,48,16,16,16);
+
             switch (partyMemberCount) {
                 case 1:
                     ulSetTextColor(RGB15(0,0,0));
@@ -184,6 +200,7 @@ void hudRender(char hudType) {
                         menuInput(true,false);
                         //ulDrawString(160,hudPos+6,"Fight");
                         if (ul_keys.pressed.left) {
+                            cout<<"oh god it hurts";
                             mmEffect(SFX_HSELECT);
                             hSelected=3;
                         }
@@ -255,5 +272,30 @@ void hudRender(char hudType) {
                      doWindowDrawing=true;
                 }
             }
+    }
+}
+void hudRenderSub(const string& hudType) {
+    if (hudType=="battle") {
+        NF_MoveSprite(1,9,0,16-8);
+        NF_MoveSprite(1,10,0,64-8);
+        NF_MoveSprite(1,11,0,112-8);
+        NF_MoveSprite(1,12,0,160-8);
+
+        NF_SpriteFrame(1,9,1);
+        NF_SpriteFrame(1,10,1);
+        NF_SpriteFrame(1,11,1);
+        NF_SpriteFrame(1,12,1);
+
+        NF_WriteText16(1,0,2,2,"Fight");
+        switch (vSelected) {
+            case 0:
+                NF_SpriteFrame(1,9,0);
+                NF_MoveSprite(1,9,64,16-8);
+                break;
+            case 1:
+                NF_SpriteFrame(1,10,0);
+                NF_MoveSprite(1,10,64,64-8);
+                break;
+        }
     }
 }

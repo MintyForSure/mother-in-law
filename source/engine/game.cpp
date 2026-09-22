@@ -65,15 +65,15 @@ void gameInit() {
 
     //Initialize NF_Lib
     NF_Set2D(1,0);
-    NF_SetRootFolder("NITROFS");
-    nitroFSInit(NULL);
     NF_InitSpriteBuffers();
     NF_InitTiledBgBuffers();
     NF_InitTiledBgSys(1);
     NF_InitSpriteSys(1);
+    NF_InitTextSys(1);
     // Initialization of µlibrary
 
     ulInit(UL_INIT_ALL);
+    //ulInitDualScreenMode();
     ulInitGfx();
     ulInitText();
     ulSetMainLcd(1);
@@ -120,7 +120,12 @@ void gameLogic() { //checks where the game is :)
                 if (ul_keys.pressed.A) {gameState='b';}
             }
 
-            NF_UpdateTextLayers();
+            if (!ulGetMainLcd()) {
+                ulDrawString(16,16,"Hi menu");
+            }
+            else {
+                ulDrawString(16,32,"Hi top screen");
+            }
         }
     }
     else if (gameState=='b') {
@@ -133,6 +138,7 @@ void gameLogic() { //checks where the game is :)
         else {
             battleProcess();
             hudRender('b');
+            hudRenderSub("battle");
             if (ul_keys.pressed.X) {
                 cout << "Setting Maple's HP to 12." << endl;
                 mapleHP[0]=12;
