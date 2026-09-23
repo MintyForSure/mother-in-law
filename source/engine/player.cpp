@@ -42,6 +42,10 @@ void handleAnims(string partyMember) {
 void partyRender() {
     party.maple->x=xPos;
     party.maple->y=yPos;
+    if (xPos<0)
+        xPos=0;
+    if (xPos>30*16)
+        xPos=30*16;
     if (animTics>59) {
         animTics=0;
     }

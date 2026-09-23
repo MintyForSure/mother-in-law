@@ -28,6 +28,7 @@ string aaronAction[]={};
 string selectingPartyMember;
 int selectedEnemy=0;
 int battlePhase=0; //0-select 1-start combat phase 2-player move phase 3-enemy move phase 4-ex turn
+vector<string> turnOrder={};
 namespace {
     struct battleElements { //one magic variable wont hurt
         UL_MAP *battleBack;
@@ -54,8 +55,50 @@ namespace {
     };
 }
 
+namespace {
+    class enemy0BattleStats {
+    public:
+        string action;
+        string target;
+        int hp{};
+        int pp{};
+        int atk{};
+        int def{};
+        int spd{};
+    };
+}
+
+namespace {
+    class enemy1BattleStats {
+    public:
+        string action;
+        string target;
+        int hp{};
+        int pp{};
+        int atk{};
+        int def{};
+        int spd{};
+    };
+}
+
+namespace {
+    class enemy2BattleStats {
+    public:
+        string action;
+        string target;
+        int hp{};
+        int pp{};
+        int atk{};
+        int def{};
+        int spd{};
+    };
+}
+
 static struct battleElements bElem;
 static mapleBattleStats maple;
+static enemy0BattleStats enemy0stats;
+static enemy1BattleStats enemy1stats;
+static enemy2BattleStats enemy2stats;
 
 void battleInit(const char *enemy0, const char *enemy1, const char *enemy2) {
     //std::string turnOrder[]={mapleStats[4]};
@@ -67,6 +110,7 @@ void battleInit(const char *enemy0, const char *enemy1, const char *enemy2) {
     ulSetImageTileSize(bElem.numbers,0,0,9,9);
 
     string enemies[]={enemy0,enemy1,enemy2};
+    //int enemy0stats[]={getEnemyData("cheesyRat")};
     //std::cout << enemies[0] << std::endl;
     maple.hp=mapleHP[1];
     maple.pp=maplePP[1];
@@ -74,7 +118,7 @@ void battleInit(const char *enemy0, const char *enemy1, const char *enemy2) {
     maple.def=mapleStats[3];
     maple.spd=mapleStats[4];
     if (enemies[0] == "rat") {
-        getEnemyData("cheesyRat");
+        enemy0stats.hp=getEnemyStats("cheesyRat")[0];
         bElem.enemy0=ulLoadImageFilePNG(cheesyRat_png,(int)cheesyRat_png_size,UL_IN_VRAM,UL_PF_PAL4);
         battlebackInit("rat");
     }
@@ -87,25 +131,27 @@ void battleInit(const char *enemy0, const char *enemy1, const char *enemy2) {
     //bElem.battleBack = ulCreateMap(battleBG,bg_map);
 }
 
-// int *getTurnOrder() {
-//
-//     int turnOrder[]={maple.spd};
-//     return turnOrder;
-// }
+vector<string> getTurnOrder() {
+
+    turnOrder.emplace_back("maple");
+    turnOrder.emplace_back("enemy0");
+    turnOrder.emplace_back("enemy1");
+    return turnOrder;
+}
 
 int damageCalc(string user,string target,string action) {
     int damage=0;
     if (action=="bash") {
         if (user=="maple") {
             cout<<(maple.atk * 1.5)<<endl;
-            damage=int(maple.atk * 1.5);
+            damage=static_cast<int>(maple.atk * 1.5);
         }
+
     }
     cout<<damage<<endl;
     return damage;
 }
 void damageRender(int dmg) {
-
     ulSetImageTileSize(bElem.numbers,0,((dmg/100)%10)*9,9,9);
     ulDrawImageXY(bElem.numbers,bElem.cursor->x,bElem.cursor->y);
     ulSetImageTileSize(bElem.numbers,0,((dmg/10)%10)*9,9,9);
@@ -120,6 +166,7 @@ void playerMove(string actor) {
         int damageOutput = damageCalc(mapleAction[0], mapleAction[1],mapleAction[2]);
         //cout<<"maple gives damage: "<<damageCalc(mapleAction[0], mapleAction[1],mapleAction[2])<<endl;
         //cout<<"maple atk: "<<mapleStats[2]<<endl;
+        enemy0stats.hp=enemy0stats.hp-damageOutput;
         damageRender(damageOutput);
     }
     else if (actor=="maple"&& mapleAction[2]=="PSI") {
@@ -221,14 +268,19 @@ void battleProcess() {
             selectingPartyMember="maple";
             break;
         case 1:
-            // getTurnOrder();
-            playerMove("maple");
+            getTurnOrder();
+            if (turnOrder[0]=="maple") {
+                playerMove("maple");
+                turnOrder.pop_back();
+            }
             if (doWindowDrawing==false) {
-                battlePhase=0;
+                battlePhase=2;
                 doWindowDrawing=true;
             }
             break;
         case 2:
+            getTurnOrder();
+            cout<<"battlephase 2"<<endl;
             break;
         case 3:
             break;

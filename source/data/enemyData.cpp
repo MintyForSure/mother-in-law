@@ -6,6 +6,7 @@
 #include "cheesyRat_png.h"
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 /*alignments declared with
 w - weak/susceptible
@@ -49,7 +50,16 @@ class cheesyRat {
 
 };
 
-extern int getEnemyData(const string &enemy) {
+vector<int> getEnemyStats(const string &enemy) {
+    vector<int> stats;
+    //returns vector with stats being maxhp,maxpp,atk,def,speed
+    if (enemy=="cheesyRat") {
+        stats = {30, 0, 2, 2, 1};
+    }
+    return stats;
+}
+
+int getEnemyData(const string &enemy,string stat) {
     if (enemy == "cheesyRat") {
         cheesyRat cheesyRatObj{};
         cout << cheesyRatObj.name << endl;

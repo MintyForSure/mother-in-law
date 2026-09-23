@@ -102,6 +102,7 @@ static int hpHandler(char member) {
         }
         ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/10)%10)*8),6,8); //Max HP will never be in the single digits, lol.
         ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x+4,167);
+        //ulSetImageTileSize(bHUD.b_numbers,0,lerp(mapleHP[1],mapleHP[1]*5,0.1f),6,8);
         ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/1)%10)*8),6,8);
         ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x+12,167);
         mHPTics++;
@@ -210,7 +211,7 @@ void hudRender(char hudType) {
                     mapleBustPos=lerp(mapleBustPos,192-(64-16),0.5f);
                 } //192-(64-16)
                 else {
-                    mapleBustPos=192;
+                    mapleBustPos=lerp(192-(64-16),mapleBustPos,0.5f);
                 }
                 switch (hSelected) {
                     case 0:

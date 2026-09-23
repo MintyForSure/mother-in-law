@@ -36,10 +36,10 @@ void renderBattleback(std::string enemy) {
     }
     if (enemy=="rat") {
         ulDrawMap(ratMap);
+         
         if (tics%2!=1) {
             ratMap->scrollX+=1;
             ratMap->scrollY+=1;
-
         }
     }
 }
