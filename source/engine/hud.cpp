@@ -21,8 +21,10 @@
 
 #include "menus.h"
 #include "window.h"
+#include "../data/enemyData.h"
 #include "characters/maple_png.h"
-#include "sound.h"
+#include "ui/pressTurnIcons_png.h"
+#include "ui/turnHolder_png.h"
 
 using namespace std;
 
@@ -31,7 +33,6 @@ int vSelected=0;
 int battleMenuState=2; //2: starting window 0:menupick 1:fightpick
 s16 hudPos=8;
 s16 mapleBustPos=192;
-int partyMemberCount=1;
 bool doDrawing;
 
 struct battleElem{
@@ -40,9 +41,18 @@ struct battleElem{
     UL_IMAGE *b_iconsItem;
     UL_IMAGE *b_iconsDefend;
 
-    UL_IMAGE *b_battleTab;
+    UL_IMAGE *b_turnIcons;
+    UL_IMAGE *b_enemyTurnIcons;
+    UL_IMAGE *b_turnHolder;
+
+    UL_IMAGE *b_mapleBattleTab;
+    UL_IMAGE *b_ashtonBattleTab;
+    UL_IMAGE *b_crusherBattleTab;
+
     UL_IMAGE *b_numbers;
     UL_IMAGE *maple;
+    UL_IMAGE *ashton;
+    UL_IMAGE *crusher;
 };
 
 static struct battleElem bHUD;
@@ -56,7 +66,14 @@ void battleHudInit() {
     bHUD.b_iconsItem=ulLoadImageFilePNG(static_cast<const char *>((void*)battleIcons_png),(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
     bHUD.b_iconsDefend=ulLoadImageFilePNG(static_cast<const char *>((void*)battleIcons_png),(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
 
-    bHUD.b_battleTab=ulLoadImageFilePNG(static_cast<const char *>((void*)battleTab_png),(int)battleTab_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    bHUD.b_turnIcons=ulLoadImageFilePNG(reinterpret_cast<const char *>(pressTurnIcons_png),pressTurnIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    bHUD.b_enemyTurnIcons=ulLoadImageFilePNG(reinterpret_cast<const char *>(pressTurnIcons_png),pressTurnIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    bHUD.b_turnHolder=ulLoadImageFilePNG(reinterpret_cast<const char *>(turnHolder_png),turnHolder_png_size,UL_IN_VRAM,UL_PF_PAL4);
+
+    bHUD.b_mapleBattleTab=ulLoadImageFilePNG(static_cast<const char *>((void*)battleTab_png),(int)battleTab_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    bHUD.b_crusherBattleTab=ulLoadImageFilePNG(static_cast<const char *>((void*)battleTab_png),(int)battleTab_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    bHUD.b_crusherBattleTab=ulLoadImageFilePNG(static_cast<const char *>((void*)battleTab_png),(int)battleTab_png_size,UL_IN_VRAM,UL_PF_PAL4);
+
     bHUD.b_numbers=ulLoadImageFilePNG(static_cast<const char *>((void*)numbers_png),numbers_png_size,UL_IN_VRAM,UL_PF_PAL4);
 
     bHUD.maple=ulLoadImageFilePNG(maple_png,static_cast<int>(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
@@ -67,6 +84,9 @@ void battleHudInit() {
     ulSetImageTileSize(bHUD.b_iconsItem,16,16,16,16);
     ulSetImageTileSize(bHUD.b_iconsSkill,32,16,16,16);
     ulSetImageTileSize(bHUD.b_iconsDefend,48,16,16,16);
+
+    ulSetImageTileSize(bHUD.b_turnIcons,0,0,16,16);
+    ulSetImageTileSize(bHUD.b_enemyTurnIcons,16,0,16,16);
 
     NF_LoadSpriteGfx("gfx/battleOptions",1,64,32);
     NF_LoadSpritePal("gfx/battleOptions",1);
@@ -79,14 +99,20 @@ void battleHudInit() {
     NF_CreateSprite(1,11,1,1,192*2,16);
     NF_CreateSprite(1,12,1,1,192*2,16);
 
+
     NF_LoadTextFont16("fnt/font16","down",256,256,0);
     NF_CreateTextLayer16(1,0,0,"down");
-    ulImageSetRotCenter(bHUD.b_battleTab);
+    ulImageSetRotCenter(bHUD.b_mapleBattleTab);
+    ulImageSetRotCenter(bHUD.b_crusherBattleTab);
 }
 
 static int mHPTics = 0;
 static int mHPVis=mapleHP[1];
 static int mPPTics = 0;
+
+static int cHPTics=0;
+static int cPPTics=0;
+
 //static int mapleHPTicker[]={0,0,0};
 int animSpeed=2;
 
@@ -98,13 +124,13 @@ static int hpHandler(char member) {
         }
         else {
             ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/100)%10)*8),6,8);
-            ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x-4,167);
+            ulDrawImageXY(bHUD.b_numbers,bHUD.b_mapleBattleTab->x-4,167);
         }
         ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/10)%10)*8),6,8); //Max HP will never be in the single digits, lol.
-        ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x+4,167);
+        ulDrawImageXY(bHUD.b_numbers,bHUD.b_mapleBattleTab->x+4,167);
         //ulSetImageTileSize(bHUD.b_numbers,0,lerp(mapleHP[1],mapleHP[1]*5,0.1f),6,8);
         ulSetImageTileSize(bHUD.b_numbers,0,(((mapleHP[1]/1)%10)*8),6,8);
-        ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x+12,167);
+        ulDrawImageXY(bHUD.b_numbers,bHUD.b_mapleBattleTab->x+12,167);
         mHPTics++;
         //cout << mTics <<endl;
         if (mapleHP[0] < mapleHP[1]) {
@@ -129,10 +155,44 @@ static int hpHandler(char member) {
     else if (member=='a') {
         cout << "ehhh whatever";
     }
+    else if (member=='c') {
+        if (((crusherHP[2]/100)%10)*8==0) {
+            ulSetImageTileSize(bHUD.b_numbers,0,(((crusherHP[1]/100)%10)*8),6,8);
+        }
+        else {
+            ulSetImageTileSize(bHUD.b_numbers,0,(((crusherHP[1]/100)%10)*8),6,8);
+            ulDrawImageXY(bHUD.b_numbers,bHUD.b_crusherBattleTab->x-4,167);
+        }
+        ulSetImageTileSize(bHUD.b_numbers,0,(((crusherHP[1]/10)%10)*8),6,8); //Max HP will never be in the single digits, lol.
+        ulDrawImageXY(bHUD.b_numbers,bHUD.b_crusherBattleTab->x+4,167);
+        //ulSetImageTileSize(bHUD.b_numbers,0,lerp(mapleHP[1],mapleHP[1]*5,0.1f),6,8);
+        ulSetImageTileSize(bHUD.b_numbers,0,(((crusherHP[1]/1)%10)*8),6,8);
+        ulDrawImageXY(bHUD.b_numbers,bHUD.b_crusherBattleTab->x+12,167);
+        cHPTics++;
+        //cout << mTics <<endl;
+        if (crusherHP[0] < crusherHP[1]) {
+            if (cHPTics % 6==1) {
+                //cout << mapleHP[1] << "\n";
+                mapleHP[1]--;
+            }
+        }
+        else if (crusherHP[0]>crusherHP[1]) {
+            if (cHPTics % 4==1) {
+                //cout << mapleHP[1] << "\n";
+                crusherHP[1]++;
+            }
+        }
+        else {
+            cHPTics=0;
+        }
+        if (cHPTics==80) {
+            cHPTics=0;
+        }
+    }
     return 0;
 }
 
-static int ppHandler(char member) {
+static int ppHandler(char member) { //please be mature about this
     //cout<<(mapleHP[1]/10)%10<<endl;
     if (member=='m') {
         if (((maplePP[2]/100)%10)*8==0) {
@@ -140,12 +200,12 @@ static int ppHandler(char member) {
         }
         else {
             ulSetImageTileSize(bHUD.b_numbers,0,(((maplePP[1]/100)%10)*8),6,8);
-            ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x-4,167+11);
+            ulDrawImageXY(bHUD.b_numbers,bHUD.b_mapleBattleTab->x-4,167+11);
         }
         ulSetImageTileSize(bHUD.b_numbers,0,(((maplePP[1]/10)%10)*8),6,8); //ditto
-        ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x+4,167+11);
+        ulDrawImageXY(bHUD.b_numbers,bHUD.b_mapleBattleTab->x+4,167+11);
         ulSetImageTileSize(bHUD.b_numbers,0,(((maplePP[1]/1)%10)*8),6,8);
-        ulDrawImageXY(bHUD.b_numbers,bHUD.b_battleTab->x+12,167+11);
+        ulDrawImageXY(bHUD.b_numbers,bHUD.b_mapleBattleTab->x+12,167+11);
         mPPTics++;
         //cout << mTics <<endl;
         if (maplePP[0] < maplePP[1]) {
@@ -169,12 +229,58 @@ static int ppHandler(char member) {
     else if (member=='a') {
         cout << "ehhh whatever";
     }
+    else if (member=='c') {
+
+        if (((crusherPP[2]/100)%10)*8==0) {
+            ulSetImageTileSize(bHUD.b_numbers,0,(((crusherPP[1]/100)%10)*8),6,8);
+        }
+        else {
+            ulSetImageTileSize(bHUD.b_numbers,0,(((crusherPP[1]/100)%10)*8),6,8);
+            ulDrawImageXY(bHUD.b_numbers,bHUD.b_crusherBattleTab->x-4,167+11);
+        }
+        ulSetImageTileSize(bHUD.b_numbers,0,(((crusherPP[1]/10)%10)*8),6,8); //Max HP will never be in the single digits, lol.
+        ulDrawImageXY(bHUD.b_numbers,bHUD.b_crusherBattleTab->x+4,167+11);
+        //ulSetImageTileSize(bHUD.b_numbers,0,lerp(mapleHP[1],mapleHP[1]*5,0.1f),6,8);
+        ulSetImageTileSize(bHUD.b_numbers,0,(((crusherPP[1]/1)%10)*8),6,8);
+        ulDrawImageXY(bHUD.b_numbers,bHUD.b_crusherBattleTab->x+12,167+11);
+        cHPTics++;
+        //cout << mTics <<endl;
+        if (crusherPP[0] < crusherPP[1]) {
+            if (cPPTics % 6==1) {
+                //cout << mapleHP[1] << "\n";
+                mapleHP[1]--;
+            }
+        }
+        else if (crusherPP[0]>crusherPP[1]) {
+            if (cHPTics % 4==1) {
+                //cout << mapleHP[1] << "\n";
+                crusherPP[1]++;
+            }
+        }
+        else {
+            cPPTics=0;
+        }
+        if (cPPTics==80) {
+            cPPTics=0;
+        }
+    }
     return 0;
 }
 
 void hudRender(char hudType) {
     switch (hudType) { //i love switch cases
         case 'b':
+            ulDrawImageXY(bHUD.b_turnHolder,179,62);
+            if (battlePhase==0 or battlePhase==1) {
+                for (int i=0; i<pressTurnCount(true); i++) {
+                    ulDrawImageXY(bHUD.b_turnIcons,188+(i*16),62-16);
+                }
+            }
+            else if (battlePhase==2) {
+                for (int i=0; i<pressTurnCount(false); i++) {
+                    ulDrawImageXY(bHUD.b_enemyTurnIcons,188+(i*16),62-16);
+                }
+            }
             //NFdrawWindow(64,64,32,32,"popup");
             //NFdrawWindow(32,32,32,32,"popup");
             ulSetImageTileSize(bHUD.b_iconsFight,0,16,16,16);
@@ -185,16 +291,31 @@ void hudRender(char hudType) {
             switch (partyMemberCount) {
                 case 1:
                     ulSetTextColor(RGB15(0,0,0));
-                    ulDrawImageXY(bHUD.maple,128,mapleBustPos);
-                    ulDrawImageXY(bHUD.b_battleTab,128,192-32);
+                    ulDrawImageXY(bHUD.maple,bHUD.b_mapleBattleTab->x,mapleBustPos);
+                    ulDrawImageXY(bHUD.b_mapleBattleTab,128,192-32);
                     ulDrawString(112,154,"Maple");
                     hpHandler('m');
                     ppHandler('m');
                     //ulSetImageTileSize(bHUD.b_numbers,0,0,6,8);
                     //ulDrawString(124,167,reinterpret_cast<const char *>(mapleHP[1]));
                     break;
+                case 2:
+                    ulSetTextColor(RGB15(0,0,0));
+                    ulDrawImageXY(bHUD.b_mapleBattleTab,67+(58/2),192-32);
+                    ulDrawImageXY(bHUD.b_crusherBattleTab,131+(58/2),192-32);
+                    if (partyMembers[0]=="maple") {
+                        ulDrawString(112-32,154,"Maple");
+                        hpHandler('m');
+                        ppHandler('m');
+                    }
+                    if (partyMembers[1]=="crusher") {
+                        ulDrawString(112+26,154,"Crusher");
+                        hpHandler('c');
+                        ppHandler('c');
+                    }
+                    break;
                 default:
-                    printf("how do you have that many party members? \n");
+                    //cout<<partyMemberCount<<endl;
                     break;
             }
 
@@ -207,7 +328,6 @@ void hudRender(char hudType) {
                     hSelected=0;
                 }
                 if (selectingPartyMember=="maple") {
-                    cout<<mapleBustPos<<endl;
                     mapleBustPos=lerp(mapleBustPos,192-(64-16),0.5f);
                 } //192-(64-16)
                 else {
@@ -277,16 +397,24 @@ void hudRender(char hudType) {
                 }
                 else if (ul_keys.pressed.A) {
                     mmEffect(SFX_SELECT);
-                    mapleAction[0]="maple";
-                    mapleAction[1]="enemy0";
-                    mapleAction[2]="bash";
-                    battlePhase=1;
+                    if (selectingPartyMember=="maple") {
+                        mapleAction[0]="maple";
+                        mapleAction[1]="enemy0";
+                        mapleAction[2]="bash";
+                        battlePhase=1;
+                        playerMove("maple");
+                        battlePhase=1;
+                    }
+                    if (selectingPartyMember=="crusher") {
+                        playerMove("crusher");
+                        battlePhase=1;
+                    }
                     battleMenuState=3;
                 }
             }
             else if (battleMenuState==2) {
                 drawWindow("enemyAppear",8,8,252-32,16,"normal");
-                windowDisplayText("The Cheesy Rat appeared!","This is a test line! Buenos dias!");
+                windowDisplayText("The "+getEnemyName(enemyList[0])+" appeared!","This is a test line!");
                  if (doWindowDrawing==false) {
                      battleMenuState=0;
                      doWindowDrawing=true;

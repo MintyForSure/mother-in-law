@@ -9,5 +9,6 @@
 
 extern int getEnemyData(const std::string &enemy, std::string stat);
 extern std::vector<int> getEnemyStats(const std::string &enemy);
-
+extern std::vector<std::string> getEnemyAttacks(const std::string& enemy);
+extern std::string getEnemyName(const std::string &enemy);
 #endif //MDELTA_ENEMYDATA_H

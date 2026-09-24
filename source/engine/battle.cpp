@@ -13,22 +13,27 @@
 #include "hud.h"
 #include "window.h"
 #include <maxmod9.h>
+#include <thread>
+
 #include "battlebacks.h"
-#include "ui/numbers_png.h"
-#include "characters/maple_png.h"
+#include "ui/pressTurnIcons_png.h"
 #include "soundbank.h"
 
 using namespace std;
 
 static s8 tics=0;
-static int damagePosXY[]={252/2,192/2};
-static s8 yPos;
-string mapleAction[]={"null","null","null"};
-string aaronAction[]={};
+//static int damagePosXY[]={252/2,192/2};
+//static s8 yPos;
+string mapleAction[3]={};
+string aaronAction[3]={};
+string crusherAction[3]={};
 string selectingPartyMember;
 int selectedEnemy=0;
 int battlePhase=0; //0-select 1-start combat phase 2-player move phase 3-enemy move phase 4-ex turn
-vector<string> turnOrder={};
+int playerTurns=partyMemberCount;
+int enemyTurns;
+
+vector<string> enemyList={};
 namespace {
     struct battleElements { //one magic variable wont hurt
         UL_MAP *battleBack;
@@ -60,6 +65,7 @@ namespace {
     public:
         string action;
         string target;
+        string name;
         int hp{};
         int pp{};
         int atk{};
@@ -73,6 +79,7 @@ namespace {
     public:
         string action;
         string target;
+        string name;
         int hp{};
         int pp{};
         int atk{};
@@ -86,6 +93,7 @@ namespace {
     public:
         string action;
         string target;
+        string name;
         int hp{};
         int pp{};
         int atk{};
@@ -100,7 +108,8 @@ static enemy0BattleStats enemy0stats;
 static enemy1BattleStats enemy1stats;
 static enemy2BattleStats enemy2stats;
 
-void battleInit(const char *enemy0, const char *enemy1, const char *enemy2) {
+void battleInit(std::string enemy0, const std::string& enemy1, const std::string& enemy2) {
+    selectingPartyMember="maple";
     //std::string turnOrder[]={mapleStats[4]};
     //bElem.battleBack=ulLoadImageFilePNG(reinterpret_cast<const char *>(bg_png),(int)bg_png_size,UL_IN_VRAM,UL_PF_PAL4);
     bElem.cursor=ulLoadImageFilePNG((cursor_png),(int)cursor_png_size,UL_IN_VRAM,UL_PF_PAL4);
@@ -109,7 +118,14 @@ void battleInit(const char *enemy0, const char *enemy1, const char *enemy2) {
     ulSetImageTileSize(bElem.cursor,0,0,8,8);
     ulSetImageTileSize(bElem.numbers,0,0,9,9);
 
-    string enemies[]={enemy0,enemy1,enemy2};
+    enemyList={enemy0};
+    if (enemy1!="empty") {
+        enemyList.emplace_back(enemy1);
+    }
+    if (enemy2!="empty") {
+        enemyList.emplace_back(enemy2);
+    }
+
     //int enemy0stats[]={getEnemyData("cheesyRat")};
     //std::cout << enemies[0] << std::endl;
     maple.hp=mapleHP[1];
@@ -117,40 +133,79 @@ void battleInit(const char *enemy0, const char *enemy1, const char *enemy2) {
     maple.atk=mapleStats[2];
     maple.def=mapleStats[3];
     maple.spd=mapleStats[4];
-    if (enemies[0] == "rat") {
+    if (enemyList[0] == "cheesyRat") {
         enemy0stats.hp=getEnemyStats("cheesyRat")[0];
+        enemy0stats.name=getEnemyName("cheesyRat");
         bElem.enemy0=ulLoadImageFilePNG(cheesyRat_png,(int)cheesyRat_png_size,UL_IN_VRAM,UL_PF_PAL4);
         battlebackInit("rat");
     }
-    if (enemies[1]=="rat") {
-        bElem.enemy1=ulLoadImageFilePNG(cheesyRat_png,(int)cheesyRat_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    if (enemyList[1]=="rat") {
+        bElem.enemy1=bElem.enemy0;
     }
-    if (enemies[2]=="rat") {
-        bElem.enemy2=ulLoadImageFilePNG(cheesyRat_png,(int)cheesyRat_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    if (enemyList[2]=="rat") {
+        bElem.enemy2=bElem.enemy0;
     }
     //bElem.battleBack = ulCreateMap(battleBG,bg_map);
 }
+int playerTakeDamage(const string& target) {
+    int damage;
+    if (target=="maple") {
+        mapleHP[0]-=5;
+    }
+    return damage;
+}
+void passTurn(bool player=true) {
+    if (player==true) {
+        playerTurns--;
+        cout<<"from: passTurn, playerTurns: "<<playerTurns<<endl;
+        if (playerTurns!=0) {
+            if (selectingPartyMember=="maple") {
+                selectingPartyMember=partyMembers[1];
+                battlePhase=0;
+                battleMenuState=2;
+            }
+            else if (selectingPartyMember=="ashton") {
+                selectingPartyMember=partyMembers[2];
+            }
+        }
+        else {
+            battlePhase=2;
+        }
+    }
+    else {
+        enemyTurns--;
+        if (enemyTurns!=0) {
 
-vector<string> getTurnOrder() {
+        }
+        else {
+            battlePhase=0;
+            battleMenuState=2;
+            playerTurns=partyMemberCount;
+            cout<<"enemyTurns: "<<(enemyTurns)<<endl;
+        }
+    }
+}
 
-    turnOrder.emplace_back("maple");
-    turnOrder.emplace_back("enemy0");
-    turnOrder.emplace_back("enemy1");
-    return turnOrder;
+int pressTurnCount(bool player) {
+    if (player==true) {
+        return playerTurns;
+    }
+    else {
+        enemyTurns=size(enemyList);
+        return enemyTurns;
+    }
 }
 
 int damageCalc(string user,string target,string action) {
     int damage=0;
     if (action=="bash") {
         if (user=="maple") {
-            cout<<(maple.atk * 1.5)<<endl;
             damage=static_cast<int>(maple.atk * 1.5);
         }
-
     }
-    cout<<damage<<endl;
     return damage;
 }
+
 void damageRender(int dmg) {
     ulSetImageTileSize(bElem.numbers,0,((dmg/100)%10)*9,9,9);
     ulDrawImageXY(bElem.numbers,bElem.cursor->x,bElem.cursor->y);
@@ -159,22 +214,45 @@ void damageRender(int dmg) {
     ulSetImageTileSize(bElem.numbers,0,((dmg/1)%10)*9,9,9);
     ulDrawImageXY(bElem.numbers,bElem.cursor->x+16,bElem.cursor->y);
 }
-void playerMove(string actor) {
-    if (actor=="maple" && mapleAction[2]=="bash") {
+void renderPlayerMove(string member) {
+    if (selectingPartyMember=="maple") {
+        int damageOutput = damageCalc(mapleAction[0], mapleAction[1],mapleAction[2]);
         drawWindow("mapleAttack",8,8,252-32,16,"normal");
         windowDisplayText("Maple attacks!","");
-        int damageOutput = damageCalc(mapleAction[0], mapleAction[1],mapleAction[2]);
-        //cout<<"maple gives damage: "<<damageCalc(mapleAction[0], mapleAction[1],mapleAction[2])<<endl;
-        //cout<<"maple atk: "<<mapleStats[2]<<endl;
-        enemy0stats.hp=enemy0stats.hp-damageOutput;
-        damageRender(damageOutput);
+        if (doWindowDrawing==true) {
+            damageRender(damageOutput);
+        }
     }
-    else if (actor=="maple"&& mapleAction[2]=="PSI") {
-
+    else if (selectingPartyMember=="crusher") {
+        int damageOutput = damageCalc(crusherAction[0], crusherAction[1],crusherAction[2]);
+        drawWindow("crusherAttack",8,8,252-32,16,"normal");
+        windowDisplayText("Crusher attacks!","");
+        if (doWindowDrawing==true) {
+            damageRender(damageOutput);
+        }
+    }
+}
+void playerMove(string member) {
+    if (member=="maple") {
+        if (mapleAction[2]=="bash") {
+            const int damageOutput = damageCalc(mapleAction[0], mapleAction[1],mapleAction[2]);
+            //cout<<"maple gives damage: "<<damageCalc(mapleAction[0], mapleAction[1],mapleAction[2])<<endl;
+            cout<<"maple atk: "<<mapleStats[2]<<endl;
+            //playerTurns--;
+            enemy0stats.hp=enemy0stats.hp-damageOutput;
+        }
+    }
+    if (member=="crusher") {
+        if (crusherAction[2]=="bash") {
+            const int damageOutput = damageCalc(crusherAction[0], crusherAction[1],crusherAction[2]);
+            cout<<"crusher atk: "<<mapleStats[2]<<endl;
+            enemy0stats.hp=enemy0stats.hp-damageOutput;
+        }
     }
 }
 
 void battleProcess() {
+    //cout<<"enemyList[1]: "<<enemyList[1]<<endl; dont try to observe the inside of the vector i guess.
     //ulDrawGradientRect(0, 0, 256, 192, RGB15(24, 0, 28), RGB15(0, 0, 0),RGB15(0, 0, 0), RGB15(0, 0, 24));
     //ulDrawImage(bElem.battleBack);
     renderBattleback("rat");
@@ -199,7 +277,7 @@ void battleProcess() {
             tics=0; //reset
         }
         //ulSetImageTint(bElem.enemy0,RGB15(31,31,31));
-        cout<<"enemy2 nullptr "<<(bElem.enemy2==nullptr)<<endl;
+        //cout<<"enemy2 nullptr "<<(bElem.enemy2==nullptr)<<endl;
         if (ul_keys.pressed.left) {
             if (bElem.enemy1==nullptr && bElem.enemy2==nullptr) {
 
@@ -264,23 +342,33 @@ void battleProcess() {
         }
     }
     switch (battlePhase) {
-        case 0:
-            selectingPartyMember="maple";
+        case 0: //player select action
+            pressTurnCount(true);
             break;
-        case 1:
-            getTurnOrder();
-            if (turnOrder[0]=="maple") {
-                playerMove("maple");
-                turnOrder.pop_back();
+        case 1: //player action execution
+            if (selectingPartyMember=="maple") {
+                renderPlayerMove("maple");
             }
-            if (doWindowDrawing==false) {
-                battlePhase=2;
-                doWindowDrawing=true;
+            else if (selectingPartyMember=="ashton") {
+                renderPlayerMove("ashton");
+            }
+            else if (selectingPartyMember=="crusher") {
+                renderPlayerMove("crusher");
+            }
+            if (ul_keys.pressed.A) {
+                passTurn(true);
             }
             break;
-        case 2:
-            getTurnOrder();
-            cout<<"battlephase 2"<<endl;
+        case 2: //enemy execution/action
+            cout<<"battlePhase2"<<endl;
+            if (inWindow==false) {doWindowDrawing=true;}
+            drawWindow("swag",8,8,252-32,16,"normal");
+            windowDisplayText(enemy0stats.name+" attacks!");
+            cout<<"maple target HP: "<<mapleHP[1]<<endl;
+            if (ul_keys.pressed.A) {
+                playerTakeDamage("maple");
+                passTurn(false);
+            }
             break;
         case 3:
             break;

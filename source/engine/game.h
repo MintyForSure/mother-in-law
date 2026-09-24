@@ -19,6 +19,9 @@ extern int mapleStats[]; //maxHP,maxPP,atk,def,speed
 extern int ashtonHP[];
 extern int ashtonPP[];
 extern int ashtonStats[];
+extern int crusherHP[];
+extern int crusherPP[];
+extern int crusherStats[];
 extern std::vector<std::string> mapleInv;
 void gameInit();
 void gameLogic();

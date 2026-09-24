@@ -21,15 +21,28 @@
 
 using namespace std;
 
-string partyMembers[]={"maple"};
+string partyMembers[]={"maple","crusher"};
 string inventory[]={"coolFood","junkFood"};
 char gameState;
 bool debug;
 bool inWindow;
 int mapleLevel[]={1,0,5}; //level,xp,xp to next level
 int mapleStats[]={25,12,5,2,4}; //maxHP,maxPP,atk,def,speed
+int crusherLevel[]={1,0,5}; //level,xp,xp to next level
+int crusherStats[]={22,20,4,3,4}; //maxHP,maxPP,atk,def,speed
+int ashtonLevel[]={1,0,5}; //level,xp,xp to next level
+int ashtonStats[]={24,0,6,3,4}; //maxHP,maxPP,atk,def,speed
+
+int partyMemberCount=std::size(partyMembers);
+
 int mapleHP[]={mapleStats[0],mapleStats[0],mapleStats[0]}; //Target HP, Current HP, Max HP
 int maplePP[]={mapleStats[1],mapleStats[1],mapleStats[1]}; //Target PP, Current PP, Max PP
+
+int crusherHP[]={crusherStats[0],crusherStats[0],crusherStats[0]};
+int crusherPP[]={crusherStats[1],crusherStats[1],crusherStats[1]};
+
+int ashtonHP[]={ashtonStats[0],ashtonStats[0],ashtonStats[0]};
+int ashtonPP[]={ashtonStats[1],ashtonStats[1],ashtonStats[1]};
 
 static bool initSwitch_b=false;
 static bool initSwitch_m=false;
@@ -37,17 +50,17 @@ static bool initSwitch_x=false;
 static int sel=0;
 
 
-static int getPartyStats(const string& member,int stat=0) {
-    constexpr int stats[]={};
-    if (member=="maple") {
-        if (mapleLevel[0]==0) { //Initialize level
-            mapleLevel[0]=1;
-            mapleLevel[1]=0;
-            mapleLevel[2]=5; //Level 1, 0 current XP, 5 XP to next level
-        }
-    }
-    return *stats;
-}
+// static int getPartyStats(const string& member,int stat=0) {
+//     constexpr int stats[]={};
+//     if (member=="maple") {
+//         if (mapleLevel[0]==0) { //Initialize level
+//             mapleLevel[0]=1;
+//             mapleLevel[1]=0;
+//             mapleLevel[2]=5; //Level 1, 0 current XP, 5 XP to next level
+//         }
+//     }
+//     return *stats;
+// }
 
 vector<string> mapleInv={"coolFood"};
 
@@ -104,8 +117,8 @@ void gameLogic() { //checks where the game is :)
         else {
             ulDrawString(16,16,"Mother Delta Game State Selector");
 
-            ulDrawString(32,32+64,"overworld");
-            ulDrawString(32,48+64,"battle");
+            ulDrawString(32,32+64,"battle");
+            ulDrawString(32,48+64,"overworld");
             ulDrawString(16,192-16,"D-Pad Up/Down to move, A to select.");
 
             if (ul_keys.pressed.down) {sel++;}
@@ -113,11 +126,11 @@ void gameLogic() { //checks where the game is :)
 
             if (sel==0) {
                 ulDrawString(16,96,">");
-                if (ul_keys.pressed.A) {gameState='o';}
+                if (ul_keys.pressed.A) {gameState='b';}
             }
             else {
                 ulDrawString(16,48+64,">");
-                if (ul_keys.pressed.A) {gameState='b';}
+                if (ul_keys.pressed.A) {gameState='o';}
             }
 
             if (!ulGetMainLcd()) {
@@ -131,7 +144,7 @@ void gameLogic() { //checks where the game is :)
     else if (gameState=='b') {
         if (initSwitch_b==false){
             battleHudInit();
-            battleInit("rat");
+            battleInit("cheesyRat");
             initSwitch_b=true;
             //cout << "initSwitch_b=true" << endl;
         }

@@ -49,7 +49,6 @@ class cheesyRat {
     char elec;
 
 };
-
 vector<int> getEnemyStats(const string &enemy) {
     vector<int> stats;
     //returns vector with stats being maxhp,maxpp,atk,def,speed
@@ -57,6 +56,28 @@ vector<int> getEnemyStats(const string &enemy) {
         stats = {30, 0, 2, 2, 1};
     }
     return stats;
+}
+// vector<string> moveData(const string &moveName) {
+//     vector<string> move;
+//     if (moveName=="basicAttack") {
+//         int damage=5;
+//
+//     }
+//     return move;
+// }
+string getEnemyName(const string &enemy) {
+    string name;
+    if (enemy=="cheesyRat") {
+        name="Cheesy Rat";
+    }
+    return name;
+}
+vector<string> getEnemyAttacks(const string& enemy) {
+    vector<string> attacks;
+    if (enemy=="cheesyRat") {
+        attacks = {"basicAttack","beInattentive","rollingAttack"};
+    }
+    return attacks;
 }
 
 int getEnemyData(const string &enemy,string stat) {

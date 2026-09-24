@@ -5,13 +5,18 @@
 #ifndef MDELTA_BATTLE_H
 #define MDELTA_BATTLE_H
 #include <string>
+#include <vector>
 
-void battleInit(const char *enemy0, const char *enemy1 = "empty", const char *enemy2 = "empty");
+void battleInit(std::string enemy0, const std::string& enemy1 = "empty", const std::string& enemy2 = "empty");
 void battleProcess();
+int pressTurnCount(bool player);
 
 extern int battlePhase;
 extern std::string selectingPartyMember;
 extern std::string mapleAction[];
 extern std::string aaronAction[];
+extern std::string crusherAction[];
+extern void playerMove(std::string member);
+extern std::vector<std::string> enemyList;
 
 #endif //MDELTA_BATTLE_H
