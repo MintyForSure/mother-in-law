@@ -1,4 +1,4 @@
-Work in progress... something involving MOTHER on the DS, codenamed Mother Delta
+Work in progress... something involving MOTHER on the DS, codenamed Mother Delta AKA Mother In-Law
 Required libraries:
 [BlocksDS](https://github.com/blocksds/sdk)
 [µLibrary](https://codeberg.org/blocksds/ulibrary)
