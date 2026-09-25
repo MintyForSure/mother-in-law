@@ -265,7 +265,7 @@ void battleProcess() {
     //ulDrawGradientRect(0, 0, 256, 192, RGB15(24, 0, 28), RGB15(0, 0, 0),RGB15(0, 0, 0), RGB15(0, 0, 24));
     //ulDrawImage(bElem.battleBack);
     renderBattleback("rat");
-    ulDrawString(8,64,(string("selectingPartyMember: ")+selectingPartyMember).c_str());
+    //ulDrawString(8,64,(string("selectingPartyMember: ")+selectingPartyMember).c_str());
     ulDrawFillRect(0,0,256,30,RGB15(0,0,0));
     ulDrawFillRect(0,162,256,192,RGB15(0,0,0)); //layering troubles, so im rendering it here.
     ulImageSetRotCenter(bElem.enemy0);

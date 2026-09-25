@@ -331,10 +331,14 @@ void hudRender(char hudType) {
                     hSelected=0;
                 }
                 if (selectingPartyMember=="maple") {
+                    cout<<mapleBustPos<<endl;
                     mapleBustPos=lerp(mapleBustPos,192-(64-16),0.5f);
                 }
                 else {
-                    mapleBustPos=lerp(192-(64-16),mapleBustPos,-1.0f);
+                    cout<<mapleBustPos<<endl;
+                    if (mapleBustPos<192) {
+                        mapleBustPos+=4;
+                    }
                 }
                 switch (hSelected) {
                     case 0:
