@@ -17,6 +17,10 @@ void audioInit() {
     std::cout<<"mmGetModuleCount(): "<<mmGetModuleCount()<<std::endl;
     std::cout<<"mmGetSampleCount(): "<<mmGetSampleCount()<<std::endl;
     std::cout<<"mmLoadEffect(SFX_HSELECT): "<<mmLoadEffect(SFX_HSELECT)<<std::endl;
+    mmLoadEffect(SFX_ALLYATTACK);
+    mmLoadEffect(SFX_ALLYPSI);
+    mmLoadEffect(SFX_ENEMYATTACK);
+    mmLoadEffect(SFX_ENEMYPSI);
     mmLoadEffect(SFX_VSELECT);
     mmLoadEffect(SFX_SELECT);
     mmLoadEffect(SFX_DESELECT);

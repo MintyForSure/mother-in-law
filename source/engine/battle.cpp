@@ -22,8 +22,8 @@
 using namespace std;
 
 static s8 tics=0;
-//static int damagePosXY[]={252/2,192/2};
-//static s8 yPos;
+bool allySfxPlayed=false;
+bool enemySfxPlayed=false;
 string mapleAction[3]={};
 string aaronAction[3]={};
 string crusherAction[3]={};
@@ -109,7 +109,7 @@ static enemy1BattleStats enemy1stats;
 static enemy2BattleStats enemy2stats;
 
 void battleInit(std::string enemy0, const std::string& enemy1, const std::string& enemy2) {
-    selectingPartyMember="maple";
+    selectingPartyMember=partyMembers[0];
     //std::string turnOrder[]={mapleStats[4]};
     //bElem.battleBack=ulLoadImageFilePNG(reinterpret_cast<const char *>(bg_png),(int)bg_png_size,UL_IN_VRAM,UL_PF_PAL4);
     bElem.cursor=ulLoadImageFilePNG((cursor_png),(int)cursor_png_size,UL_IN_VRAM,UL_PF_PAL4);
@@ -148,7 +148,7 @@ void battleInit(std::string enemy0, const std::string& enemy1, const std::string
     //bElem.battleBack = ulCreateMap(battleBG,bg_map);
 }
 int playerTakeDamage(const string& target) {
-    int damage;
+    int damage=0;
     if (target=="maple") {
         mapleHP[0]-=5;
     }
@@ -167,8 +167,12 @@ void passTurn(bool player=true) {
             else if (selectingPartyMember=="ashton") {
                 selectingPartyMember=partyMembers[2];
             }
+            else if (selectingPartyMember=="crusher") {
+                selectingPartyMember="maple";
+            }
         }
         else {
+            cout<<"playerTurns==0"<<endl;
             battlePhase=2;
         }
     }
@@ -180,6 +184,7 @@ void passTurn(bool player=true) {
         else {
             battlePhase=0;
             battleMenuState=2;
+            selectingPartyMember=partyMembers[0];
             playerTurns=partyMemberCount;
             cout<<"enemyTurns: "<<(enemyTurns)<<endl;
         }
@@ -215,6 +220,10 @@ void damageRender(int dmg) {
     ulDrawImageXY(bElem.numbers,bElem.cursor->x+16,bElem.cursor->y);
 }
 void renderPlayerMove(string member) {
+    if (allySfxPlayed==false) {
+        mmEffect(SFX_ALLYATTACK);
+        allySfxPlayed=true;
+    }
     if (selectingPartyMember=="maple") {
         int damageOutput = damageCalc(mapleAction[0], mapleAction[1],mapleAction[2]);
         drawWindow("mapleAttack",8,8,252-32,16,"normal");
@@ -256,6 +265,7 @@ void battleProcess() {
     //ulDrawGradientRect(0, 0, 256, 192, RGB15(24, 0, 28), RGB15(0, 0, 0),RGB15(0, 0, 0), RGB15(0, 0, 24));
     //ulDrawImage(bElem.battleBack);
     renderBattleback("rat");
+    ulDrawString(8,64,(string("selectingPartyMember: ")+selectingPartyMember).c_str());
     ulDrawFillRect(0,0,256,30,RGB15(0,0,0));
     ulDrawFillRect(0,162,256,192,RGB15(0,0,0)); //layering troubles, so im rendering it here.
     ulImageSetRotCenter(bElem.enemy0);
@@ -356,17 +366,22 @@ void battleProcess() {
                 renderPlayerMove("crusher");
             }
             if (ul_keys.pressed.A) {
+                allySfxPlayed=false;
                 passTurn(true);
             }
             break;
         case 2: //enemy execution/action
-            cout<<"battlePhase2"<<endl;
             if (inWindow==false) {doWindowDrawing=true;}
             drawWindow("swag",8,8,252-32,16,"normal");
             windowDisplayText(enemy0stats.name+" attacks!");
-            cout<<"maple target HP: "<<mapleHP[1]<<endl;
+            if (enemySfxPlayed==false) {
+                mmEffect(SFX_ENEMYATTACK);
+                enemySfxPlayed=true;
+            }
+            //mmEffect(SFX_ENEMYATTACK);
             if (ul_keys.pressed.A) {
                 playerTakeDamage("maple");
+                enemySfxPlayed=false;
                 passTurn(false);
             }
             break;

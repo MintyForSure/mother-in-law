@@ -33,6 +33,7 @@ int vSelected=0;
 int battleMenuState=2; //2: starting window 0:menupick 1:fightpick
 s16 hudPos=8;
 s16 mapleBustPos=192;
+s16 crusherBustPos=192;
 bool doDrawing;
 
 struct battleElem{
@@ -77,6 +78,7 @@ void battleHudInit() {
     bHUD.b_numbers=ulLoadImageFilePNG(static_cast<const char *>((void*)numbers_png),numbers_png_size,UL_IN_VRAM,UL_PF_PAL4);
 
     bHUD.maple=ulLoadImageFilePNG(maple_png,static_cast<int>(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
+    bHUD.crusher=ulLoadImageFilePNG(maple_png,static_cast<int>(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
     ulSetImageTileSize(bHUD.maple,16,0,16,32);
     ulImageSetRotCenter(bHUD.maple);
 
@@ -281,8 +283,6 @@ void hudRender(char hudType) {
                     ulDrawImageXY(bHUD.b_enemyTurnIcons,188+(i*16),62-16);
                 }
             }
-            //NFdrawWindow(64,64,32,32,"popup");
-            //NFdrawWindow(32,32,32,32,"popup");
             ulSetImageTileSize(bHUD.b_iconsFight,0,16,16,16);
             ulSetImageTileSize(bHUD.b_iconsItem,16,16,16,16);
             ulSetImageTileSize(bHUD.b_iconsSkill,32,16,16,16);
@@ -301,15 +301,18 @@ void hudRender(char hudType) {
                     break;
                 case 2:
                     ulSetTextColor(RGB15(0,0,0));
+                    ulDrawImageXY(bHUD.maple,bHUD.b_mapleBattleTab->x,mapleBustPos);
+                    ulDrawImageXY(bHUD.crusher,bHUD.b_crusherBattleTab->x,crusherBustPos);
                     ulDrawImageXY(bHUD.b_mapleBattleTab,67+(58/2),192-32);
                     ulDrawImageXY(bHUD.b_crusherBattleTab,131+(58/2),192-32);
+
                     if (partyMembers[0]=="maple") {
-                        ulDrawString(112-32,154,"Maple");
+                        ulDrawString(bHUD.b_mapleBattleTab->x-16,bHUD.b_mapleBattleTab->y-6,"Maple");
                         hpHandler('m');
                         ppHandler('m');
                     }
                     if (partyMembers[1]=="crusher") {
-                        ulDrawString(112+26,154,"Crusher");
+                        ulDrawString(bHUD.b_crusherBattleTab->x-20,bHUD.b_crusherBattleTab->y-6,"Crusher");
                         hpHandler('c');
                         ppHandler('c');
                     }
@@ -329,9 +332,9 @@ void hudRender(char hudType) {
                 }
                 if (selectingPartyMember=="maple") {
                     mapleBustPos=lerp(mapleBustPos,192-(64-16),0.5f);
-                } //192-(64-16)
+                }
                 else {
-                    mapleBustPos=lerp(192-(64-16),mapleBustPos,0.5f);
+                    mapleBustPos=lerp(192-(64-16),mapleBustPos,-1.0f);
                 }
                 switch (hSelected) {
                     case 0:
@@ -340,7 +343,6 @@ void hudRender(char hudType) {
                         menuInput(true,false);
                         //ulDrawString(160,hudPos+6,"Fight");
                         if (ul_keys.pressed.left) {
-                            cout<<"oh god it hurts";
                             mmEffect(SFX_HSELECT);
                             hSelected=3;
                         }

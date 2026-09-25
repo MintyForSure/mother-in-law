@@ -25,16 +25,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="341b5b14-4693-4d05-b2a2-52d3c1d4d75d" name="Changes" comment="begin press turn implementation">
+    <list default="true" id="341b5b14-4693-4d05-b2a2-52d3c1d4d75d" name="Changes" comment="c++ versioning">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/data/enemyData.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/data/enemyData.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/data/enemyData.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/data/enemyData.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nitrofs/soundbank.bin" beforeDir="false" afterPath="$PROJECT_DIR$/nitrofs/soundbank.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/engine/battle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/battle.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/engine/battle.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/battle.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/engine/game.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/game.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/engine/game.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/game.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/engine/hud.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/hud.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/engine/sound.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/sound.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -275,7 +271,7 @@
       "second": "fafe1ac5-66e9-4b4d-99af-402f643177ad"
     }
   ],
-  "modificationCount": 198
+  "modificationCount": 206
 }]]></component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -300,7 +296,9 @@
     <MESSAGE value="i wasn't keeping track" />
     <MESSAGE value="c++ 17 to c++ 20" />
     <MESSAGE value="begin press turn implementation" />
-    <option name="LAST_COMMIT_MESSAGE" value="begin press turn implementation" />
+    <MESSAGE value="baseline press turn" />
+    <MESSAGE value="c++ versioning" />
+    <option name="LAST_COMMIT_MESSAGE" value="c++ versioning" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
