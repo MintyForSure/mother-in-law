@@ -1,6 +1,5 @@
 /build/
-/msharp.nds
-/mdelta.nds
+*.nds
 /.idea/
 /main.c.old
 /.cache/

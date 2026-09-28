@@ -136,8 +136,11 @@ static int hpHandler(char member) {
         mHPTics++;
         //cout << mTics <<endl;
         if (mapleHP[0] < mapleHP[1]) {
-            if (mHPTics % 6==1) {
+            if (mapleDefending==true && mHPTics % 10==1) {
                 //cout << mapleHP[1] << "\n";
+                mapleHP[1]--;
+            }
+            else if (mHPTics % 6==1) {
                 mapleHP[1]--;
             }
         }
@@ -274,12 +277,12 @@ void hudRender(char hudType) {
         case 'b':
             ulDrawImageXY(bHUD.b_turnHolder,179,62);
             if (battlePhase==0 or battlePhase==1) {
-                for (int i=0; i<pressTurnCount(true); i++) {
+                for (int i=0; i<pressTurnCount(true)/2; i++) {
                     ulDrawImageXY(bHUD.b_turnIcons,188+(i*16),62-16);
                 }
             }
             else if (battlePhase==2) {
-                for (int i=0; i<pressTurnCount(false); i++) {
+                for (int i=0; i<pressTurnCount(false)/2; i++) {
                     ulDrawImageXY(bHUD.b_enemyTurnIcons,188+(i*16),62-16);
                 }
             }
@@ -331,12 +334,10 @@ void hudRender(char hudType) {
                     hSelected=0;
                 }
                 if (selectingPartyMember=="maple") {
-                    cout<<mapleBustPos<<endl;
                     mapleBustPos=lerp(mapleBustPos,192-(64-16),0.5f);
                 }
                 else {
-                    cout<<mapleBustPos<<endl;
-                    if (mapleBustPos<192) {
+                    if (mapleBustPos<192) { //lerp was annoying me
                         mapleBustPos+=4;
                     }
                 }
@@ -387,6 +388,21 @@ void hudRender(char hudType) {
                         if (ul_keys.pressed.right) {
                             mmEffect(SFX_HSELECT);
                             hSelected=0;
+                        }
+                        else if (ul_keys.pressed.A) {
+                            mmEffect(SFX_SELECT);
+                            if (selectingPartyMember=="maple") {
+                                mapleAction[0]="maple";
+                                mapleAction[1]="self";
+                                mapleAction[2]="defend";
+                                playerMove("maple");
+                            }
+                            else if (selectingPartyMember=="crusher") {
+                                crusherAction[0]="crusher";
+                                crusherAction[1]="self";
+                                crusherAction[2]="defend";
+                                playerMove("crusher");
+                            }
                         }
                         drawWindow("Guard",156,18,128,4,"popup");
                         windowDisplayText("Guard");
