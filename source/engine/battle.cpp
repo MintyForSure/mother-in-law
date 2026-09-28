@@ -27,10 +27,13 @@ bool enemySfxPlayed=false;
 string mapleAction[3]={};
 string aaronAction[3]={};
 string crusherAction[3]={};
+bool mapleDefending;
+bool aaronDefending;
+bool crusherDefending;
 string selectingPartyMember;
 int selectedEnemy=0;
 int battlePhase=0; //0-select 1-start combat phase 2-player move phase 3-enemy move phase 4-ex turn
-int playerTurns=partyMemberCount;
+int playerTurns=partyMemberCount*2;
 int enemyTurns;
 
 vector<string> enemyList={};
@@ -45,6 +48,13 @@ namespace {
         UL_IMAGE *numbers;
     };
 }
+
+struct partyMemberActions {
+    string *maple;
+    string *crusher;
+    string *ashton;
+};
+static struct partyMemberActions actions;
 
 namespace {
     class mapleBattleStats {
@@ -154,9 +164,14 @@ int playerTakeDamage(const string& target) {
     }
     return damage;
 }
-void passTurn(bool player=true) {
+void passTurn(bool player, bool fullTurn) {
     if (player==true) {
-        playerTurns--;
+        if (fullTurn==true) {
+            playerTurns-=2;
+        }
+        else {
+            playerTurns--;
+        }
         cout<<"from: passTurn, playerTurns: "<<playerTurns<<endl;
         if (playerTurns!=0) {
             if (selectingPartyMember=="maple") {
@@ -250,12 +265,21 @@ void playerMove(string member) {
             //playerTurns--;
             enemy0stats.hp=enemy0stats.hp-damageOutput;
         }
+        passTurn();
+        if (mapleAction[2]=="defend") {
+            passTurn(true,false);
+            mapleDefending=true;
+        }
     }
     if (member=="crusher") {
         if (crusherAction[2]=="bash") {
             const int damageOutput = damageCalc(crusherAction[0], crusherAction[1],crusherAction[2]);
             cout<<"crusher atk: "<<mapleStats[2]<<endl;
             enemy0stats.hp=enemy0stats.hp-damageOutput;
+        }
+        if (crusherAction[2]=="defend") {
+            passTurn(true,false);
+            crusherDefending=true;
         }
     }
 }
@@ -265,7 +289,7 @@ void battleProcess() {
     //ulDrawGradientRect(0, 0, 256, 192, RGB15(24, 0, 28), RGB15(0, 0, 0),RGB15(0, 0, 0), RGB15(0, 0, 24));
     //ulDrawImage(bElem.battleBack);
     renderBattleback("rat");
-    //ulDrawString(8,64,(string("selectingPartyMember: ")+selectingPartyMember).c_str());
+    // ulDrawString(8,64,(string("selectingPartyMember: ")+selectingPartyMember).c_str());
     ulDrawFillRect(0,0,256,30,RGB15(0,0,0));
     ulDrawFillRect(0,162,256,192,RGB15(0,0,0)); //layering troubles, so im rendering it here.
     ulImageSetRotCenter(bElem.enemy0);

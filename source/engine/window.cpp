@@ -175,6 +175,9 @@ void drawWindow(string windowID,int X,int Y,int width,int height,string type) {
                 tics=0; //reset
             }
         }
+        else if (type=="menu") {
+
+        }
     }
 }
 
