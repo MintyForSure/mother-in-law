@@ -112,8 +112,8 @@ void battleInit(std::string enemy0, const std::string& enemy1, const std::string
     selectingPartyMember=partyMembers[0];
     //std::string turnOrder[]={mapleStats[4]};
     //bElem.battleBack=ulLoadImageFilePNG(reinterpret_cast<const char *>(bg_png),(int)bg_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    bElem.cursor=ulLoadImageFilePNG((cursor_png),(int)cursor_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    bElem.numbers=ulLoadImageFilePNG(numbers1_png,(int)numbers1_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    bElem.cursor=ulLoadImageFilePNG(reinterpret_cast<const char *>(cursor_png),(int)cursor_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    bElem.numbers=ulLoadImageFilePNG(reinterpret_cast<const char *>(numbers1_png),(int)numbers1_png_size,UL_IN_VRAM,UL_PF_PAL4);
 
     ulSetImageTileSize(bElem.cursor,0,0,8,8);
     ulSetImageTileSize(bElem.numbers,0,0,9,9);
@@ -136,7 +136,7 @@ void battleInit(std::string enemy0, const std::string& enemy1, const std::string
     if (enemyList[0] == "cheesyRat") {
         enemy0stats.hp=getEnemyStats("cheesyRat")[0];
         enemy0stats.name=getEnemyName("cheesyRat");
-        bElem.enemy0=ulLoadImageFilePNG(cheesyRat_png,(int)cheesyRat_png_size,UL_IN_VRAM,UL_PF_PAL4);
+        bElem.enemy0=ulLoadImageFilePNG(reinterpret_cast<const char *>(cheesyRat_png),(int)cheesyRat_png_size,UL_IN_VRAM,UL_PF_PAL4);
         battlebackInit("rat");
     }
     if (enemyList[1]=="rat") {

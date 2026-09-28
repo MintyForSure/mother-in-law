@@ -77,8 +77,8 @@ void battleHudInit() {
 
     bHUD.b_numbers=ulLoadImageFilePNG(static_cast<const char *>((void*)numbers_png),numbers_png_size,UL_IN_VRAM,UL_PF_PAL4);
 
-    bHUD.maple=ulLoadImageFilePNG(maple_png,static_cast<int>(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
-    bHUD.crusher=ulLoadImageFilePNG(maple_png,static_cast<int>(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
+    bHUD.maple=ulLoadImageFilePNG(reinterpret_cast<const char *>(maple_png),static_cast<int>(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
+    bHUD.crusher=ulLoadImageFilePNG(reinterpret_cast<const char *>(maple_png),static_cast<int>(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
     ulSetImageTileSize(bHUD.maple,16,0,16,32);
     ulImageSetRotCenter(bHUD.maple);
 

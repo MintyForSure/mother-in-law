@@ -23,7 +23,7 @@ struct partyMembers {
 
 static struct partyMembers party;
 void partyInit() { //british neighbor asking you about your house
-    party.maple=ulLoadImageFilePNG(maple_png,int(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
+    party.maple=ulLoadImageFilePNG(reinterpret_cast<const char *>(maple_png),int(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
     ulSetImageTileSize(party.maple,0,0,16,32);
     ulImageSetRotCenter(party.maple);
 }
@@ -40,9 +40,9 @@ void handleAnims(string partyMember) {
 };
 
 void partyRender() {
-    party.maple->x=xPos;
-    party.maple->y=yPos;
-    if (xPos<0)
+    party.maple->x=leaderXOffset;
+    party.maple->y=leaderYOffset;
+    if (xPos<1)
         xPos=0;
     if (xPos>30*16)
         xPos=30*16;
@@ -54,21 +54,18 @@ void partyRender() {
     }
     if (ul_keys.held.up && inWindow==false) {
         ulSetImageTileSize(party.maple,32,0,16,32);
-        animTics++;
-        yPos--;
+        leaderYOffset--;
     }
     else if (ul_keys.held.down && inWindow==false) {
         handleAnims("maple");
-        yPos++;
+        leaderYOffset++;
     }
     if (ul_keys.held.left && inWindow==false) {
         ulSetImageTileSize(party.maple,16,0,16,32);
-        animTics++;
-        xPos--;
+        leaderXOffset--;
     }
     else if (ul_keys.held.right && inWindow==false) {
         ulSetImageTileSize(party.maple,48,0,16,32);
-        animTics++;
-        xPos++;
+        leaderXOffset++;
     }
 }

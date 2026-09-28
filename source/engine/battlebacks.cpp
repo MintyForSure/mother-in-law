@@ -20,7 +20,7 @@ static int tics;
 
 void battlebackInit(std::string enemy) {
     if (enemy=="rat") {
-        UL_IMAGE *ratImg = ulLoadImageFilePNG(bgtiles_png, (int) bgtiles_png_size, UL_IN_VRAM, UL_PF_PAL4);
+        UL_IMAGE *ratImg = ulLoadImageFilePNG(reinterpret_cast<const char *>(bgtiles_png), (int) bgtiles_png_size, UL_IN_VRAM, UL_PF_PAL4);
         ratMap=ulCreateMap(ratImg,ratBattleback,32,32,8,6,UL_MF_U16);
         NF_LoadTiledBg("gfx/bg","nfRatMap",256,256);
         //NF_CreateTiledBg(1,2,"nfRatMap");

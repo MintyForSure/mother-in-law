@@ -8,4 +8,7 @@
 void partyInit();
 void partyRender();
 
+inline int leaderXOffset;
+inline int leaderYOffset;
+
 #endif //MDELTA_PLAYER_H
