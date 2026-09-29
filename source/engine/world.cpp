@@ -15,7 +15,7 @@ static UL_MAP *map;
 
 void mapLoad(const std::string& mapName) {
     if (mapName=="debugRoom") {
-        UL_IMAGE *mapImg=ulLoadImageFilePNG(debugRoom_png,debugRoom_png_size,UL_IN_VRAM,UL_PF_PAL4);
+        UL_IMAGE *mapImg=ulLoadImageFilePNG(reinterpret_cast<const char *>(debugRoom_png),debugRoom_png_size,UL_IN_VRAM,UL_PF_PAL4);
         map=ulCreateMap(mapImg,debugRoomMap,16,16,30,30,UL_MF_U16);
     }
 }

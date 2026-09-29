@@ -77,8 +77,8 @@ void battleHudInit() {
 
     bHUD.b_numbers=ulLoadImageFilePNG(static_cast<const char *>((void*)numbers_png),numbers_png_size,UL_IN_VRAM,UL_PF_PAL4);
 
-    bHUD.maple=ulLoadImageFilePNG(maple_png,static_cast<int>(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
-    bHUD.crusher=ulLoadImageFilePNG(maple_png,static_cast<int>(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
+    bHUD.maple=ulLoadImageFilePNG(reinterpret_cast<const char *>(maple_png),static_cast<int>(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
+    bHUD.crusher=ulLoadImageFilePNG(reinterpret_cast<const char *>(maple_png),static_cast<int>(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
     ulSetImageTileSize(bHUD.maple,16,0,16,32);
     ulImageSetRotCenter(bHUD.maple);
 
@@ -296,8 +296,6 @@ void hudRender(char hudType) {
                     ulDrawString(112,154,"Maple");
                     hpHandler('m');
                     ppHandler('m');
-                    //ulSetImageTileSize(bHUD.b_numbers,0,0,6,8);
-                    //ulDrawString(124,167,reinterpret_cast<const char *>(mapleHP[1]));
                     break;
                 case 2:
                     ulSetTextColor(RGB15(0,0,0));
@@ -318,7 +316,6 @@ void hudRender(char hudType) {
                     }
                     break;
                 default:
-                    //cout<<partyMemberCount<<endl;
                     break;
             }
 

@@ -82,7 +82,7 @@ void windowSysInit() {
     window.window21=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
     window.window22=ulLoadImageFilePNG(reinterpret_cast<const char *>(window_png),int(window_png_size),UL_IN_VRAM,UL_PF_PAL4);
 
-    window.indicator=ulLoadImageFilePNG(cursor_png,cursor_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    window.indicator=ulLoadImageFilePNG(reinterpret_cast<const char *>(cursor_png),cursor_png_size,UL_IN_VRAM,UL_PF_PAL4);
 
     ulSetImageTileSize(window.window00,0,0,8,8);
     ulSetImageTileSize(window.window01,8,0,8,8);

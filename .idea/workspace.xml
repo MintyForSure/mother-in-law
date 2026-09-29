@@ -11,12 +11,12 @@
   </component>
   <component name="CMakeRunConfigurationManager">
     <generated>
-      <config projectName="mdelta" targetName="sdimage" />
-      <config projectName="mdelta" targetName="all" />
-      <config projectName="mdelta" targetName="nitrofs" />
-      <config projectName="mdelta" targetName="Makefile" />
-      <config projectName="mdelta" targetName="dldipatch" />
-      <config projectName="mdelta" targetName="dump" />
+      <config projectName="motherGamma" targetName="Makefile" />
+      <config projectName="motherGamma" targetName="dldipatch" />
+      <config projectName="motherGamma" targetName="dump" />
+      <config projectName="motherGamma" targetName="sdimage" />
+      <config projectName="motherGamma" targetName="all" />
+      <config projectName="motherGamma" targetName="nitrofs" />
     </generated>
   </component>
   <component name="CMakeSettings">
@@ -25,10 +25,18 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="341b5b14-4693-4d05-b2a2-52d3c1d4d75d" name="Changes" comment="better press turn, start on overworld">
+    <list default="true" id="341b5b14-4693-4d05-b2a2-52d3c1d4d75d" name="Changes" comment="better press turn, start on overworld #2">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/ui/pressTurnIcons.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/ui/pressTurnIcons.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/ui/turnHolder.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/ui/turnHolder.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/engine/battle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/battle.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/engine/battlebacks.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/battlebacks.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/engine/hud.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/hud.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/engine/player.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/player.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/engine/window.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/window.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/engine/world.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/engine/world.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,14 +78,14 @@
         <entry>
           <key>
             <ExternalProjectPojo>
-              <option name="name" value="mdelta" />
+              <option name="name" value="motherGamma" />
               <option name="path" value="$PROJECT_DIR$" />
             </ExternalProjectPojo>
           </key>
           <value>
             <list>
               <ExternalProjectPojo>
-                <option name="name" value="mdelta" />
+                <option name="name" value="motherGamma" />
                 <option name="path" value="$PROJECT_DIR$" />
               </ExternalProjectPojo>
             </list>
@@ -142,7 +150,7 @@
   }
 }</component>
   <component name="RunManager" selected="Native Application.all">
-    <configuration name="Makefile" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="mdelta" TARGET_NAME="Makefile" CONFIG_NAME="Makefile" version="1" RUN_TARGET_PROJECT_NAME="mdelta" RUN_TARGET_NAME="Makefile">
+    <configuration name="Makefile" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="motherGamma" TARGET_NAME="Makefile" CONFIG_NAME="Makefile" version="1" RUN_TARGET_PROJECT_NAME="motherGamma" RUN_TARGET_NAME="Makefile">
       <method v="2">
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
@@ -152,7 +160,7 @@
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration name="all" type="CLionNativeAppRunConfigurationType" PROGRAM_PARAMS="$PROJECT_DIR$/mdelta.nds" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="mdelta" TARGET_NAME="all" CONFIG_NAME="all" version="1" RUN_PATH="/bin/melonDS">
+    <configuration name="all" type="CLionNativeAppRunConfigurationType" PROGRAM_PARAMS="$PROJECT_DIR$/mgamma.nds" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="motherGamma" TARGET_NAME="all" CONFIG_NAME="all" version="1" RUN_PATH="/bin/melonDS">
       <method v="2">
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
@@ -162,7 +170,7 @@
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration name="dldipatch" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="mdelta" TARGET_NAME="dldipatch" CONFIG_NAME="dldipatch" version="1" RUN_TARGET_PROJECT_NAME="mdelta" RUN_TARGET_NAME="dldipatch">
+    <configuration name="dldipatch" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="motherGamma" TARGET_NAME="dldipatch" CONFIG_NAME="dldipatch" version="1" RUN_TARGET_PROJECT_NAME="motherGamma" RUN_TARGET_NAME="dldipatch">
       <method v="2">
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
@@ -172,7 +180,7 @@
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration name="dump" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="mdelta" TARGET_NAME="dump" CONFIG_NAME="dump" version="1" RUN_TARGET_PROJECT_NAME="mdelta" RUN_TARGET_NAME="dump">
+    <configuration name="dump" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="motherGamma" TARGET_NAME="dump" CONFIG_NAME="dump" version="1" RUN_TARGET_PROJECT_NAME="motherGamma" RUN_TARGET_NAME="dump">
       <method v="2">
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
@@ -182,7 +190,7 @@
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration name="nitrofs" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="mdelta" TARGET_NAME="nitrofs" CONFIG_NAME="nitrofs" version="1" RUN_TARGET_PROJECT_NAME="mdelta" RUN_TARGET_NAME="nitrofs">
+    <configuration name="nitrofs" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="motherGamma" TARGET_NAME="nitrofs" CONFIG_NAME="nitrofs" version="1" RUN_TARGET_PROJECT_NAME="motherGamma" RUN_TARGET_NAME="nitrofs">
       <method v="2">
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
@@ -192,7 +200,7 @@
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration name="sdimage" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="mdelta" TARGET_NAME="sdimage" CONFIG_NAME="sdimage" version="1" RUN_TARGET_PROJECT_NAME="mdelta" RUN_TARGET_NAME="sdimage">
+    <configuration name="sdimage" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="motherGamma" TARGET_NAME="sdimage" CONFIG_NAME="sdimage" version="1" RUN_TARGET_PROJECT_NAME="motherGamma" RUN_TARGET_NAME="sdimage">
       <method v="2">
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
@@ -252,25 +260,25 @@
     </configuration>
     <list>
       <item itemvalue="Native Application.Makefile" />
-      <item itemvalue="Native Application.nitrofs" />
       <item itemvalue="Native Application.all" />
       <item itemvalue="Native Application.dldipatch" />
       <item itemvalue="Native Application.dump" />
+      <item itemvalue="Native Application.nitrofs" />
       <item itemvalue="Native Application.sdimage" />
       <item itemvalue="Python.build" />
     </list>
   </component>
-  <component name="SelectedDebugProfileService"><![CDATA[{
-  "profileIdByStamp": [
+  <component name="SelectedDebugProfileService">{
+  &quot;profileIdByStamp&quot;: [
     {
-      "first": {
-        "##RUN_CONFIGURATION##": "Python.build"
+      &quot;first&quot;: {
+        &quot;##RUN_CONFIGURATION##&quot;: &quot;Python.build&quot;
       },
-      "second": "fafe1ac5-66e9-4b4d-99af-402f643177ad"
+      &quot;second&quot;: &quot;fafe1ac5-66e9-4b4d-99af-402f643177ad&quot;
     }
   ],
-  "modificationCount": 210
-}]]></component>
+  &quot;modificationCount&quot;: 219
+}</component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="341b5b14-4693-4d05-b2a2-52d3c1d4d75d" name="Changes" comment="" />

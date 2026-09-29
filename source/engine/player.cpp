@@ -23,12 +23,12 @@ struct partyMembers {
 
 static struct partyMembers party;
 void partyInit() { //british neighbor asking you about your house
-    party.maple=ulLoadImageFilePNG(maple_png,int(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
+    party.maple=ulLoadImageFilePNG(reinterpret_cast<const char *>(maple_png),int(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
     ulSetImageTileSize(party.maple,0,0,16,32);
     ulImageSetRotCenter(party.maple);
 }
 
-void handleAnims(string partyMember) {
+void handleAnims(const string& partyMember) {
     if (partyMember=="maple") {
         if (animTics>29) {
             ulSetImageTileSize(party.maple,0,0,16,32);
