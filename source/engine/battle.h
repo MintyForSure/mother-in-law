@@ -16,6 +16,10 @@ extern std::string selectingPartyMember;
 extern std::string mapleAction[];
 extern std::string aaronAction[];
 extern std::string crusherAction[];
+extern bool mapleDefending;
+extern bool aaronDefending;
+extern bool crusherDefending;
+extern void passTurn(bool player=true, bool fullTurn=true);
 extern void playerMove(std::string member);
 extern std::vector<std::string> enemyList;
 

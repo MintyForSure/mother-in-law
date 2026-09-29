@@ -21,7 +21,7 @@
 
 using namespace std;
 
-string partyMembers[]={"maple","crusher"};
+string partyMembers[]={"maple"};
 string inventory[]={"coolFood","junkFood"};
 char gameState;
 bool debug;
@@ -43,7 +43,7 @@ int crusherPP[]={crusherStats[1],crusherStats[1],crusherStats[1]};
 
 int ashtonHP[]={ashtonStats[0],ashtonStats[0],ashtonStats[0]};
 int ashtonPP[]={ashtonStats[1],ashtonStats[1],ashtonStats[1]};
-
+bool gamePaused;
 static bool initSwitch_b=false;
 static bool initSwitch_m=false;
 static bool initSwitch_x=false;
@@ -93,7 +93,8 @@ void gameInit() {
     ulSetTransparentColor(RGB15(31,0,31));
 }
 void pauseMenu() {
-    drawMenu(4,true,16,16,64,128);
+    drawWindow("pause",16,16,32,128,"menu");
+
 }
 void gameLogic() { //checks where the game is :)
     if (gameState=='o') {
@@ -105,6 +106,15 @@ void gameLogic() { //checks where the game is :)
         else if (initSwitch_m==true) {
             mapRender();
             partyRender();
+            // if (ul_keys.pressed.start && gamePaused==false) {
+            //     gamePaused=true;
+            // }
+            // else if (ul_keys.pressed.start && gamePaused==true) {
+            //     gamePaused=false;
+            // }
+            // if (gamePaused==true) {
+            //     pauseMenu();
+            // }
         }
     }
     else if (gameState=='x') {

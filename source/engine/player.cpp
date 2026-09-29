@@ -11,8 +11,6 @@
 #include "game.h"
 #include "characters/maple_png.h"
 using namespace std;
-int xPos=64;
-int yPos=64;
 int animTics=0;
 struct partyMembers {
     UL_IMAGE *maple;
@@ -26,6 +24,8 @@ void partyInit() { //british neighbor asking you about your house
     party.maple=ulLoadImageFilePNG(reinterpret_cast<const char *>(maple_png),int(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
     ulSetImageTileSize(party.maple,0,0,16,32);
     ulImageSetRotCenter(party.maple);
+    party.maple->x=256/2;
+    party.maple->y=192/2;
 }
 
 void handleAnims(const string& partyMember) {
@@ -40,12 +40,10 @@ void handleAnims(const string& partyMember) {
 };
 
 void partyRender() {
-    party.maple->x=xPos;
-    party.maple->y=yPos;
-    if (xPos<0)
-        xPos=0;
-    if (xPos>30*16)
-        xPos=30*16;
+    if (leaderXOffset<=0)
+        leaderXOffset=0;
+    if (leaderXOffset>30*16)
+        leaderXOffset=30*16;
     if (animTics>59) {
         animTics=0;
     }
@@ -53,22 +51,15 @@ void partyRender() {
         ulDrawImage(party.maple);
     }
     if (ul_keys.held.up && inWindow==false) {
-        ulSetImageTileSize(party.maple,32,0,16,32);
-        animTics++;
-        yPos--;
+        leaderYOffset--;
     }
     else if (ul_keys.held.down && inWindow==false) {
-        handleAnims("maple");
-        yPos++;
+        leaderYOffset++;
     }
     if (ul_keys.held.left && inWindow==false) {
-        ulSetImageTileSize(party.maple,16,0,16,32);
-        animTics++;
-        xPos--;
+        leaderXOffset--;
     }
     else if (ul_keys.held.right && inWindow==false) {
-        ulSetImageTileSize(party.maple,48,0,16,32);
-        animTics++;
-        xPos++;
+        leaderXOffset++;
     }
 }
