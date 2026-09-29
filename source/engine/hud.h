@@ -8,5 +8,6 @@
 void battleHudInit();
 void hudRender(char hudType);
 void hudRenderSub(const std::string& hudType);
+void hudShake(std::string member,int intensity);
 extern int battleMenuState;
 #endif //MDELTA_HUD_H

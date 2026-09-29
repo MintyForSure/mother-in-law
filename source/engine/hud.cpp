@@ -272,17 +272,23 @@ static int ppHandler(char member) { //please be mature about this
     return 0;
 }
 
+void hudShake(std::string member, int intensity) {
+    if (member=="maple") {
+
+    }
+}
+
 void hudRender(char hudType) {
     switch (hudType) { //i love switch cases
         case 'b':
             ulDrawImageXY(bHUD.b_turnHolder,179,62);
             if (battlePhase==0 or battlePhase==1) {
-                for (int i=0; i<pressTurnCount(true)/2; i++) {
+                for (int i=0; i<pressTurnCount(true,false)/2; i++) {
                     ulDrawImageXY(bHUD.b_turnIcons,188+(i*16),62-16);
                 }
             }
             else if (battlePhase==2) {
-                for (int i=0; i<pressTurnCount(false)/2; i++) {
+                for (int i=0; i<pressTurnCount(false,false)/2; i++) {
                     ulDrawImageXY(bHUD.b_enemyTurnIcons,188+(i*16),62-16);
                 }
             }

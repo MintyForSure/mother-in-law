@@ -33,7 +33,6 @@ int instanceEntity(int X, int Y, std::string name) {
 
 void updateEntities() {
     ulDrawImage(entity.image);
-    cout<<"entity.image->x: "<<entity.image->x<<endl;
     entity.image->x=leaderXOffset+8;
     entity.image->y=leaderYOffset+8;
 }

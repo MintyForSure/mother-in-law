@@ -9,7 +9,7 @@
 
 void battleInit(std::string enemy0, const std::string& enemy1 = "empty", const std::string& enemy2 = "empty");
 void battleProcess();
-int pressTurnCount(bool player);
+int pressTurnCount(bool player,bool refresh);
 
 extern int battlePhase;
 extern std::string selectingPartyMember;

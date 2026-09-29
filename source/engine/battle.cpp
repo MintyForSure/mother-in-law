@@ -54,7 +54,7 @@ struct partyMemberActions {
     string *crusher;
     string *ashton;
 };
-static struct partyMemberActions actions;
+//static struct partyMemberActions actions;
 
 namespace {
     class mapleBattleStats {
@@ -160,58 +160,61 @@ void battleInit(std::string enemy0, const std::string& enemy1, const std::string
 int playerTakeDamage(const string& target) {
     int damage=0;
     if (target=="maple") {
+        hudShake("maple",0);
         mapleHP[0]-=5;
     }
+
     return damage;
 }
 void passTurn(bool player, bool fullTurn) {
-    if (player==true) {
-        if (fullTurn==true) {
+    if (player==true)
+    {
+        if (fullTurn==true)
+        {
             playerTurns-=2;
         }
-        else {
+        else
+        {
             playerTurns--;
         }
-        cout<<"from: passTurn, playerTurns: "<<playerTurns<<endl;
-        if (playerTurns!=0) {
-            if (selectingPartyMember=="maple") {
-                selectingPartyMember=partyMembers[1];
-                battlePhase=0;
-                battleMenuState=2;
-            }
-            else if (selectingPartyMember=="ashton") {
-                selectingPartyMember=partyMembers[2];
-            }
-            else if (selectingPartyMember=="crusher") {
-                selectingPartyMember="maple";
-            }
-        }
-        else {
-            cout<<"playerTurns==0"<<endl;
+
+        if (playerTurns<0)
+        {
+            pressTurnCount(false,true);
             battlePhase=2;
         }
     }
-    else {
-        enemyTurns--;
-        if (enemyTurns!=0) {
-
+    else
+    {
+        if (fullTurn==true)
+        {
+            enemyTurns-=2;
         }
-        else {
-            battlePhase=0;
+        else
+        {
+            enemyTurns--;
+        }
+        if (enemyTurns<0)
+        {
+            pressTurnCount(true,true);
             battleMenuState=2;
-            selectingPartyMember=partyMembers[0];
-            playerTurns=partyMemberCount;
-            cout<<"enemyTurns: "<<(enemyTurns)<<endl;
+            battlePhase=0;
         }
     }
 }
 
-int pressTurnCount(bool player) {
+int pressTurnCount(bool player,bool refresh) {
     if (player==true) {
+        if (refresh==true)
+        {
+            playerTurns=partyMemberCount*2;
+        }
         return playerTurns;
     }
     else {
-        enemyTurns=size(enemyList);
+        if (refresh==true) {
+            enemyTurns=size(enemyList)*2;
+        }
         return enemyTurns;
     }
 }
@@ -377,7 +380,7 @@ void battleProcess() {
     }
     switch (battlePhase) {
         case 0: //player select action
-            pressTurnCount(true);
+            //pressTurnCount(true,true);
             break;
         case 1: //player action execution
             if (selectingPartyMember=="maple") {
@@ -391,6 +394,7 @@ void battleProcess() {
             }
             if (ul_keys.pressed.A) {
                 allySfxPlayed=false;
+                cout<<"A pressed, passing turn"<<endl;
                 passTurn(true);
             }
             break;
