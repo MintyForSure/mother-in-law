@@ -282,13 +282,15 @@ void hudRender(char hudType) {
     switch (hudType) { //i love switch cases
         case 'b':
             ulDrawImageXY(bHUD.b_turnHolder,179,62);
+            auto v=pressTurnCount(true,false);
+            auto w=pressTurnCount(false,false);
             if (battlePhase==0 or battlePhase==1) {
-                for (int i=0; i<pressTurnCount(true,false)/2; i++) {
+                for (int i = 0; i < v.size(); i++){
                     ulDrawImageXY(bHUD.b_turnIcons,188+(i*16),62-16);
                 }
             }
             else if (battlePhase==2) {
-                for (int i=0; i<pressTurnCount(false,false)/2; i++) {
+                for (int i = 0; i < w.size(); i++) {
                     ulDrawImageXY(bHUD.b_enemyTurnIcons,188+(i*16),62-16);
                 }
             }
@@ -406,6 +408,7 @@ void hudRender(char hudType) {
                                 crusherAction[2]="defend";
                                 playerMove("crusher");
                             }
+                            battleMenuState=3;
                         }
                         drawWindow("Guard",156,18,128,4,"popup");
                         windowDisplayText("Guard");

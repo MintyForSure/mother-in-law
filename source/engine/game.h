@@ -8,7 +8,9 @@
 #include <string>
 #include <vector>
 
-extern std::string partyMembers[];
+using namespace std;
+
+extern vector<string> partyMembers;
 extern int partyMemberCount;
 extern char gameState;
 extern bool debug;

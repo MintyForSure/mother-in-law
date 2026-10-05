@@ -9,7 +9,8 @@
 
 void battleInit(std::string enemy0, const std::string& enemy1 = "empty", const std::string& enemy2 = "empty");
 void battleProcess();
-int pressTurnCount(bool player,bool refresh);
+
+std::vector<int> pressTurnCount(bool player, bool refresh);
 
 extern int battlePhase;
 extern std::string selectingPartyMember;
@@ -21,6 +22,7 @@ extern bool aaronDefending;
 extern bool crusherDefending;
 extern void passTurn(bool player=true, bool fullTurn=true);
 extern void playerMove(std::string member);
+extern void makeHalfTurn(int turn);
 extern std::vector<std::string> enemyList;
 
 #endif //MDELTA_BATTLE_H

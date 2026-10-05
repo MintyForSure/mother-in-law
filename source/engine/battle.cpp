@@ -33,8 +33,8 @@ bool crusherDefending;
 string selectingPartyMember;
 int selectedEnemy=0;
 int battlePhase=0; //0-select 1-start combat phase 2-player move phase 3-enemy move phase 4-ex turn
-int playerTurns=partyMemberCount*2;
-int enemyTurns;
+vector<int> playerTurns={}; //0 full turn, 1 half turn
+vector<int> enemyTurns={};
 
 vector<string> enemyList={};
 namespace {
@@ -119,7 +119,11 @@ static enemy1BattleStats enemy1stats;
 static enemy2BattleStats enemy2stats;
 
 void battleInit(std::string enemy0, const std::string& enemy1, const std::string& enemy2) {
-    selectingPartyMember=partyMembers[0];
+    selectingPartyMember=partyMembers.at(0);
+    consoleDebugInit(DebugDevice_NOCASH);
+    for (auto i:partyMembers) {
+        playerTurns.emplace(playerTurns.begin(),0);
+    }
     //std::string turnOrder[]={mapleStats[4]};
     //bElem.battleBack=ulLoadImageFilePNG(reinterpret_cast<const char *>(bg_png),(int)bg_png_size,UL_IN_VRAM,UL_PF_PAL4);
     bElem.cursor=ulLoadImageFilePNG(reinterpret_cast<const char *>(cursor_png),(int)cursor_png_size,UL_IN_VRAM,UL_PF_PAL4);
@@ -166,36 +170,39 @@ int playerTakeDamage(const string& target) {
 
     return damage;
 }
-void passTurn(bool player, bool fullTurn) {
-    if (player==true)
-    {
-        if (fullTurn==true)
-        {
-            playerTurns-=2;
-        }
-        else
-        {
-            playerTurns--;
-        }
 
-        if (playerTurns<0)
-        {
+void makeHalfTurn(int turn) {
+    switch (turn) {
+        case 0:
+
+            break;
+    }
+}
+
+void passTurn(bool player, bool fullTurn) {
+    if (player==true){
+        if (fullTurn==true){
+            playerTurns.pop_back();
+        }
+        else{
+            playerTurns.pop_back();
+            playerTurns.emplace(playerTurns.begin(),1);
+        }
+        if (playerTurns.front()!=0 or playerTurns.front()!=1){
             pressTurnCount(false,true);
             battlePhase=2;
         }
     }
     else
     {
-        if (fullTurn==true)
-        {
-            enemyTurns-=2;
+        if (fullTurn==true){
+            enemyTurns.pop_back();
         }
-        else
-        {
-            enemyTurns--;
+        else{
+            enemyTurns.pop_back();
+            enemyTurns.emplace(enemyTurns.begin(),1);
         }
-        if (enemyTurns<0)
-        {
+        if (count(enemyTurns.begin(),enemyTurns.end(),0)>0 or count(enemyTurns.begin(),enemyTurns.end(),1)>0){
             pressTurnCount(true,true);
             battleMenuState=2;
             battlePhase=0;
@@ -203,19 +210,22 @@ void passTurn(bool player, bool fullTurn) {
     }
 }
 
-int pressTurnCount(bool player,bool refresh) {
+vector<int> pressTurnCount(bool player, bool refresh) {
     if (player==true) {
-        if (refresh==true)
-        {
-            playerTurns=partyMemberCount*2;
+        if (refresh==true){
+            for (auto i:partyMembers) {
+                playerTurns.push_back(0);
+            }
         }
         return playerTurns;
     }
     else {
         if (refresh==true) {
-            enemyTurns=size(enemyList)*2;
+            for (auto i=0;i<enemyList.size();i++) {
+                enemyTurns.push_back(0);
+            }
         }
-        return enemyTurns;
+        return std::vector<int>(enemyTurns);
     }
 }
 
@@ -239,6 +249,7 @@ void damageRender(int dmg) {
 }
 void renderPlayerMove(string member) {
     if (allySfxPlayed==false) {
+        cout<<"im snitching"<<endl;
         mmEffect(SFX_ALLYATTACK);
         allySfxPlayed=true;
     }
@@ -313,8 +324,6 @@ void battleProcess() {
         if (tics==60) {
             tics=0; //reset
         }
-        //ulSetImageTint(bElem.enemy0,RGB15(31,31,31));
-        //cout<<"enemy2 nullptr "<<(bElem.enemy2==nullptr)<<endl;
         if (ul_keys.pressed.left) {
             if (bElem.enemy1==nullptr && bElem.enemy2==nullptr) {
 
@@ -396,6 +405,7 @@ void battleProcess() {
                 allySfxPlayed=false;
                 cout<<"A pressed, passing turn"<<endl;
                 passTurn(true);
+                //pressTurnCount(true,true);
             }
             break;
         case 2: //enemy execution/action

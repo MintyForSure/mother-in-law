@@ -21,7 +21,7 @@
 
 using namespace std;
 
-string partyMembers[]={"maple"};
+vector<string> partyMembers={"maple","crusher"};
 string inventory[]={"coolFood","junkFood"};
 char gameState;
 bool debug;
@@ -106,15 +106,6 @@ void gameLogic() { //checks where the game is :)
         else if (initSwitch_m==true) {
             mapRender();
             partyRender();
-            // if (ul_keys.pressed.start && gamePaused==false) {
-            //     gamePaused=true;
-            // }
-            // else if (ul_keys.pressed.start && gamePaused==true) {
-            //     gamePaused=false;
-            // }
-            // if (gamePaused==true) {
-            //     pauseMenu();
-            // }
         }
     }
     else if (gameState=='x') {
@@ -125,7 +116,7 @@ void gameLogic() { //checks where the game is :)
             initSwitch_x=true;
         }
         else {
-            ulDrawString(16,16,"Mother Delta Game State Selector");
+            ulDrawString(16,16,"Mother In-Law Game State Selector");
 
             ulDrawString(32,32+64,"battle");
             ulDrawString(32,48+64,"overworld");
@@ -141,13 +132,6 @@ void gameLogic() { //checks where the game is :)
             else {
                 ulDrawString(16,48+64,">");
                 if (ul_keys.pressed.A) {gameState='o';}
-            }
-
-            if (!ulGetMainLcd()) {
-                ulDrawString(16,16,"Hi menu");
-            }
-            else {
-                ulDrawString(16,32,"Hi top screen");
             }
         }
     }
