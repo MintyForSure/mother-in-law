@@ -11,3 +11,4 @@
 *.ase
 *.aseprite
 /build.py
+/.idea/workspace.xml

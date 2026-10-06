@@ -33,8 +33,7 @@ bool crusherDefending;
 string selectingPartyMember;
 int selectedEnemy=0;
 int battlePhase=0; //0-select 1-start combat phase 2-player move phase 3-enemy move phase 4-ex turn
-vector<int> playerTurns={}; //0 full turn, 1 half turn
-vector<int> enemyTurns={};
+int turns={};
 
 vector<string> enemyList={};
 namespace {
@@ -121,9 +120,7 @@ static enemy2BattleStats enemy2stats;
 void battleInit(std::string enemy0, const std::string& enemy1, const std::string& enemy2) {
     selectingPartyMember=partyMembers.at(0);
     consoleDebugInit(DebugDevice_NOCASH);
-    for (auto i:partyMembers) {
-        playerTurns.emplace(playerTurns.begin(),0);
-    }
+    pressTurnCount(true,true);
     //std::string turnOrder[]={mapleStats[4]};
     //bElem.battleBack=ulLoadImageFilePNG(reinterpret_cast<const char *>(bg_png),(int)bg_png_size,UL_IN_VRAM,UL_PF_PAL4);
     bElem.cursor=ulLoadImageFilePNG(reinterpret_cast<const char *>(cursor_png),(int)cursor_png_size,UL_IN_VRAM,UL_PF_PAL4);
@@ -153,12 +150,6 @@ void battleInit(std::string enemy0, const std::string& enemy1, const std::string
         bElem.enemy0=ulLoadImageFilePNG(reinterpret_cast<const char *>(cheesyRat_png),(int)cheesyRat_png_size,UL_IN_VRAM,UL_PF_PAL4);
         battlebackInit("rat");
     }
-    if (enemyList[1]=="rat") {
-        bElem.enemy1=bElem.enemy0;
-    }
-    if (enemyList[2]=="rat") {
-        bElem.enemy2=bElem.enemy0;
-    }
     //bElem.battleBack = ulCreateMap(battleBG,bg_map);
 }
 int playerTakeDamage(const string& target) {
@@ -180,29 +171,34 @@ void makeHalfTurn(int turn) {
 }
 
 void passTurn(bool player, bool fullTurn) {
-    if (player==true){
+    if (player==true) {
         if (fullTurn==true){
-            playerTurns.pop_back();
+            turns-=2;
         }
-        else{
-            playerTurns.pop_back();
-            playerTurns.emplace(playerTurns.begin(),1);
+        else {
+            turns--;
         }
-        if (playerTurns.front()!=0 or playerTurns.front()!=1){
+        if (partyMembers.size()!=1) {
+            if (partyMembers.at(0)=="maple") {
+                selectingPartyMember=partyMembers.at(1);
+                cout<<selectingPartyMember<<endl;
+            }
+        } //check to see if its at the end of the party members vector
+        if (turns<=0){
+            cout<<"turns: "<<turns<<endl;
             pressTurnCount(false,true);
             battlePhase=2;
         }
     }
-    else
-    {
-        if (fullTurn==true){
-            enemyTurns.pop_back();
+    else if (player==false) {
+        if (fullTurn==true) {
+            turns-=2;
         }
-        else{
-            enemyTurns.pop_back();
-            enemyTurns.emplace(enemyTurns.begin(),1);
+        else {
+            turns--;
         }
-        if (count(enemyTurns.begin(),enemyTurns.end(),0)>0 or count(enemyTurns.begin(),enemyTurns.end(),1)>0){
+        if (turns<=0) {
+            cout<<"enemy turns: "<<turns<<endl;
             pressTurnCount(true,true);
             battleMenuState=2;
             battlePhase=0;
@@ -210,22 +206,22 @@ void passTurn(bool player, bool fullTurn) {
     }
 }
 
-vector<int> pressTurnCount(bool player, bool refresh) {
+int pressTurnCount(bool player, bool refresh) {
     if (player==true) {
         if (refresh==true){
             for (auto i:partyMembers) {
-                playerTurns.push_back(0);
+                turns+=2;
             }
         }
-        return playerTurns;
+        return turns;
     }
     else {
         if (refresh==true) {
             for (auto i=0;i<enemyList.size();i++) {
-                enemyTurns.push_back(0);
+                turns+=2;
             }
         }
-        return std::vector<int>(enemyTurns);
+        return turns;
     }
 }
 
@@ -249,7 +245,6 @@ void damageRender(int dmg) {
 }
 void renderPlayerMove(string member) {
     if (allySfxPlayed==false) {
-        cout<<"im snitching"<<endl;
         mmEffect(SFX_ALLYATTACK);
         allySfxPlayed=true;
     }
@@ -278,10 +273,11 @@ void playerMove(string member) {
             cout<<"maple atk: "<<mapleStats[2]<<endl;
             //playerTurns--;
             enemy0stats.hp=enemy0stats.hp-damageOutput;
+            passTurn();
         }
-        passTurn();
         if (mapleAction[2]=="defend") {
             passTurn(true,false);
+            cout<<"Maple defending."<<endl;
             mapleDefending=true;
         }
     }
@@ -404,8 +400,8 @@ void battleProcess() {
             if (ul_keys.pressed.A) {
                 allySfxPlayed=false;
                 cout<<"A pressed, passing turn"<<endl;
-                passTurn(true);
-                //pressTurnCount(true,true);
+                passTurn(true,true);
+                cout<<"oh god where am i"<<endl;
             }
             break;
         case 2: //enemy execution/action
@@ -420,7 +416,7 @@ void battleProcess() {
             if (ul_keys.pressed.A) {
                 playerTakeDamage("maple");
                 enemySfxPlayed=false;
-                passTurn(false);
+                passTurn(false,true);
             }
             break;
         case 3:

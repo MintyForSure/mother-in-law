@@ -282,15 +282,20 @@ void hudRender(char hudType) {
     switch (hudType) { //i love switch cases
         case 'b':
             ulDrawImageXY(bHUD.b_turnHolder,179,62);
+            //cout<<"turns "<<pressTurnCount(true,false)<<endl;
             auto v=pressTurnCount(true,false);
             auto w=pressTurnCount(false,false);
             if (battlePhase==0 or battlePhase==1) {
-                for (int i = 0; i < v.size(); i++){
+                for (int i = 0; i < v/2; i++){
                     ulDrawImageXY(bHUD.b_turnIcons,188+(i*16),62-16);
+                    if ((v*2)%2==1) {
+                        cout<<"half icon here"<<endl;
+                        ulSetImageTileSize(bHUD.b_turnIcons,0,16,16,16);
+                    }
                 }
             }
             else if (battlePhase==2) {
-                for (int i = 0; i < w.size(); i++) {
+                for (int i = 0; i < w/2; i++) {
                     ulDrawImageXY(bHUD.b_enemyTurnIcons,188+(i*16),62-16);
                 }
             }
@@ -401,12 +406,15 @@ void hudRender(char hudType) {
                                 mapleAction[1]="self";
                                 mapleAction[2]="defend";
                                 playerMove("maple");
+                                //passTurn(true,false);
+                                battleMenuState=3;
                             }
                             else if (selectingPartyMember=="crusher") {
                                 crusherAction[0]="crusher";
                                 crusherAction[1]="self";
                                 crusherAction[2]="defend";
                                 playerMove("crusher");
+                                battleMenuState=3;
                             }
                             battleMenuState=3;
                         }
@@ -447,6 +455,13 @@ void hudRender(char hudType) {
                      battleMenuState=0;
                      doWindowDrawing=true;
                 }
+            }
+            else if (battleMenuState==3) {
+
+            }
+            else if (battleMenuState==9) {
+                drawWindow("youWon",8,8,252-32,16,"normal");
+                windowDisplayText("You won!");
             }
     }
 }
