@@ -74,6 +74,7 @@ void manageInv() {
 }
 
 void gameInit() {
+    consoleDebugInit(DebugDevice_NOCASH);
     srand(time(0));
 
     //Initialize NF_Lib

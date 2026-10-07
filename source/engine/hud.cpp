@@ -281,24 +281,6 @@ void hudShake(std::string member, int intensity) {
 void hudRender(char hudType) {
     switch (hudType) { //i love switch cases
         case 'b':
-            ulDrawImageXY(bHUD.b_turnHolder,179,62);
-            //cout<<"turns "<<pressTurnCount(true,false)<<endl;
-            auto v=pressTurnCount(true,false);
-            auto w=pressTurnCount(false,false);
-            if (battlePhase==0 or battlePhase==1) {
-                for (int i = 0; i < v/2; i++){
-                    ulDrawImageXY(bHUD.b_turnIcons,188+(i*16),62-16);
-                    if ((v*2)%2==1) {
-                        cout<<"half icon here"<<endl;
-                        ulSetImageTileSize(bHUD.b_turnIcons,0,16,16,16);
-                    }
-                }
-            }
-            else if (battlePhase==2) {
-                for (int i = 0; i < w/2; i++) {
-                    ulDrawImageXY(bHUD.b_enemyTurnIcons,188+(i*16),62-16);
-                }
-            }
             ulSetImageTileSize(bHUD.b_iconsFight,0,16,16,16);
             ulSetImageTileSize(bHUD.b_iconsItem,16,16,16,16);
             ulSetImageTileSize(bHUD.b_iconsSkill,32,16,16,16);
@@ -437,15 +419,18 @@ void hudRender(char hudType) {
                         mapleAction[0]="maple";
                         mapleAction[1]="enemy0";
                         mapleAction[2]="bash";
-                        battlePhase=1;
-                        playerMove("maple");
-                        battlePhase=1;
+                        nextMemberSelecting();
+                        cout<<selectingPartyMember<<endl;
+                        cout<<"cycle of samsara"<<endl;
+                        battleMenuState=0;
+                        //playerMove("maple");
                     }
                     if (selectingPartyMember=="crusher") {
-                        playerMove("crusher");
-                        battlePhase=1;
-                    }
-                    battleMenuState=3;
+                        crusherAction[0]="crusher";
+                        crusherAction[1]="enemy0";
+                        crusherAction[2]="bash";
+                    } //TODO make actions execute after all have been selected, then make Up Next! and Encore!s
+                    //battleMenuState=3;
                 }
             }
             else if (battleMenuState==2) {
