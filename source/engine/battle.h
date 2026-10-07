@@ -24,7 +24,7 @@ extern bool aaronDefending;
 extern bool crusherDefending;
 extern void passTurn(bool player=true, bool fullTurn=true);
 extern void playerMove(const std::string& member);
-extern void nextMemberSelecting();
+extern void nextMemberSelecting(bool cancel=false);
 extern std::vector<std::string> enemyList;
 
 #endif //MDELTA_BATTLE_H

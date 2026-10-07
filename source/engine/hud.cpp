@@ -323,7 +323,8 @@ void hudRender(char hudType) {
                 ulDrawImageXY(bHUD.b_iconsSkill,48,hudPos);
                 ulDrawImageXY(bHUD.b_iconsDefend,64,hudPos);
                 if (ul_keys.pressed.B) {
-                    hSelected=0;
+                    mmEffect(SFX_DESELECT);
+                    nextMemberSelecting(true);
                 }
                 if (selectingPartyMember=="maple") {
                     mapleBustPos=lerp(mapleBustPos,192-(64-16),0.5f);
@@ -429,6 +430,7 @@ void hudRender(char hudType) {
                         crusherAction[0]="crusher";
                         crusherAction[1]="enemy0";
                         crusherAction[2]="bash";
+                        nextMemberSelecting();
                     } //TODO make actions execute after all have been selected, then make Up Next! and Encore!s
                     //battleMenuState=3;
                 }

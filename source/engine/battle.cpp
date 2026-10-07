@@ -210,9 +210,26 @@ void playerMove(const string& member) {
     }
 }
 
-void nextMemberSelecting() {
-    activePartyIndex++;
-    selectingPartyMember=partyMembers.at(activePartyIndex);
+void nextMemberSelecting(const bool cancel) {
+    if (cancel==true && activePartyIndex!=0) {
+        cout<<"tells truths"<<endl;
+        activePartyIndex--;
+        selectingPartyMember=partyMembers.at(activePartyIndex);
+    }
+    else if (cancel==true && activePartyIndex==0) {
+        //do fuck all
+    }
+    else {
+        cout<<activePartyIndex<<endl;
+        if (activePartyIndex+1!=partyMembers.size()) {
+            cout<<"mewwwww"<<endl;
+            activePartyIndex++;
+            selectingPartyMember=partyMembers.at(activePartyIndex);
+        }
+        if (activePartyIndex+1==partyMembers.size()) {
+            cout<<"ourghhh"<<endl;
+        }
+    }
 }
 
 static void getTurnOrder() {
@@ -324,6 +341,20 @@ void battleProcess() {
             battlePhase=2;
             break;
         case 2:
+            if (nextAction>=turnOrder.size()) {
+                battlePhase=0;
+                break;
+            }
+            if (turnOrder[nextAction].member=="maple") {
+                playerMove("maple");
+            }
+            else if (turnOrder[nextAction].member=="crusher") {
+                playerMove("crusher");
+            }
+            else if (turnOrder[nextAction].member=="aaron") {
+                playerMove("aaron");
+            }
+            nextAction++;
             break;
         case 3:
             break;
