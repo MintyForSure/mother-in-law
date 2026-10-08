@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
     windowSysInit();
     //consoleDemoInit();
     gameState='x';
+
     while (1)
     {
         ulStartDrawing2D();

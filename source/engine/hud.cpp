@@ -23,6 +23,7 @@
 #include "window.h"
 #include "../data/enemyData.h"
 #include "characters/maple_png.h"
+#include "characters/crusher_png.h"
 #include "ui/pressTurnIcons_png.h"
 #include "ui/turnHolder_png.h"
 
@@ -57,6 +58,14 @@ struct battleElem{
 };
 
 static struct battleElem bHUD;
+static WindowClosedCallback onWindowClosed;
+
+static void handleWindowClosed(const std::string& id) {
+    if (id == "enemyAppear") {
+        battleMenuState = 0;
+        doWindowDrawing = true;
+    }
+}
 
 void battleHudInit() {
     printf("battle hud initializing\n");
@@ -78,9 +87,11 @@ void battleHudInit() {
     bHUD.b_numbers=ulLoadImageFilePNG(static_cast<const char *>((void*)numbers_png),numbers_png_size,UL_IN_VRAM,UL_PF_PAL4);
 
     bHUD.maple=ulLoadImageFilePNG(reinterpret_cast<const char *>(maple_png),static_cast<int>(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
-    bHUD.crusher=ulLoadImageFilePNG(reinterpret_cast<const char *>(maple_png),static_cast<int>(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
+    bHUD.crusher=ulLoadImageFilePNG(reinterpret_cast<const char *>(crusher_png),static_cast<int>(crusher_png_size),UL_IN_VRAM,UL_PF_PAL4);
     ulSetImageTileSize(bHUD.maple,16,0,16,32);
     ulImageSetRotCenter(bHUD.maple);
+    ulSetImageTileSize(bHUD.crusher,20,0,20,32);
+    ulImageSetRotCenter(bHUD.crusher);
 
     ulSetImageTileSize(bHUD.b_iconsFight,0,16,16,16);
     ulSetImageTileSize(bHUD.b_iconsItem,16,16,16,16);
@@ -106,13 +117,15 @@ void battleHudInit() {
     NF_CreateTextLayer16(1,0,0,"down");
     ulImageSetRotCenter(bHUD.b_mapleBattleTab);
     ulImageSetRotCenter(bHUD.b_crusherBattleTab);
+    setWindowClosedCallback(handleWindowClosed);
 }
 
 static int mHPTics = 0;
-static int mHPVis=mapleHP[1];
+static int mHPVis=mapleHP[0];
 static int mPPTics = 0;
 
 static int cHPTics=0;
+static int cHPVis=crusherHP[0];
 static int cPPTics=0;
 
 //static int mapleHPTicker[]={0,0,0};
@@ -178,7 +191,7 @@ static int hpHandler(char member) {
         if (crusherHP[0] < crusherHP[1]) {
             if (cHPTics % 6==1) {
                 //cout << mapleHP[1] << "\n";
-                mapleHP[1]--;
+                crusherHP[1]--;
             }
         }
         else if (crusherHP[0]>crusherHP[1]) {
@@ -322,18 +335,27 @@ void hudRender(char hudType) {
                 ulDrawImageXY(bHUD.b_iconsItem,32,hudPos);
                 ulDrawImageXY(bHUD.b_iconsSkill,48,hudPos);
                 ulDrawImageXY(bHUD.b_iconsDefend,64,hudPos);
-                if (ul_keys.pressed.B) {
-                    mmEffect(SFX_DESELECT);
-                    nextMemberSelecting(true);
-                }
+                // if (ul_keys.pressed.B) {
+                //     mmEffect(SFX_DESELECT);
+                //     nextMemberSelecting(true);
+                // }
                 if (selectingPartyMember=="maple") {
                     mapleBustPos=lerp(mapleBustPos,192-(64-16),0.5f);
                 }
-                else {
-                    if (mapleBustPos<192) { //lerp was annoying me
+                else if (selectingPartyMember=="crusher") {
+                    crusherBustPos=lerp(crusherBustPos,192-(64-10),0.5f);
+                }
+                if (selectingPartyMember!="maple") {
+                    if (mapleBustPos<192) {
                         mapleBustPos+=4;
                     }
                 }
+                else if (selectingPartyMember!="crusher") {
+                    if (crusherBustPos<192) {
+                        crusherBustPos+=4;
+                    }
+                }
+
                 switch (hSelected) {
                     case 0:
                         ulSetImageTileSize(bHUD.b_iconsFight,0,0,16,16); //focus
@@ -420,10 +442,9 @@ void hudRender(char hudType) {
                         mapleAction[0]="maple";
                         mapleAction[1]="enemy0";
                         mapleAction[2]="bash";
-                        nextMemberSelecting();
-                        cout<<selectingPartyMember<<endl;
                         cout<<"cycle of samsara"<<endl;
-                        battleMenuState=0;
+                        battleMenuState=3;
+                        battlePhase=1;
                         //playerMove("maple");
                     }
                     if (selectingPartyMember=="crusher") {
@@ -438,13 +459,13 @@ void hudRender(char hudType) {
             else if (battleMenuState==2) {
                 drawWindow("enemyAppear",8,8,252-32,16,"normal");
                 windowDisplayText("The "+getEnemyName(enemyList[0])+" appeared!","This is a test line!");
-                 if (doWindowDrawing==false) {
+                 if (onWindowClosed) {
                      battleMenuState=0;
                      doWindowDrawing=true;
                 }
             }
             else if (battleMenuState==3) {
-
+                
             }
             else if (battleMenuState==9) {
                 drawWindow("youWon",8,8,252-32,16,"normal");

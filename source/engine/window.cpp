@@ -58,15 +58,11 @@ int visibleCharactersLine1=0;
 int visibleCharactersLine2=0;
 bool doWindowDrawing=true;
 
-// void flushMessages() {
-//     visibleCharactersLine1=0;
-//     visibleCharactersLine2=0;
-//     windowMessages[0]={};
-//     windowMessages[1]={};
-//     windowMessages[2]={};
-//     windowMessages[3]={};
-//     windowMessages[4]={};
-// }
+static WindowClosedCallback onWindowClosed;
+
+void setWindowClosedCallback(const WindowClosedCallback callback) {
+    onWindowClosed=callback;
+}
 
 void windowSysInit() {
     //ulib side
@@ -163,6 +159,10 @@ void drawWindow(string windowID,int X,int Y,int width,int height,string type) {
             if (ul_keys.pressed.A && gameState=='b') {
                 doWindowDrawing=false;
                 inWindow=false;
+
+                if (onWindowClosed) {
+                    onWindowClosed(windowID);
+                }
             }
             tics++;
             if (tics>29) {

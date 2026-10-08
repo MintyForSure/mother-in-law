@@ -14,7 +14,7 @@ int pressTurnCount(bool player, bool refresh);
 
 extern int battlePhase;
 extern int turns;
-extern int activePartyIndex;
+extern size_t activePartyIndex;
 extern std::string selectingPartyMember;
 extern std::string mapleAction[];
 extern std::string aaronAction[];
@@ -24,7 +24,8 @@ extern bool aaronDefending;
 extern bool crusherDefending;
 extern void passTurn(bool player=true, bool fullTurn=true);
 extern void playerMove(const std::string& member);
-extern void nextMemberSelecting(bool cancel=false);
+extern void nextMemberSelecting(bool cancel = false);
+extern int pressTurns(bool player,bool refresh);
 extern std::vector<std::string> enemyList;
 
 #endif //MDELTA_BATTLE_H

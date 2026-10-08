@@ -34,7 +34,8 @@ string selectingPartyMember;
 int selectedEnemy=0;
 int battlePhase=0; //0-select 1-start combat phase 2-player move phase 3-enemy move phase 4-ex turn
 int turns={};
-int activePartyIndex=0;
+int consciousMembers=0;
+size_t activePartyIndex=0;
 
 vector<string> enemyList={};
 
@@ -118,6 +119,7 @@ static mapleBattleStats maple;
 static enemy0BattleStats enemy0stats;
 static enemy1BattleStats enemy1stats;
 static enemy2BattleStats enemy2stats;
+static WindowClosedCallback onWindowClosed;
 
 struct TurnAction {
     string member;
@@ -137,8 +139,22 @@ static void enemyStatConstructor(string name) {
     bElem.enemy0=ulLoadImageFilePNG(reinterpret_cast<const char *>(cheesyRat_png),(int)cheesyRat_png_size,UL_IN_VRAM,UL_PF_PAL4);
 }
 
+static void handleWindowClosed(const std::string& id) {
+    if (id=="playerActionExec") {
+        playerMove(selectingPartyMember);
+        battleMenuState=0;
+        doWindowDrawing=false;
+        cout<<"playerActionExec"<<endl;
+    }
+    if (id == "enemyAppear") {
+        battleMenuState = 0;
+        doWindowDrawing = true;
+    }
+}
+
 void battleInit(std::string enemy0, const std::string& enemy1, const std::string& enemy2) {
     selectingPartyMember=partyMembers.at(activePartyIndex);
+    turns=partyMembers.size()*2;
     //pressTurnCount(true,true);
     //std::string turnOrder[]={mapleStats[4]};
     //bElem.battleBack=ulLoadImageFilePNG(reinterpret_cast<const char *>(bg_png),(int)bg_png_size,UL_IN_VRAM,UL_PF_PAL4);
@@ -188,9 +204,8 @@ void playerMove(const string& member) {
     if (member=="maple") {
         if (mapleAction[2]=="bash") {
             const int damageOutput = damageCalc(mapleAction[0], mapleAction[1],mapleAction[2]);
-            //cout<<"maple gives damage: "<<damageCalc(mapleAction[0], mapleAction[1],mapleAction[2])<<endl;
             cout<<"maple atk: "<<damageOutput<<endl;
-            //playerTurns--;
+            windowDisplayText("Maple attacks the "+enemy0stats.name+"!");
             enemy0stats.hp=enemy0stats.hp-damageOutput;
         }
         if (mapleAction[2]=="defend") {
@@ -208,49 +223,78 @@ void playerMove(const string& member) {
             crusherDefending=true;
         }
     }
+    if (onWindowClosed) {
+
+    }
 }
 
 void nextMemberSelecting(const bool cancel) {
-    if (cancel==true && activePartyIndex!=0) {
-        cout<<"tells truths"<<endl;
-        activePartyIndex--;
-        selectingPartyMember=partyMembers.at(activePartyIndex);
+    cout<<activePartyIndex<<" "<<partyMembers.size()<<endl;
+    if (activePartyIndex < partyMembers.size()) {
+        selectingPartyMember = partyMembers.at(activePartyIndex);
     }
-    else if (cancel==true && activePartyIndex==0) {
-        //do fuck all
+    if (activePartyIndex+1<partyMembers.size()) {
+        activePartyIndex++;
+        selectingPartyMember = partyMembers.at(activePartyIndex);
     }
     else {
-        cout<<activePartyIndex<<endl;
-        if (activePartyIndex+1!=partyMembers.size()) {
-            cout<<"mewwwww"<<endl;
-            activePartyIndex++;
-            selectingPartyMember=partyMembers.at(activePartyIndex);
-        }
-        if (activePartyIndex+1==partyMembers.size()) {
-            cout<<"ourghhh"<<endl;
-        }
+        battleMenuState=3;
+        battlePhase=1;
     }
 }
 
-static void getTurnOrder() {
-    turnOrder.clear();
-
-    turnOrder.push_back({.member = "maple",.speed = maple.spd});
-    if (enemy0stats.hp>0) {
-        turnOrder.push_back({.member = enemy0stats.name,.speed = enemy0stats.spd});
+void passTurn(bool player, bool fullTurn) {
+    if (player) {
+        turns--;
+        nextMemberSelecting();
     }
-    stable_sort(turnOrder.begin(), turnOrder.end(),[](const TurnAction& a, const TurnAction& b) {
-            return a.speed > b.speed;
-        });
-    nextAction=0;
+
+    turns<=0?battlePhase=2:battlePhase=0;
+}
+
+// static void getTurnOrder() {
+//     turnOrder.clear();
+//
+//     turnOrder.push_back({.member = "maple",.speed = maple.spd});
+//     if (enemy0stats.hp>0) {
+//         turnOrder.push_back({.member = enemy0stats.name,.speed = enemy0stats.spd});
+//     }
+//     stable_sort(turnOrder.begin(), turnOrder.end(),[](const TurnAction& a, const TurnAction& b) {
+//             return a.speed > b.speed;
+//         });
+//     nextAction=0;
+// }
+
+static bool isntDowned(string memberName) {
+    if (mapleHP[1]>0) {
+        consciousMembers++;
+        return true;
+    }
+    if (crusherHP[1]>0) {
+        consciousMembers++;
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+int pressTurns(bool player,bool refresh) {
+    cout<<"uh oh"<<endl;
+    if (player&&refresh) {
+        turns=consciousMembers*2;
+    }
+    cout<<"turns"<<turns;
+    return turns;
 }
 
 void battleProcess() {
+    string battlePhaseString=to_string(battlePhase);
     //cout<<"enemyList[1]: "<<enemyList[1]<<endl; dont try to observe the inside of the vector i guess.
     //ulDrawGradientRect(0, 0, 256, 192, RGB15(24, 0, 28), RGB15(0, 0, 0),RGB15(0, 0, 0), RGB15(0, 0, 24));
     //ulDrawImage(bElem.battleBack);
     renderBattleback("rat");
-    // ulDrawString(8,64,(string("selectingPartyMember: ")+selectingPartyMember).c_str());
+    //ulDrawString(8,64,(string("selectingPartyMember: ")+selectingPartyMember).c_str());
     ulDrawFillRect(0,0,256,30,RGB15(0,0,0));
     ulDrawFillRect(0,162,256,192,RGB15(0,0,0)); //layering troubles, so im rendering it here.
     ulImageSetRotCenter(bElem.enemy0);
@@ -335,30 +379,27 @@ void battleProcess() {
     }
     switch (battlePhase) {
         case 0: //action selection
+            setWindowClosedCallback(handleWindowClosed);
             break;
-        case 1:
-            getTurnOrder();
-            battlePhase=2;
-            break;
-        case 2:
-            if (nextAction>=turnOrder.size()) {
-                battlePhase=0;
-                break;
+        case 1: //player action execution
+            drawWindow("playerActionExec",8,8,252-32,16,"normal");
+            if (selectingPartyMember=="maple") {
+                if (onWindowClosed) {
+                    playerMove("maple");
+                }
             }
-            if (turnOrder[nextAction].member=="maple") {
-                playerMove("maple");
-            }
-            else if (turnOrder[nextAction].member=="crusher") {
+            else if (selectingPartyMember=="crusher") {
                 playerMove("crusher");
             }
-            else if (turnOrder[nextAction].member=="aaron") {
+            else if (selectingPartyMember=="aaron") {
                 playerMove("aaron");
             }
-            nextAction++;
             break;
-        case 3:
+        case 2: //enemy action execution
             break;
-        case 4:
+        case 3: //battle won
+            break;
+        case 4: //battle lost
             break;
         default:
             break;
