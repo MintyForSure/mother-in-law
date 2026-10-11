@@ -70,35 +70,7 @@ namespace {
 }
 
 namespace {
-    class enemy0BattleStats {
-    public:
-        string action;
-        string target;
-        string name;
-        int hp{};
-        int pp{};
-        int atk{};
-        int def{};
-        int spd{};
-    };
-}
-
-namespace {
-    class enemy1BattleStats {
-    public:
-        string action;
-        string target;
-        string name;
-        int hp{};
-        int pp{};
-        int atk{};
-        int def{};
-        int spd{};
-    };
-}
-
-namespace {
-    class enemy2BattleStats {
+    class enemyBattleStats {
     public:
         string action;
         string target;
@@ -113,13 +85,13 @@ namespace {
 
 static struct battleElements bElem;
 static mapleBattleStats maple;
-static enemy0BattleStats enemy0stats;
-static enemy1BattleStats enemy1stats;
-static enemy2BattleStats enemy2stats;
+static enemyBattleStats enemy0stats;
+static enemyBattleStats enemy1stats;
+static enemyBattleStats enemy2stats;
 
 void battleInit(std::string enemy0, const std::string& enemy1, const std::string& enemy2) {
     selectingPartyMember=partyMembers.at(0);
-    consoleDebugInit(DebugDevice_NOCASH);
+    cout<<"selectingPartyMember: "<<selectingPartyMember<<endl;
     pressTurnCount(true,true);
     //std::string turnOrder[]={mapleStats[4]};
     //bElem.battleBack=ulLoadImageFilePNG(reinterpret_cast<const char *>(bg_png),(int)bg_png_size,UL_IN_VRAM,UL_PF_PAL4);
@@ -162,14 +134,6 @@ int playerTakeDamage(const string& target) {
     return damage;
 }
 
-void makeHalfTurn(int turn) {
-    switch (turn) {
-        case 0:
-
-            break;
-    }
-}
-
 void passTurn(bool player, bool fullTurn) {
     if (player==true) {
         if (fullTurn==true){
@@ -188,6 +152,10 @@ void passTurn(bool player, bool fullTurn) {
             cout<<"turns: "<<turns<<endl;
             pressTurnCount(false,true);
             battlePhase=2;
+        }
+        else {
+            battlePhase=0;
+            battleMenuState=0;
         }
     }
     else if (player==false) {
@@ -388,21 +356,24 @@ void battleProcess() {
             //pressTurnCount(true,true);
             break;
         case 1: //player action execution
+            drawWindow("playerAttack",8,8,252-32,16,"normal");
             if (selectingPartyMember=="maple") {
-                renderPlayerMove("maple");
+                if (inWindow==true) {
+                    windowDisplayText("Maple attacks!","");
+                }
+                cout<<"selecting party member is maple"<<endl;
+                if (ul_keys.pressed.A) {
+                    playerMove("maple");
+                }
+
+                //renderPlayerMove("maple");
             }
-            else if (selectingPartyMember=="ashton") {
-                renderPlayerMove("ashton");
-            }
-            else if (selectingPartyMember=="crusher") {
-                renderPlayerMove("crusher");
-            }
-            if (ul_keys.pressed.A) {
-                allySfxPlayed=false;
-                cout<<"A pressed, passing turn"<<endl;
-                passTurn(true,true);
-                cout<<"oh god where am i"<<endl;
-            }
+            // if (ul_keys.pressed.A) {
+            //     allySfxPlayed=false;
+            //     cout<<"A pressed, passing turn"<<endl;
+            //     passTurn(true,true);
+            //     cout<<"oh god where am i"<<endl;
+            // }
             break;
         case 2: //enemy execution/action
             if (inWindow==false) {doWindowDrawing=true;}

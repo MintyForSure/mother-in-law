@@ -25,6 +25,7 @@
 #include "characters/maple_png.h"
 #include "ui/pressTurnIcons_png.h"
 #include "ui/turnHolder_png.h"
+#include "ui/turnHolderEnemy_png.h"
 
 using namespace std;
 
@@ -32,6 +33,8 @@ int hSelected=0; //0:fight 1:item 2:skill 3:whatever
 int vSelected=0;
 int battleMenuState=2; //2: starting window 0:menupick 1:fightpick
 s16 hudPos=8;
+s16 turnHolderPos=179+128;
+s16 enemyTurnHolderPos=179+128;
 s16 mapleBustPos=192;
 s16 crusherBustPos=192;
 bool doDrawing;
@@ -45,6 +48,7 @@ struct battleElem{
     UL_IMAGE *b_turnIcons;
     UL_IMAGE *b_enemyTurnIcons;
     UL_IMAGE *b_turnHolder;
+    UL_IMAGE *b_enemyTurnHolder;
 
     UL_IMAGE *b_mapleBattleTab;
     UL_IMAGE *b_ashtonBattleTab;
@@ -70,6 +74,7 @@ void battleHudInit() {
     bHUD.b_turnIcons=ulLoadImageFilePNG(reinterpret_cast<const char *>(pressTurnIcons_png),pressTurnIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
     bHUD.b_enemyTurnIcons=ulLoadImageFilePNG(reinterpret_cast<const char *>(pressTurnIcons_png),pressTurnIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
     bHUD.b_turnHolder=ulLoadImageFilePNG(reinterpret_cast<const char *>(turnHolder_png),turnHolder_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    bHUD.b_enemyTurnHolder=ulLoadImageFilePNG(reinterpret_cast<const char *>(turnHolderEnemy_png),turnHolderEnemy_png_size,UL_IN_VRAM,UL_PF_PAL4);
 
     bHUD.b_mapleBattleTab=ulLoadImageFilePNG(static_cast<const char *>((void*)battleTab_png),(int)battleTab_png_size,UL_IN_VRAM,UL_PF_PAL4);
     bHUD.b_crusherBattleTab=ulLoadImageFilePNG(static_cast<const char *>((void*)battleTab_png),(int)battleTab_png_size,UL_IN_VRAM,UL_PF_PAL4);
@@ -281,11 +286,13 @@ void hudShake(std::string member, int intensity) {
 void hudRender(char hudType) {
     switch (hudType) { //i love switch cases
         case 'b':
-            ulDrawImageXY(bHUD.b_turnHolder,179,62);
             //cout<<"turns "<<pressTurnCount(true,false)<<endl;
             auto v=pressTurnCount(true,false);
             auto w=pressTurnCount(false,false);
             if (battlePhase==0 or battlePhase==1) {
+                turnHolderPos=lerp(turnHolderPos,179,0.25f);
+                enemyTurnHolderPos=179+128;
+                ulDrawImageXY(bHUD.b_turnHolder,turnHolderPos,62);
                 for (int i = 0; i < v/2; i++){
                     ulDrawImageXY(bHUD.b_turnIcons,188+(i*16),62-16);
                     if ((v*2)%2==1) {
@@ -295,6 +302,9 @@ void hudRender(char hudType) {
                 }
             }
             else if (battlePhase==2) {
+                turnHolderPos=179+128;
+                enemyTurnHolderPos=lerp(enemyTurnHolderPos,179,0.25f);
+                ulDrawImageXY(bHUD.b_enemyTurnHolder,enemyTurnHolderPos,62);
                 for (int i = 0; i < w/2; i++) {
                     ulDrawImageXY(bHUD.b_enemyTurnIcons,188+(i*16),62-16);
                 }
@@ -346,10 +356,17 @@ void hudRender(char hudType) {
                 if (selectingPartyMember=="maple") {
                     mapleBustPos=lerp(mapleBustPos,192-(64-16),0.5f);
                 }
+                else if (selectingPartyMember=="crusher") {
+                    crusherBustPos=lerp(crusherBustPos,192-(64-16),0.5f);
+                }
                 else {
                     if (mapleBustPos<192) { //lerp was annoying me
                         mapleBustPos+=4;
                     }
+                    if (crusherBustPos<192) { //lerp was annoying me
+                        crusherBustPos+=4;
+                    }
+
                 }
                 switch (hSelected) {
                     case 0:
@@ -405,15 +422,16 @@ void hudRender(char hudType) {
                                 mapleAction[0]="maple";
                                 mapleAction[1]="self";
                                 mapleAction[2]="defend";
-                                playerMove("maple");
+                                //playerMove("maple");
                                 //passTurn(true,false);
+                                battlePhase=1;
                                 battleMenuState=3;
                             }
                             else if (selectingPartyMember=="crusher") {
                                 crusherAction[0]="crusher";
                                 crusherAction[1]="self";
                                 crusherAction[2]="defend";
-                                playerMove("crusher");
+                                //playerMove("crusher");
                                 battleMenuState=3;
                             }
                             battleMenuState=3;
@@ -438,11 +456,8 @@ void hudRender(char hudType) {
                         mapleAction[1]="enemy0";
                         mapleAction[2]="bash";
                         battlePhase=1;
-                        playerMove("maple");
-                        battlePhase=1;
                     }
                     if (selectingPartyMember=="crusher") {
-                        playerMove("crusher");
                         battlePhase=1;
                     }
                     battleMenuState=3;
