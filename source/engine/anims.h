@@ -6,13 +6,12 @@
 #define MDELTA_ANIMS_H
 #include <string>
 #include <vector>
-#include <ulib/ulib.h>
 
 struct partyMembers {
-    UL_IMAGE *maple;
-    UL_IMAGE *ashton;
-
-    UL_IMAGE *crusher;
+    // UL_IMAGE *maple;
+    // UL_IMAGE *ashton;
+    //
+    // UL_IMAGE *crusher;
 };
 
 inline partyMembers party;

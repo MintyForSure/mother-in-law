@@ -4,7 +4,6 @@
 
 #include "battlebacks.h"
 
-#include <ulib/ulib.h>
 #include <string>
 #include <nds.h>
 #include <nf_lib.h>
@@ -13,7 +12,7 @@
 #define MAP_WIDTH   8
 #define MAP_HEIGHT  6
 
-static UL_MAP *ratMap;
+//static UL_MAP *ratMap;
 static int tics;
 
 void battlebackInit(std::string enemy) {
@@ -33,11 +32,11 @@ void renderBattleback(std::string enemy) {
         tics++;
     }
     if (enemy=="rat") {
-        ulDrawMap(ratMap);
-         
-        if (tics%2!=1) {
-            ratMap->scrollX+=1;
-            ratMap->scrollY+=1;
-        }
+        // ulDrawMap(ratMap);
+        //
+        // if (tics%2!=1) {
+        //     ratMap->scrollX+=1;
+        //     ratMap->scrollY+=1;
+        // }
     }
 }

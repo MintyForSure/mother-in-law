@@ -2,7 +2,6 @@
 // Created by tailofhell on 8/26/26.
 //
 #include <stdbool.h>
-#include <ulib/ulib.h>
 #include <nf_lib.h>
 #include "game.h"
 #include "../data/enemyData.h"

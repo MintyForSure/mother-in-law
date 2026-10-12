@@ -15,8 +15,8 @@ vector<string> initAnimation(const std::string& group) {
     vector<string> animationGroup;
     if (group=="maple") {
         //party.maple=ulLoadImageFilePNG(reinterpret_cast<const char *>(maple_png),int(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
-        ulSetImageTileSize(party.maple,0,0,16,32);
-        ulImageSetRotCenter(party.maple);
+        // ulSetImageTileSize(party.maple,0,0,16,32);
+        // ulImageSetRotCenter(party.maple);
         animationMaker mapleWalkingUp;
         animationMaker mapleWalkingDown;
         animationMaker mapleWalkingLeft;
@@ -38,19 +38,19 @@ void playAnimation(std::string name) {
         tics=0;
     }
     if (name=="mapleWalkingDown") {
-        ulDrawImage(party.maple);
-        if (tics==0) {
-            ulSetImageTileSize(party.maple,0,0,16,32);
-        }
-        else if (tics==14) {
-            ulSetImageTileSize(party.maple,16,0,16,32);
-        }
-        else if (tics==29){
-            ulSetImageTileSize(party.maple,32,0,16,32);
-        }
-        else if (tics==29+15) {
-            ulSetImageTileSize(party.maple,16,0,16,32);
-        }
+        // ulDrawImage(party.maple);
+        // if (tics==0) {
+        //     ulSetImageTileSize(party.maple,0,0,16,32);
+        // }
+        // else if (tics==14) {
+        //     ulSetImageTileSize(party.maple,16,0,16,32);
+        // }
+        // else if (tics==29){
+        //     ulSetImageTileSize(party.maple,32,0,16,32);
+        // }
+        // else if (tics==29+15) {
+        //     ulSetImageTileSize(party.maple,16,0,16,32);
+        // }
         cout<<tics<<endl;
     }
 }

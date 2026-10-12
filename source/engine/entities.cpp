@@ -6,13 +6,12 @@
 #include "entities.h"
 
 #include <iostream>
-#include <ulib/ulib.h>
 #include <string>
 
 using namespace std;
 
 struct overworldEntity {
-    UL_IMAGE *image;
+    //UL_IMAGE *image;
     const char *name;
     int *entityXPos;
     int *entityYPos;
@@ -31,7 +30,7 @@ int instanceEntity(int X, int Y, std::string name) {
 }
 
 void updateEntities() {
-    ulDrawImage(entity.image);
-    entity.image->x=leaderXOffset+8;
-    entity.image->y=leaderYOffset+8;
+    // ulDrawImage(entity.image);
+    // entity.image->x=leaderXOffset+8;
+    // entity.image->y=leaderYOffset+8;
 }

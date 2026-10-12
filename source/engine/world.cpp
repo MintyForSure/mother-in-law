@@ -5,7 +5,6 @@
 #include "world.h"
 
 #include <iostream>
-#include <ulib/ulib.h>
 #include "window.h"
 #include "game.h"
 #include "player.h"
@@ -14,7 +13,7 @@
 #include "../data/maps/debugRoom.h"
 
 
-static UL_MAP *map;
+//static UL_MAP *map;
 
 class worldObject{
 

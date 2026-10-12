@@ -4,7 +4,6 @@
 #include "battle.h"
 #include <iostream>
 #include <nds/arm9/video.h>
-#include <ulib/ulib.h>
 #include "../data/enemyData.h"
 #include "../engine/game.h"
 #include "../engine/hud.h"
@@ -34,13 +33,7 @@ int turns={};
 vector<string> enemyList={};
 namespace {
     struct battleElements { //one magic variable wont hurt
-        UL_MAP *battleBack;
-        UL_IMAGE *battleBG;
-        UL_IMAGE *enemy0;
-        UL_IMAGE *enemy1;
-        UL_IMAGE *enemy2;
-        UL_IMAGE *cursor;
-        UL_IMAGE *numbers;
+
     };
 }
 
@@ -94,8 +87,8 @@ void battleInit(std::string enemy0, const std::string& enemy1, const std::string
     // bElem.cursor=ulLoadImageFilePNG(reinterpret_cast<const char *>(cursor_png),(int)cursor_png_size,UL_IN_VRAM,UL_PF_PAL4);
     // bElem.numbers=ulLoadImageFilePNG(reinterpret_cast<const char *>(numbers1_png),(int)numbers1_png_size,UL_IN_VRAM,UL_PF_PAL4);
 
-    ulSetImageTileSize(bElem.cursor,0,0,8,8);
-    ulSetImageTileSize(bElem.numbers,0,0,9,9);
+    // ulSetImageTileSize(bElem.cursor,0,0,8,8);
+    // ulSetImageTileSize(bElem.numbers,0,0,9,9);
 
     enemyList={enemy0};
     if (enemy1!="empty") {
@@ -199,12 +192,7 @@ int damageCalc(string user,string target,string action) {
 }
 
 void damageRender(int dmg) {
-    ulSetImageTileSize(bElem.numbers,0,((dmg/100)%10)*9,9,9);
-    ulDrawImageXY(bElem.numbers,bElem.cursor->x,bElem.cursor->y);
-    ulSetImageTileSize(bElem.numbers,0,((dmg/10)%10)*9,9,9);
-    ulDrawImageXY(bElem.numbers,bElem.cursor->x+8,bElem.cursor->y);
-    ulSetImageTileSize(bElem.numbers,0,((dmg/1)%10)*9,9,9);
-    ulDrawImageXY(bElem.numbers,bElem.cursor->x+16,bElem.cursor->y);
+
 }
 void renderPlayerMove(string member) {
     if (allySfxPlayed==false) {
@@ -261,139 +249,15 @@ void battleProcess() {
     //cout<<"enemyList[1]: "<<enemyList[1]<<endl; dont try to observe the inside of the vector i guess.
     //ulDrawGradientRect(0, 0, 256, 192, RGB15(24, 0, 28), RGB15(0, 0, 0),RGB15(0, 0, 0), RGB15(0, 0, 24));
     //ulDrawImage(bElem.battleBack);
-    renderBattleback("rat");
-    // ulDrawString(8,64,(string("selectingPartyMember: ")+selectingPartyMember).c_str());
-    ulDrawFillRect(0,0,256,30,RGB15(0,0,0));
-    ulDrawFillRect(0,162,256,192,RGB15(0,0,0)); //layering troubles, so im rendering it here.
-    ulImageSetRotCenter(bElem.enemy0);
+    //ulDrawString(8,64,(string("selectingPartyMember: ")+selectingPartyMember).c_str());
 
-    ulDrawImageXY(bElem.enemy0,256/2,192/2);
     //ulDrawImageXY(bElem.enemy1,128,64);
     //ulDrawImageXY(bElem.enemy2,64,192/2); //fuck it bro its your life
 
 
-    if (battleMenuState==1) {
-        tics++;
-        if (tics>29) {
-            ulSetImageTileSize(bElem.cursor,0,0,8,8);
-        }
-        else {
-            ulSetImageTileSize(bElem.cursor,8,0,8,8);
-        }
-        if (tics==60) {
-            tics=0; //reset
-        }
-        if (ul_keys.pressed.left) {
-            if (bElem.enemy1==nullptr && bElem.enemy2==nullptr) {
 
-            }
-            else if (selectedEnemy!=0) {
-                selectedEnemy--;
-                mmEffect(SFX_HSELECT);
-            }
-            else if (selectedEnemy==0) {
-                if (bElem.enemy2!=nullptr) {
-                    selectedEnemy=2;
-                    mmEffect(SFX_HSELECT);
-                }
-                else {
-                    selectedEnemy=1;
-                    mmEffect(SFX_HSELECT);
-                }
-            }
 
-        }
-        else if (ul_keys.pressed.right) {
-            if (bElem.enemy1==nullptr && bElem.enemy2==nullptr) {
-
-            }
-            else if (selectedEnemy!=2) {
-                selectedEnemy++;
-                mmEffect(SFX_HSELECT);
-            }
-            else if (selectedEnemy==1) {
-                if (bElem.enemy2==nullptr) {
-                    selectedEnemy=0;
-                    mmEffect(SFX_HSELECT);
-                }
-                else {
-                    selectedEnemy=2;
-                    mmEffect(SFX_HSELECT);
-                }
-            }
-            else {
-                selectedEnemy=0;
-                mmEffect(SFX_HSELECT);
-            }
-        }
-
-        if (selectedEnemy==0) {
-            ulDrawImageXY(bElem.cursor,bElem.enemy0->x-24,bElem.enemy0->y-16);
-        }
-        else if (selectedEnemy==1) {
-            ulDrawImageXY(bElem.cursor,bElem.enemy1->x,bElem.enemy1->y);
-        }
-        else if (selectedEnemy==2) {
-            ulDrawImageXY(bElem.cursor,bElem.enemy2->x,bElem.enemy2->y);
-        }
-        else if (ul_keys.pressed.B) {
-            ulSetImageTint(bElem.enemy0,RGB15(31,31,31));
-            if (bElem.enemy1!=nullptr) {
-                ulSetImageTint(bElem.enemy1,RGB15(31,31,31));
-            }
-            if (bElem.enemy2!=nullptr) {
-                ulSetImageTint(bElem.enemy2,RGB15(31,31,31));
-            }
-        }
-    }
-    switch (battlePhase) {
-        case 0: //player select action
-
-            //pressTurnCount(true,true);
-            break;
-        case 1: //player action execution
-            drawWindow("playerAttack",8,8,252-32,16,"normal");
-            if (selectingPartyMember=="maple") {
-                if (inWindow==true) {
-                    windowDisplayText("Maple attacks!","");
-                }
-                cout<<"selecting party member is maple"<<endl;
-                if (ul_keys.pressed.A) {
-                    playerMove("maple");
-                    cout<<"damn it"<<endl;
-                    if (inWindow==true) {doWindowDrawing=false;}
-                    battleMenuState=0;
-                }
-                //renderPlayerMove("maple");
-            }
-            // if (ul_keys.pressed.A) {
-            //     allySfxPlayed=false;
-            //     cout<<"A pressed, passing turn"<<endl;
-            //     passTurn(true,true);
-            //     cout<<"oh god where am i"<<endl;
-            // }
-            break;
-        case 2: //enemy execution/action
-            battleMenuState=3;
-            if (inWindow==false) {doWindowDrawing=true;}
-            drawWindow("swag",8,8,252-32,16,"normal");
-            windowDisplayText(enemy0stats.name+" attacks!");
-            if (enemySfxPlayed==false) {
-                mmEffect(SFX_ENEMYATTACK);
-                enemySfxPlayed=true;
-            }
-            //mmEffect(SFX_ENEMYATTACK);
-            if (ul_keys.pressed.A) {
-                playerTakeDamage("maple");
-                enemySfxPlayed=false;
-                passTurn(false,true);
-            }
-            break;
-        case 3:
-            break;
-        case 4:
-            break;
-        default:
-            break;
-    }
+        // else if (ul_keys.pressed.B) {
+        //
+        //
 }
