@@ -1,12 +1,11 @@
 #include <filesystem.h>
-#include <ulib/ulib.h> // Include for µLibrary
 #include <nds.h>
 #include "engine/game.h"
 #include "engine/window.h"
 #include "engine/sound.h"
 #include <nf_lib.h>
 
-#include "soundbank.h"
+#include "nitrofs/soundbank_info.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,19 +13,19 @@ int main(int argc, char *argv[])
     nitroFSInit(NULL);
     gameInit();
     audioInit();
-    windowSysInit();
+    //windowSysInit();
     //consoleDemoInit();
     gameState='x';
     while (1)
     {
-        ulStartDrawing2D();
+        //ulStartDrawing2D();
         gameLogic();
-        ulReadKeys(0);
+        //ulReadKeys(0);
         NF_UpdateTextLayers();
         NF_SpriteOamSet(1);
         oamUpdate(&oamSub);
-        ulEndDrawing();
-        ulSyncFrame();
+        //ulEndDrawing();
+        //ulSyncFrame();
     }
     soundDisable();
     return 0;

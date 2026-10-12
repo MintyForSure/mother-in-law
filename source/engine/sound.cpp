@@ -8,7 +8,7 @@
 #include <maxmod9.h>
 #include <nds.h>
 
-#include "soundbank.h"
+#include "nitrofs/soundbank_info.h"
 //#include "soundbank_bin.h"
 
 void audioInit() {

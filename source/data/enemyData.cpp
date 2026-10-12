@@ -3,7 +3,6 @@
 //
 
 #include "enemyData.h"
-#include "cheesyRat_png.h"
 #include <iostream>
 #include <string>
 #include <vector>

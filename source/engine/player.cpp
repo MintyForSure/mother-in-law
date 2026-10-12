@@ -10,7 +10,6 @@
 #include "anims.h"
 #include "ulib/ulib.h"
 #include "game.h"
-#include "characters/maple_png.h"
 using namespace std;
 int animTics=0;
 

@@ -8,14 +8,13 @@
 #include <string>
 #include <vector>
 
-#include "characters/maple_png.h"
 int tics = 0;
 using namespace std;
 
 vector<string> initAnimation(const std::string& group) {
     vector<string> animationGroup;
     if (group=="maple") {
-        party.maple=ulLoadImageFilePNG(reinterpret_cast<const char *>(maple_png),int(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
+        //party.maple=ulLoadImageFilePNG(reinterpret_cast<const char *>(maple_png),int(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
         ulSetImageTileSize(party.maple,0,0,16,32);
         ulImageSetRotCenter(party.maple);
         animationMaker mapleWalkingUp;

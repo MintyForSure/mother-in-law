@@ -4,8 +4,7 @@
 #include <maxmod9.h>
 #include "menus.h"
 #include "sound.h"
-#include <ulib/ulib.h>
-#include "soundbank.h"
+#include "nitrofs/soundbank_info.h"
 
 void menuInput(const bool fallbackL, const bool fallbackR) {
     if (ul_keys.pressed.left && fallbackL == false) {

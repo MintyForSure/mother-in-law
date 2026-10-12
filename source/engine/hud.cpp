@@ -5,15 +5,11 @@
 #include <iostream>
 #include <nds.h>
 #include <nds/arm9/video.h>
-#include <ulib/ulib.h>
-#include "battle.h"
-#include "ui/battleIcons_png.h"
-#include "ui/battleTab_png.h"
+#include "../battle/battle.h"
 #include "game.h"
-#include "ui/numbers_png.h"
 #include <nf_lib.h>
 #include <maxmod9.h>
-#include "soundbank.h"
+#include "nitrofs/soundbank_info.h"
 //#include "soundbank_bin.h"
 #include "hud.h"
 
@@ -22,10 +18,6 @@
 #include "menus.h"
 #include "window.h"
 #include "../data/enemyData.h"
-#include "characters/maple_png.h"
-#include "ui/pressTurnIcons_png.h"
-#include "ui/turnHolder_png.h"
-#include "ui/turnHolderEnemy_png.h"
 
 using namespace std;
 
@@ -66,26 +58,30 @@ void battleHudInit() {
     printf("battle hud initializing\n");
     //ulDrawGradientRect(0, 0, 256, 192, RGB15(24, 0, 0), RGB15(0, 0, 0),RGB15(0, 0, 0), RGB15(0, 0, 24));
     //Load battle hud elements
-    bHUD.b_iconsFight=ulLoadImageFilePNG(static_cast<const char *>((void*)battleIcons_png),(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    bHUD.b_iconsSkill=ulLoadImageFilePNG(static_cast<const char *>((void*)battleIcons_png),(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    bHUD.b_iconsItem=ulLoadImageFilePNG(static_cast<const char *>((void*)battleIcons_png),(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    bHUD.b_iconsDefend=ulLoadImageFilePNG(static_cast<const char *>((void*)battleIcons_png),(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    // bHUD.b_iconsFight=ulLoadImageFilePNG(static_cast<const char *>((void*)battleIcons_png),(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    // bHUD.b_iconsSkill=ulLoadImageFilePNG(static_cast<const char *>((void*)battleIcons_png),(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    // bHUD.b_iconsItem=ulLoadImageFilePNG(static_cast<const char *>((void*)battleIcons_png),(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    // bHUD.b_iconsDefend=ulLoadImageFilePNG(static_cast<const char *>((void*)battleIcons_png),(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    //
+    // bHUD.b_turnIcons=ulLoadImageFilePNG(reinterpret_cast<const char *>(pressTurnIcons_png),pressTurnIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    // bHUD.b_enemyTurnIcons=ulLoadImageFilePNG(reinterpret_cast<const char *>(pressTurnIcons_png),pressTurnIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    // bHUD.b_turnHolder=ulLoadImageFilePNG(reinterpret_cast<const char *>(turnHolder_png),turnHolder_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    // bHUD.b_enemyTurnHolder=ulLoadImageFilePNG(reinterpret_cast<const char *>(turnHolderEnemy_png),turnHolderEnemy_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    //
+    // bHUD.b_mapleBattleTab=ulLoadImageFilePNG(static_cast<const char *>((void*)battleTab_png),(int)battleTab_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    // bHUD.b_crusherBattleTab=ulLoadImageFilePNG(static_cast<const char *>((void*)battleTab_png),(int)battleTab_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    // bHUD.b_crusherBattleTab=ulLoadImageFilePNG(static_cast<const char *>((void*)battleTab_png),(int)battleTab_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    //
+    // bHUD.b_numbers=ulLoadImageFilePNG(static_cast<const char *>((void*)numbers_png),numbers_png_size,UL_IN_VRAM,UL_PF_PAL4);
+    //
+    // bHUD.maple=ulLoadImageFilePNG(reinterpret_cast<const char *>(maple_png),static_cast<int>(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
+    // bHUD.crusher=ulLoadImageFilePNG(reinterpret_cast<const char *>(crusher_png),static_cast<int>(crusher_png_size),UL_IN_VRAM,UL_PF_PAL4);
 
-    bHUD.b_turnIcons=ulLoadImageFilePNG(reinterpret_cast<const char *>(pressTurnIcons_png),pressTurnIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    bHUD.b_enemyTurnIcons=ulLoadImageFilePNG(reinterpret_cast<const char *>(pressTurnIcons_png),pressTurnIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    bHUD.b_turnHolder=ulLoadImageFilePNG(reinterpret_cast<const char *>(turnHolder_png),turnHolder_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    bHUD.b_enemyTurnHolder=ulLoadImageFilePNG(reinterpret_cast<const char *>(turnHolderEnemy_png),turnHolderEnemy_png_size,UL_IN_VRAM,UL_PF_PAL4);
 
-    bHUD.b_mapleBattleTab=ulLoadImageFilePNG(static_cast<const char *>((void*)battleTab_png),(int)battleTab_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    bHUD.b_crusherBattleTab=ulLoadImageFilePNG(static_cast<const char *>((void*)battleTab_png),(int)battleTab_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    bHUD.b_crusherBattleTab=ulLoadImageFilePNG(static_cast<const char *>((void*)battleTab_png),(int)battleTab_png_size,UL_IN_VRAM,UL_PF_PAL4);
-
-    bHUD.b_numbers=ulLoadImageFilePNG(static_cast<const char *>((void*)numbers_png),numbers_png_size,UL_IN_VRAM,UL_PF_PAL4);
-
-    bHUD.maple=ulLoadImageFilePNG(reinterpret_cast<const char *>(maple_png),static_cast<int>(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
-    bHUD.crusher=ulLoadImageFilePNG(reinterpret_cast<const char *>(maple_png),static_cast<int>(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
     ulSetImageTileSize(bHUD.maple,16,0,16,32);
     ulImageSetRotCenter(bHUD.maple);
+    ulSetImageTileSize(bHUD.crusher,20,0,20,32);
+    ulImageSetRotCenter(bHUD.crusher);
 
     ulSetImageTileSize(bHUD.b_iconsFight,0,16,16,16);
     ulSetImageTileSize(bHUD.b_iconsItem,16,16,16,16);
@@ -319,7 +315,7 @@ void hudRender(char hudType) {
                     ulSetTextColor(RGB15(0,0,0));
                     ulDrawImageXY(bHUD.maple,bHUD.b_mapleBattleTab->x,mapleBustPos);
                     ulDrawImageXY(bHUD.b_mapleBattleTab,128,192-32);
-                    ulDrawString(112,154,"Maple");
+                    ulDrawString(112,156,"Maple");
                     hpHandler('m');
                     ppHandler('m');
                     break;
@@ -331,12 +327,12 @@ void hudRender(char hudType) {
                     ulDrawImageXY(bHUD.b_crusherBattleTab,131+(58/2),192-32);
 
                     if (partyMembers[0]=="maple") {
-                        ulDrawString(bHUD.b_mapleBattleTab->x-16,bHUD.b_mapleBattleTab->y-6,"Maple");
+                        ulDrawString(bHUD.b_mapleBattleTab->x-16,bHUD.b_mapleBattleTab->y-5,"Maple");
                         hpHandler('m');
                         ppHandler('m');
                     }
                     if (partyMembers[1]=="crusher") {
-                        ulDrawString(bHUD.b_crusherBattleTab->x-20,bHUD.b_crusherBattleTab->y-6,"Crusher");
+                        ulDrawString(bHUD.b_crusherBattleTab->x-20,bHUD.b_crusherBattleTab->y-5,"Crusher");
                         hpHandler('c');
                         ppHandler('c');
                     }
@@ -357,16 +353,17 @@ void hudRender(char hudType) {
                     mapleBustPos=lerp(mapleBustPos,192-(64-16),0.5f);
                 }
                 else if (selectingPartyMember=="crusher") {
-                    crusherBustPos=lerp(crusherBustPos,192-(64-16),0.5f);
+                    crusherBustPos=lerp(crusherBustPos,192-(64-10),0.5f);
                 }
-                else {
-                    if (mapleBustPos<192) { //lerp was annoying me
+                if (selectingPartyMember!="maple"){
+                    if (mapleBustPos<192) {
                         mapleBustPos+=4;
                     }
-                    if (crusherBustPos<192) { //lerp was annoying me
+                }
+                else if (selectingPartyMember!="crusher") {
+                    if (crusherBustPos<192) {
                         crusherBustPos+=4;
                     }
-
                 }
                 switch (hSelected) {
                     case 0:

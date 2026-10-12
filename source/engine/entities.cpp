@@ -8,7 +8,6 @@
 #include <iostream>
 #include <ulib/ulib.h>
 #include <string>
-#include "characters/enemy_png.h"
 
 using namespace std;
 
@@ -23,7 +22,7 @@ static struct overworldEntity entity;
 int instanceEntity(int X, int Y, std::string name) {
     if (name=="testEnemy") {
         entity.name="testEnemy";
-        entity.image=ulLoadImageFilePNG(reinterpret_cast<const char *>(enemy_png),int(enemy_png_size),UL_IN_VRAM,UL_PF_PAL4);
+        //entity.image=ulLoadImageFilePNG(reinterpret_cast<const char *>(enemy_png),int(enemy_png_size),UL_IN_VRAM,UL_PF_PAL4);
         entity.entityXPos=&X;
         entity.entityYPos=&Y;
         cout<<entity.name<<endl;
