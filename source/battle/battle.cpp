@@ -82,6 +82,10 @@ void battleInit(std::string enemy0, const std::string& enemy1, const std::string
     selectingPartyMember=partyMembers.at(0);
     cout<<"selectingPartyMember: "<<selectingPartyMember<<endl;
     pressTurnCount(true,true);
+    if (enemy0=="cheesyRat") {
+        battlebackInit("rat");
+        cout<<"battleback: rat"<<endl;
+    }
     //std::string turnOrder[]={mapleStats[4]};
     //bElem.battleBack=ulLoadImageFilePNG(reinterpret_cast<const char *>(bg_png),(int)bg_png_size,UL_IN_VRAM,UL_PF_PAL4);
     // bElem.cursor=ulLoadImageFilePNG(reinterpret_cast<const char *>(cursor_png),(int)cursor_png_size,UL_IN_VRAM,UL_PF_PAL4);
@@ -246,18 +250,8 @@ void playerMove(string member) {
 }
 
 void battleProcess() {
-    //cout<<"enemyList[1]: "<<enemyList[1]<<endl; dont try to observe the inside of the vector i guess.
-    //ulDrawGradientRect(0, 0, 256, 192, RGB15(24, 0, 28), RGB15(0, 0, 0),RGB15(0, 0, 0), RGB15(0, 0, 24));
-    //ulDrawImage(bElem.battleBack);
-    //ulDrawString(8,64,(string("selectingPartyMember: ")+selectingPartyMember).c_str());
-
-    //ulDrawImageXY(bElem.enemy1,128,64);
-    //ulDrawImageXY(bElem.enemy2,64,192/2); //fuck it bro its your life
-
-
-
-
-        // else if (ul_keys.pressed.B) {
-        //
-        //
+    switch (battlePhase) {
+        case 0:
+            break;
+    }
 }

@@ -9,23 +9,26 @@
 
 int main(int argc, char *argv[])
 {
+    consoleDebugInit(DebugDevice_NOCASH);
     NF_SetRootFolder("NITROFS");
     nitroFSInit(NULL);
     gameInit();
     audioInit();
     //windowSysInit();
     //consoleDemoInit();
-    gameState='x';
+    gameState='b';
     while (1)
     {
-        //ulStartDrawing2D();
         gameLogic();
-        //ulReadKeys(0);
-        NF_UpdateTextLayers();
+        NF_SpriteOamSet(0);
         NF_SpriteOamSet(1);
+        scanKeys();
+        // Wait for the screen refresh
+        swiWaitForVBlank();
+
+        // Update OAM
+        oamUpdate(&oamMain);
         oamUpdate(&oamSub);
-        //ulEndDrawing();
-        //ulSyncFrame();
     }
     soundDisable();
     return 0;

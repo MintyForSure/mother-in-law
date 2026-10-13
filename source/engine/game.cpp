@@ -3,6 +3,7 @@
 //
 #include <stdbool.h>
 #include <nf_lib.h>
+#include <nds.h>
 #include "game.h"
 #include "../data/enemyData.h"
 #include "hud.h"
@@ -74,18 +75,20 @@ void manageInv() {
 }
 
 void gameInit() {
-    consoleDebugInit(DebugDevice_NOCASH);
     srand(time(0));
 
     //Initialize NF_Lib
     NF_Set2D(1,0);
     NF_Set2D(0,0);
-    NF_Set3D(0,0);
+    //NF_Set3D(0,0);
     NF_InitSpriteBuffers();
     NF_InitTiledBgBuffers();
     NF_InitTiledBgSys(0);
     NF_InitSpriteSys(0);
     NF_InitTextSys(0);
+    NF_InitTiledBgSys(1);
+    NF_InitSpriteSys(1);
+    NF_InitTextSys(1);
     // Initialization of µlibrary
 
     // ulInit(UL_INIT_ALL);
@@ -94,6 +97,7 @@ void gameInit() {
     // ulInitText();
     // ulSetMainLcd(1);
     // ulSetTransparentColor(RGB15(31,0,31));
+    NF_UpdateTextLayers();
 }
 void pauseMenu() {
     drawWindow("pause",16,16,32,128,"menu");
@@ -115,31 +119,32 @@ void gameLogic() { //checks where the game is :)
 
         if (initSwitch_x==false) {
             NF_InitTextSys(1);
-            NF_LoadTextFont("fnt/font16", "down", 256, 256, 0);
+            NF_LoadTextFont("fnt/default", "down", 256, 256, 0);
             NF_CreateTextLayer(0, 0, 0, "down");
+            NF_Sort3dSprites();
             initSwitch_x=true;
         }
         else {
-            NF_WriteText(0,0,0,0,"Game State Selector");
+            NF_WriteText(0,0,2,2,"Mother Game State Selector");
             // ulDrawString(16,16,"Mother 2000 Game State Selector");
             //
             // ulDrawString(32,32+64,"battle");
+            NF_WriteText(0,0,2,8,"battle");
+            NF_WriteText(0,0,2,9,"overworld");
             // ulDrawString(32,48+64,"overworld");
-            // ulDrawString(16,192-16,"D-Pad Up/Down to move, A to select.");
+            NF_WriteText(0,0,2,16,"D-Pad Up/Down to move, \n  A to select.");
 
 
-            // if (ul_keys.pressed.down) {sel++;}
-            // else if (ul_keys.pressed.up){sel--;}
-            // if (ul_keys.pressed.left) {hSel--;}
-            // else if (ul_keys.pressed.right) {hSel++;}
-            // if (sel==0) {
-            //     ulDrawString(16,96,">");
-            //     if (ul_keys.pressed.A) {gameState='b';}
-            // }
-            // else {
-            //     ulDrawString(16,48+64,">");
-            //     if (ul_keys.pressed.A) {gameState='o';}
-            // }
+            if (keysHeld() & KEY_DOWN) {sel++;}
+            else if (keysHeld() & KEY_UP){sel--;}
+            if (sel==0) {
+                NF_WriteText(0,0,1,8,">");
+                if (keysHeld() & KEY_A) {gameState='b';}
+            }
+            else {
+                NF_WriteText(0,0,1,9,">");
+                if (keysHeld() & KEY_A) {gameState='o';}
+            }
             // if (hSel==0) {
             //     ulDrawString(16,32,"Party Members: Maple");
             //     partyMembers={"maple"};
@@ -161,26 +166,6 @@ void gameLogic() { //checks where the game is :)
         else {
             battleProcess();
             hudRender('b');
-           //hudRenderSub("battle");
-            // if (ul_keys.pressed.X) {
-            //     cout << "Setting Maple's HP to 12." << endl;
-            //     mapleHP[0]=12;
-            // }
-            // else if (ul_keys.pressed.Y) {
-            //     cout << "Setting Maple's HP to max" << endl;
-            //     cout << mapleHP[2] << endl;
-            //     mapleHP[0]=mapleHP[2];
-            // }
         }
     }
-    // if (ul_keys.held.L && ul_keys.held.R) {
-    //     debug=true;
-    //     consoleDemoInit();
-    //     cout << "Maple level:"<< mapleLevel[0] << endl;
-    //     cout << "Maple HP: " << mapleHP[0] << endl;
-    //     //printf("debug enabled, probably");
-    // }
-    // if (ul_keys.pressed.L) {
-    //     mapleHP[2]=125;
-    // }
 }

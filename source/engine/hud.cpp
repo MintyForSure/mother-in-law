@@ -23,8 +23,10 @@ using namespace std;
 
 int hSelected=0; //0:fight 1:item 2:skill 3:whatever
 int vSelected=0;
-int battleMenuState=2; //2: starting window 0:menupick 1:fightpick
+int battleMenuState=0; //2: starting window 0:menupick 1:fightpick
 s16 hudPos=8;
+static s16 selectionOffsetX=76;
+static s16 selectionOffsetY;
 s16 turnHolderPos=179+128;
 s16 enemyTurnHolderPos=179+128;
 s16 mapleBustPos=192;
@@ -39,41 +41,62 @@ static struct battleElem bHUD;
 
 void battleHudInit() {
     printf("battle hud initializing\n");
-    //ulDrawGradientRect(0, 0, 256, 192, RGB15(24, 0, 0), RGB15(0, 0, 0),RGB15(0, 0, 0), RGB15(0, 0, 24));
-    //Load battle hud elements
-    // bHUD.b_iconsFight=ulLoadImageFilePNG(static_cast<const char *>((void*)battleIcons_png),(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    // bHUD.b_iconsSkill=ulLoadImageFilePNG(static_cast<const char *>((void*)battleIcons_png),(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    // bHUD.b_iconsItem=ulLoadImageFilePNG(static_cast<const char *>((void*)battleIcons_png),(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    // bHUD.b_iconsDefend=ulLoadImageFilePNG(static_cast<const char *>((void*)battleIcons_png),(int)battleIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    //
-    // bHUD.b_turnIcons=ulLoadImageFilePNG(reinterpret_cast<const char *>(pressTurnIcons_png),pressTurnIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    // bHUD.b_enemyTurnIcons=ulLoadImageFilePNG(reinterpret_cast<const char *>(pressTurnIcons_png),pressTurnIcons_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    // bHUD.b_turnHolder=ulLoadImageFilePNG(reinterpret_cast<const char *>(turnHolder_png),turnHolder_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    // bHUD.b_enemyTurnHolder=ulLoadImageFilePNG(reinterpret_cast<const char *>(turnHolderEnemy_png),turnHolderEnemy_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    //
-    // bHUD.b_mapleBattleTab=ulLoadImageFilePNG(static_cast<const char *>((void*)battleTab_png),(int)battleTab_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    // bHUD.b_crusherBattleTab=ulLoadImageFilePNG(static_cast<const char *>((void*)battleTab_png),(int)battleTab_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    // bHUD.b_crusherBattleTab=ulLoadImageFilePNG(static_cast<const char *>((void*)battleTab_png),(int)battleTab_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    //
-    // bHUD.b_numbers=ulLoadImageFilePNG(static_cast<const char *>((void*)numbers_png),numbers_png_size,UL_IN_VRAM,UL_PF_PAL4);
-    //
-    // bHUD.maple=ulLoadImageFilePNG(reinterpret_cast<const char *>(maple_png),static_cast<int>(maple_png_size),UL_IN_VRAM,UL_PF_PAL4);
-    // bHUD.crusher=ulLoadImageFilePNG(reinterpret_cast<const char *>(crusher_png),static_cast<int>(crusher_png_size),UL_IN_VRAM,UL_PF_PAL4);
 
-    NF_LoadSpriteGfx("gfx/battleOptions",1,64,32);
-    NF_LoadSpritePal("gfx/battleOptions",1);
+    NF_LoadSpriteGfx("gfx/ui/battleTab",1,64,64);
+    NF_LoadSpritePal("gfx/ui/battleTab",1);
+    NF_LoadSpriteGfx("gfx/ui/turnHolder",2,64,64);
+    NF_LoadSpritePal("gfx/ui/turnHolder",2);
+    NF_LoadSpriteGfx("gfx/ui/blackbox", 3, 64, 32);
+    NF_LoadSpritePal("gfx/ui/blackbox", 3);
+    NF_LoadSpriteGfx("gfx/ui/bBash",4,32,32);
+    NF_LoadSpritePal("gfx/ui/bBash",4);
+    NF_LoadSpriteGfx("gfx/ui/bPSI",5,32,32);
+    NF_LoadSpritePal("gfx/ui/bPSI",5);
+    NF_LoadSpriteGfx("gfx/ui/bGuard",6,32,32);
+    NF_LoadSpritePal("gfx/ui/bGuard",6);
+    NF_LoadSpriteGfx("gfx/ui/bBag",7,32,32);
+    NF_LoadSpritePal("gfx/ui/bBag",7);
 
-    NF_VramSpriteGfx(1,1,1,false);
-    NF_VramSpritePal(1,1,1);
+    NF_VramSpriteGfx(0,1,1,false);
+    NF_VramSpritePal(0,1,1);
+    NF_VramSpriteGfx(0,2,2,false);
+    NF_VramSpritePal(0,2,2);
+    NF_VramSpriteGfx(0, 3, 3, false);
+    NF_VramSpritePal(0, 3, 3);
+    NF_VramSpriteGfx(0,4,4,false);
+    NF_VramSpritePal(0,4,4);
+    NF_VramSpriteGfx(0,5,5,false);
+    NF_VramSpritePal(0,5,5);
+    NF_VramSpriteGfx(0,6,6,false);
+    NF_VramSpritePal(0,6,6);
+    NF_VramSpriteGfx(0,7,7,false);
+    NF_VramSpritePal(0,7,7);
 
-    NF_CreateSprite(1,9,1,1,192*2,16);
-    NF_CreateSprite(1,10,1,1,192*2,16);
-    NF_CreateSprite(1,11,1,1,192*2,16);
-    NF_CreateSprite(1,12,1,1,192*2,16);
 
+    //Create the sprites :]
 
-    NF_LoadTextFont16("fnt/font16","down",256,256,0);
-    NF_CreateTextLayer16(1,0,0,"down");
+    switch (partyMemberCount) { //shut up clangd
+        case 1:
+            NF_CreateSprite(0,1,1,1,(256/2)-32,192-64);
+        default:
+            cout<<"default"<<endl;
+            NF_CreateSprite(0,1,1,1,(256/2)-32,192-64);
+    }
+    NF_CreateSprite(0,2,2,2,192,62);
+    for (int x = 0; x < 256; x += 64) {
+        const int id = 3 + x / 64;
+        NF_CreateSprite(0, id, 3, 3, x, 0);       // top bar
+        NF_CreateSprite(0, id + 4, 3, 3, x, 160); // bottom bar
+
+        NF_SpriteLayer(0,id,1);
+        NF_SpriteLayer(0,id+4,1);
+        cout<<"id="<<id+4<<endl;
+    }
+    //NF_SpriteLayer(0,11,0);
+    NF_CreateSprite(0,11,4,4,40+selectionOffsetX,32-8); //bash
+    NF_CreateSprite(0,12,5,5,16+selectionOffsetX,40);    //
+    NF_CreateSprite(0,13,6,6,36+selectionOffsetX,40+8);
+    NF_CreateSprite(0,14,7,7,64+selectionOffsetX,39);
 }
 
 static int mHPTics = 0;
@@ -166,30 +189,55 @@ void hudShake(std::string member, int intensity) {
 }
 
 void hudRender(char hudType) {
+    NF_MoveSprite(0,11,40+selectionOffsetX,selectionOffsetY+(32-8));
+    NF_MoveSprite(0,12,16+selectionOffsetX,selectionOffsetY+40);
+    NF_MoveSprite(0,13,36+selectionOffsetX,selectionOffsetY+40+8);
+    NF_MoveSprite(0,14,64+selectionOffsetX,selectionOffsetY+39);
+    if (battleMenuState==0) {
+        selectionOffsetY=lerp(selectionOffsetY,0,0.25f);
+    }
+    else {
+        selectionOffsetY=lerp(selectionOffsetY,-70,0.25f);
+    }
+    switch (hudType) {
+        case 'b':
+            if (battleMenuState==0) {
+                if (keysHeld() & KEY_UP) {
+                    battleMenuState=1;
+                }
+            }
+            else if (battleMenuState==1) {
+                if (keysHeld() & KEY_B) {
+                    battleMenuState=0;
+                }
+            }
+        case 'o':
 
+        default: ;
+    }
 }
 
 void hudRenderSub(const string& hudType) {
     if (hudType=="battle") {
-        NF_MoveSprite(1,9,0,16-8);
-        NF_MoveSprite(1,10,0,64-8);
-        NF_MoveSprite(1,11,0,112-8);
-        NF_MoveSprite(1,12,0,160-8);
+        NF_MoveSprite(0,9,0,16-8);
+        NF_MoveSprite(0,10,0,64-8);
+        NF_MoveSprite(0,11,0,112-8);
+        NF_MoveSprite(0,12,0,160-8);
 
-        NF_SpriteFrame(1,9,1);
-        NF_SpriteFrame(1,10,1);
-        NF_SpriteFrame(1,11,1);
-        NF_SpriteFrame(1,12,1);
+        NF_SpriteFrame(0,9,1);
+        NF_SpriteFrame(0,10,1);
+        NF_SpriteFrame(0,11,1);
+        NF_SpriteFrame(0,12,1);
 
         NF_WriteText16(1,0,2,2,"Fight");
         switch (vSelected) {
             case 0:
-                NF_SpriteFrame(1,9,0);
-                NF_MoveSprite(1,9,64,16-8);
+                NF_SpriteFrame(0,9,0);
+                NF_MoveSprite(0,9,64,16-8);
                 break;
             case 1:
-                NF_SpriteFrame(1,10,0);
-                NF_MoveSprite(1,10,64,64-8);
+                NF_SpriteFrame(0,10,0);
+                NF_MoveSprite(0,10,64,64-8);
                 break;
         }
     }
