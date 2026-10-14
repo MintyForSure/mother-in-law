@@ -119,20 +119,20 @@ void gameLogic() { //checks where the game is :)
 
         if (initSwitch_x==false) {
             NF_InitTextSys(1);
-            NF_LoadTextFont("fnt/default", "down", 256, 256, 0);
-            NF_CreateTextLayer(0, 0, 0, "down");
-            NF_Sort3dSprites();
+            NF_LoadTextFont16("fnt/silver", "default", 256, 256, 0);
+            NF_CreateTextLayer16(0, 0, 0, "default");
+            NF_UpdateTextLayers();
             initSwitch_x=true;
         }
         else {
-            NF_WriteText(0,0,2,2,"Mother Game State Selector");
+            NF_WriteText16(0,0,2,2,"Mother Game State Selector");
             // ulDrawString(16,16,"Mother 2000 Game State Selector");
             //
             // ulDrawString(32,32+64,"battle");
-            NF_WriteText(0,0,2,8,"battle");
-            NF_WriteText(0,0,2,9,"overworld");
+            NF_WriteText16(0,0,2,8,"battle");
+            NF_WriteText16(0,0,2,9,"overworld");
             // ulDrawString(32,48+64,"overworld");
-            NF_WriteText(0,0,2,16,"D-Pad Up/Down to move, \n  A to select.");
+            //NF_WriteText16(0,0,2,16,"D-Pad Up/Down to move, \n  A to select.");
 
 
             if (keysHeld() & KEY_DOWN) {sel++;}

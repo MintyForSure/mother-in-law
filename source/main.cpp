@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     audioInit();
     //windowSysInit();
     //consoleDemoInit();
-    gameState='b';
+    gameState='x';
     while (1)
     {
         gameLogic();

@@ -12,7 +12,7 @@
 //#include "soundbank_bin.h"
 
 void audioInit() {
-    std::cout<<"mmInitDefault: "<<mmInitDefault("nitro:/soundbank.bin")<<std::endl;
+    std::cout<<"mmInitDefault: "<<mmInitDefault("maxmod/soundbank.bin")<<std::endl;
     soundEnable();
     std::cout<<"mmGetModuleCount(): "<<mmGetModuleCount()<<std::endl;
     std::cout<<"mmGetSampleCount(): "<<mmGetSampleCount()<<std::endl;

@@ -10,6 +10,7 @@
 #include "../engine/window.h"
 #include <maxmod9.h>
 #include <thread>
+#include <nf_lib.h>
 
 #include "../engine/battlebacks.h"
 #include "nitrofs/soundbank_info.h"
@@ -84,7 +85,13 @@ void battleInit(std::string enemy0, const std::string& enemy1, const std::string
     pressTurnCount(true,true);
     if (enemy0=="cheesyRat") {
         battlebackInit("rat");
-        cout<<"battleback: rat"<<endl;
+        NF_LoadSpriteGfx("gfx/characters/cheesyRat",12,64,64);
+        NF_LoadSpritePal("gfx/characters/cheesyRat",12);
+        NF_VramSpriteGfx(0,12,12,false);
+        NF_VramSpritePal(0,12,12);
+
+        NF_CreateSprite(0,33,12,12,(256/2)-32,(192/2)-32);
+        cout<<"enemy0: rat"<<endl;
     }
     //std::string turnOrder[]={mapleStats[4]};
     //bElem.battleBack=ulLoadImageFilePNG(reinterpret_cast<const char *>(bg_png),(int)bg_png_size,UL_IN_VRAM,UL_PF_PAL4);

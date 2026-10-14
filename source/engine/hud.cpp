@@ -42,6 +42,10 @@ static struct battleElem bHUD;
 void battleHudInit() {
     printf("battle hud initializing\n");
 
+    //Initialize the HUD sprites
+    //Sprite slot 0-8 belongs to the hud
+    NF_LoadSpriteGfx("gfx/ui/numbers1",0,16,16);
+    NF_LoadSpritePal("gfx/ui/numbers1",0);
     NF_LoadSpriteGfx("gfx/ui/battleTab",1,64,64);
     NF_LoadSpritePal("gfx/ui/battleTab",1);
     NF_LoadSpriteGfx("gfx/ui/turnHolder",2,64,64);
@@ -56,7 +60,16 @@ void battleHudInit() {
     NF_LoadSpritePal("gfx/ui/bGuard",6);
     NF_LoadSpriteGfx("gfx/ui/bBag",7,32,32);
     NF_LoadSpritePal("gfx/ui/bBag",7);
+    NF_LoadSpriteGfx("gfx/ui/turnHolderEnemy",8,64,64);
+    NF_LoadSpritePal("gfx/ui/turnHolderEnemy",8);
+    NF_LoadSpriteGfx("gfx/ui/featherCursor",9,16,16);
+    NF_LoadSpritePal("gfx/ui/featherCursor",9);
+    NF_LoadSpriteGfx("gfx/ui/numbers",10,8,8);
+    NF_LoadSpritePal("gfx/ui/numbers",10);
 
+
+    NF_VramSpriteGfx(0,0,0,true);
+    NF_VramSpritePal(0,0,0);
     NF_VramSpriteGfx(0,1,1,false);
     NF_VramSpritePal(0,1,1);
     NF_VramSpriteGfx(0,2,2,false);
@@ -71,13 +84,27 @@ void battleHudInit() {
     NF_VramSpritePal(0,6,6);
     NF_VramSpriteGfx(0,7,7,false);
     NF_VramSpritePal(0,7,7);
-
+    NF_VramSpriteGfx(0,8,8,false);
+    NF_VramSpritePal(0,8,8);
+    NF_VramSpriteGfx(0,9,9,false);
+    NF_VramSpritePal(0,9,9);
+    NF_VramSpriteGfx(0,10,10,true);
+    NF_VramSpritePal(0,10,10);
 
     //Create the sprites :]
 
     switch (partyMemberCount) { //shut up clangd
         case 1:
             NF_CreateSprite(0,1,1,1,(256/2)-32,192-64);
+            NF_SpriteLayer(0,1,1);
+            for (int i=0;i<3;i++) {
+                NF_CreateSprite(0, 18+i, 10, 10, 124 + i * 8, 167);
+                //NF_SpriteLayer(0, 18+i, 0);
+            }
+            for (int i=0;i<3;i++) {
+                NF_CreateSprite(0, 18+3+i, 10, 10, 124 + i * 8, 178);
+            }
+            break;
         default:
             cout<<"default"<<endl;
             NF_CreateSprite(0,1,1,1,(256/2)-32,192-64);
@@ -85,11 +112,11 @@ void battleHudInit() {
     NF_CreateSprite(0,2,2,2,192,62);
     for (int x = 0; x < 256; x += 64) {
         const int id = 3 + x / 64;
-        NF_CreateSprite(0, id, 3, 3, x, 0);       // top bar
-        NF_CreateSprite(0, id + 4, 3, 3, x, 160); // bottom bar
+        NF_CreateSprite(0,id,3,3,x,0);       // top bar
+        NF_CreateSprite(0,id+4,3,3,x,160); // bottom bar
 
-        NF_SpriteLayer(0,id,1);
-        NF_SpriteLayer(0,id+4,1);
+        NF_SpriteLayer(0,id,3);
+        NF_SpriteLayer(0,id+4,3);
         cout<<"id="<<id+4<<endl;
     }
     //NF_SpriteLayer(0,11,0);
@@ -97,6 +124,10 @@ void battleHudInit() {
     NF_CreateSprite(0,12,5,5,16+selectionOffsetX,40);    //
     NF_CreateSprite(0,13,6,6,36+selectionOffsetX,40+8);
     NF_CreateSprite(0,14,7,7,64+selectionOffsetX,39);
+    NF_CreateSprite(0,15,8,8,192+64,62);
+    NF_CreateSprite(0,16,9,9,-16,-16);
+    NF_CreateSprite(0,0,0,0,206,58);
+    //Sprite slots 0-32 belong to the Battle HUD
 }
 
 static int mHPTics = 0;
@@ -201,18 +232,24 @@ void hudRender(char hudType) {
     }
     switch (hudType) {
         case 'b':
-            if (battleMenuState==0) {
-                if (keysHeld() & KEY_UP) {
-                    battleMenuState=1;
-                }
+            switch (battleMenuState) {
+                case 0:
+                    if (keysHeld() & KEY_UP) {
+                        mmEffect(SFX_SELECT);
+                        battleMenuState=1;
+                    }
+                    break;
+                case 1:
+                    if (keysHeld() & KEY_B) {
+                        mmEffect(SFX_DESELECT);
+                        battleMenuState=0;
+                    }
+                    break;
+                default: ;
             }
-            else if (battleMenuState==1) {
-                if (keysHeld() & KEY_B) {
-                    battleMenuState=0;
-                }
-            }
+            break;
         case 'o':
-
+            break;
         default: ;
     }
 }
