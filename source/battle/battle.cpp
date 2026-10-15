@@ -26,10 +26,16 @@ string crusherAction[3]={};
 bool mapleDefending;
 bool aaronDefending;
 bool crusherDefending;
+static string battleInitEnemy0;
+static string battleInitEnemy1;
+static string battleInitEnemy2;
 string selectingPartyMember;
-int selectedEnemy=0;
 int battlePhase=0; //0-select 1-start combat phase 2-player move phase 3-enemy move phase 4-ex turn
 int turns={};
+
+s8 enemy0pos[2];
+s8 enemy1pos[2];
+s8 enemy2pos[2];
 
 vector<string> enemyList={};
 namespace {
@@ -79,10 +85,14 @@ static enemyBattleStats enemy0stats;
 static enemyBattleStats enemy1stats;
 static enemyBattleStats enemy2stats;
 
-void battleInit(std::string enemy0, const std::string& enemy1, const std::string& enemy2) {
+void battleInit(const std::string& enemy0, const std::string& enemy1, const std::string& enemy2) {
+    battleInitEnemy0=enemy0;
+    battleInitEnemy1=enemy1;
+    battleInitEnemy2=enemy2;
     selectingPartyMember=partyMembers.at(0);
     cout<<"selectingPartyMember: "<<selectingPartyMember<<endl;
     pressTurnCount(true,true);
+    cout<<"enemy1: "<<enemy1<<endl;
     if (enemy0=="cheesyRat") {
         battlebackInit("rat");
         NF_LoadSpriteGfx("gfx/characters/cheesyRat",12,64,64);
@@ -123,7 +133,18 @@ void battleInit(std::string enemy0, const std::string& enemy1, const std::string
         battlebackInit("rat");
     }
     //bElem.battleBack = ulCreateMap(battleBG,bg_map);
+    setEnemyPositions();
 }
+
+void setEnemyPositions() {
+    if (battleInitEnemy0!="empty" and battleInitEnemy1=="empty" and battleInitEnemy2=="empty") {
+        enemy0pos[0]=(256/2)-32;
+        enemy0pos[1]=(192/2)-32;
+        cout<<enemy0pos[1]<<endl;
+    }
+    NF_MoveSprite(0,12,enemy0pos[0],enemy0pos[1]);
+}
+
 int playerTakeDamage(const string& target) {
     int damage=0;
     if (target=="maple") {
@@ -192,7 +213,7 @@ int pressTurnCount(bool player, bool refresh) {
     }
 }
 
-int damageCalc(string user,string target,string action) {
+int damageCalc(string user,int target,string action) {
     int damage=0;
     if (action=="bash") {
         if (user=="maple") {
@@ -205,60 +226,109 @@ int damageCalc(string user,string target,string action) {
 void damageRender(int dmg) {
 
 }
-void renderPlayerMove(string member) {
-    if (allySfxPlayed==false) {
-        mmEffect(SFX_ALLYATTACK);
-        allySfxPlayed=true;
-    }
-    if (selectingPartyMember=="maple") {
-        int damageOutput = damageCalc(mapleAction[0], mapleAction[1],mapleAction[2]);
-        drawWindow("mapleAttack",8,8,252-32,16,"normal");
-        windowDisplayText("Maple attacks!","");
-        if (doWindowDrawing==true) {
-            damageRender(damageOutput);
+
+static int mHPTics = 0;
+static int mPPTics = 0;
+
+static int cHPTics = 0;
+static int cPPTics = 0;
+
+void updateHP(){
+    if (mapleHP[0] < mapleHP[1]) {
+        if (mapleDefending==true && mHPTics % 10==1) {
+            mapleHP[1]--;
+        }
+        else if (mHPTics % 6==1) {
+            mapleHP[1]--;
         }
     }
-    else if (selectingPartyMember=="crusher") {
-        int damageOutput = damageCalc(crusherAction[0], crusherAction[1],crusherAction[2]);
-        drawWindow("crusherAttack",8,8,252-32,16,"normal");
-        windowDisplayText("Crusher attacks!","");
-        if (doWindowDrawing==true) {
-            damageRender(damageOutput);
+    else if (mapleHP[0]>mapleHP[1]) {
+        if (mHPTics % 4==1) {
+            mapleHP[1]++;
         }
     }
-}
-void playerMove(string member) {
-    if (member=="maple") {
-        if (mapleAction[2]=="bash") {
-            const int damageOutput = damageCalc(mapleAction[0], mapleAction[1],mapleAction[2]);
-            //cout<<"maple gives damage: "<<damageCalc(mapleAction[0], mapleAction[1],mapleAction[2])<<endl;
-            cout<<"maple atk: "<<mapleStats[2]<<endl;
-            //playerTurns--;
-            enemy0stats.hp=enemy0stats.hp-damageOutput;
-            passTurn();
-        }
-        if (mapleAction[2]=="defend") {
-            passTurn(true,false);
-            cout<<"Maple defending."<<endl;
-            mapleDefending=true;
+    else {
+        mHPTics=0;
+    }
+    if (mHPTics==80) {
+        mHPTics=0;
+    }
+    if (crusherHP[0] < crusherHP[1]) {
+        if (cHPTics % 6==1) {
+            //cout << mapleHP[1] << "\n";
+            mapleHP[1]--;
         }
     }
-    if (member=="crusher") {
-        if (crusherAction[2]=="bash") {
-            const int damageOutput = damageCalc(crusherAction[0], crusherAction[1],crusherAction[2]);
-            cout<<"crusher atk: "<<mapleStats[2]<<endl;
-            enemy0stats.hp=enemy0stats.hp-damageOutput;
+    else if (crusherHP[0]>crusherHP[1]) {
+        if (cHPTics % 4==1) {
+            //cout << mapleHP[1] << "\n";
+            crusherHP[1]++;
         }
-        if (crusherAction[2]=="defend") {
-            passTurn(true,false);
-            crusherDefending=true;
-        }
+    }
+    else {
+        cHPTics=0;
+    }
+    if (cHPTics==80) {
+        cHPTics=0;
     }
 }
 
+void updatePP() {
+    if (maplePP[0] < maplePP[1]) {
+        if (mPPTics % 6==1) {
+            maplePP[1]--;
+        }
+    }
+    else if (maplePP[0]>maplePP[1]) {
+        if (mPPTics % 4==1) {
+            maplePP[1]++;
+        }
+    }
+    else {
+        mPPTics=0;
+    }
+    if (crusherPP[0] < crusherPP[1]) {
+        if (cPPTics % 6==1) {
+            //cout << mapleHP[1] << "\n";
+            crusherPP[1]--;
+        }
+    }
+    else if (crusherPP[0]>crusherPP[1]) {
+        if (cHPTics % 4==1) {
+            //cout << mapleHP[1] << "\n";
+            crusherPP[1]++;
+        }
+    }
+    else {
+        cPPTics=0;
+    }
+}
+
+void playerMove(string member,int target,string action) {
+    int damageOutput = 0;
+    if (action=="bash") {
+        if (member=="maple") {
+            damageOutput = damageCalc("maple",selectedEnemy,"bash");
+        }
+        else if (member=="crusher") {
+            damageOutput = damageCalc("crusher",selectedEnemy,"bash");
+        }
+        passTurn(true,true);
+    }
+    cout<<damageOutput<<endl;
+}
+
 void battleProcess() {
+    updateHP();
+    updatePP();
     switch (battlePhase) {
         case 0:
             break;
+        case 1:
+            break;
+        case 2: //windowwww
+            break;
+        default:
+            cout<<"default, battlePhase"<<endl;
     }
 }

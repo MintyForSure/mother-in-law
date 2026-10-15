@@ -4,6 +4,7 @@
 #include "engine/window.h"
 #include "engine/sound.h"
 #include <nf_lib.h>
+#include <nds/arm9/input.h>
 
 #include "nitrofs/soundbank_info.h"
 
@@ -24,6 +25,7 @@ int main(int argc, char *argv[])
         NF_SpriteOamSet(1);
         scanKeys();
         // Wait for the screen refresh
+        NF_UpdateTextLayers();
         swiWaitForVBlank();
 
         // Update OAM

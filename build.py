@@ -24,6 +24,7 @@ arm9.generate_elf()
 nds = NdsRom(
     binaries=[arm9, nitrofs],
     game_title='Mother In-Law',
+    game_icon='icon',
 )
 nds.generate_nds()
 

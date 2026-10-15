@@ -7,6 +7,8 @@
 #include <string>
 #include <nds.h>
 #include <nf_lib.h>
+#include <nds/arm9/video.h>
+
 #include "../data/battlebacks/ratBattleback.h"
 
 #define MAP_WIDTH   8
@@ -35,17 +37,18 @@ void hblank_handler(void)
             i[vline] *= -1;
 
         NF_ScrollBg(0, 3, (bgx[vline] / 8) - 4, 0);
+        NF_ScrollBg(1, 3, (bgx[vline] / 8), 0);
+        NF_ScrollBg(1, 2, (bgx[vline] / 8), 0);
     }
 }
 
 void battlebackInit(std::string enemy) {
     if (enemy=="rat") {
-        //UL_IMAGE *ratImg = ulLoadImageFilePNG(reinterpret_cast<const char *>(bgtiles_png), (int) bgtiles_png_size, UL_IN_VRAM, UL_PF_PAL4);
-        //ratMap=ulCreateMap(ratImg,ratBattleback,32,32,8,6,UL_MF_U16);
-        //NF_LoadTiledBg("bg/bg","nfRatMap",256,256);
-        //NF_CreateTiledBg(1,2,"nfRatMap");
         NF_LoadTiledBg("bg/bg","testbg",256,256);
+        NF_LoadTiledBg("bg/black","black",256,256);
         NF_CreateTiledBg(0,3,"testbg");
+        NF_CreateTiledBg(1,3,"testbg");
+        NF_CreateTiledBg(1,2,"black");
         s8 inc = 1;
         int x = 0;
 
@@ -59,6 +62,8 @@ void battlebackInit(std::string enemy) {
 
             i[y] = inc;
         }
+        REG_BLDCNT_SUB = BLEND_ALPHA | BLEND_SRC_BG2 | BLEND_DST_BG3;
+        REG_BLDALPHA_SUB = BLDALPHA_EVA(8) | BLDALPHA_EVB(8);  // Equal blend: 8/16 of each layer
         irqSet(IRQ_HBLANK, hblank_handler);
         irqEnable(IRQ_HBLANK);
     }

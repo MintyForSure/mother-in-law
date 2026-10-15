@@ -12,6 +12,7 @@
 #include <nds/arm9/video.h>
 #include <filesystem.h>
 #include <vector>
+#include <nds/arm9/input.h>
 
 #include "../battle/battle.h"
 #include "player.h"
@@ -21,7 +22,7 @@
 
 using namespace std;
 
-vector<string> partyMembers={"maple"};
+vector<string> partyMembers={"maple","crusher"};
 string inventory[]={"coolFood","junkFood"};
 char gameState;
 bool debug;
@@ -121,7 +122,6 @@ void gameLogic() { //checks where the game is :)
             NF_InitTextSys(1);
             NF_LoadTextFont16("fnt/silver", "default", 256, 256, 0);
             NF_CreateTextLayer16(0, 0, 0, "default");
-            NF_UpdateTextLayers();
             initSwitch_x=true;
         }
         else {
@@ -135,14 +135,16 @@ void gameLogic() { //checks where the game is :)
             //NF_WriteText16(0,0,2,16,"D-Pad Up/Down to move, \n  A to select.");
 
 
-            if (keysHeld() & KEY_DOWN) {sel++;}
-            else if (keysHeld() & KEY_UP){sel--;}
+            if (keysDown() & KEY_DOWN) {sel++;}
+            else if (keysDown() & KEY_UP){sel--;}
             if (sel==0) {
-                NF_WriteText(0,0,1,8,">");
+                NF_WriteText16(0,0,1,8,">");
+                NF_WriteText16(0,0,1,9," ");
                 if (keysHeld() & KEY_A) {gameState='b';}
             }
-            else {
-                NF_WriteText(0,0,1,9,">");
+            else if (sel==1){
+                NF_WriteText16(0,0,1,9,">");
+                NF_WriteText16(0,0,1,8," ");
                 if (keysHeld() & KEY_A) {gameState='o';}
             }
             // if (hSel==0) {
@@ -153,11 +155,13 @@ void gameLogic() { //checks where the game is :)
             //     ulDrawString(16,32,"Party Members: Maple, Crusher");
             //     partyMembers={"maple","crusher"};
             //  }
-
+            NF_UpdateTextLayers();
         }
     }
     else if (gameState=='b') {
         if (initSwitch_b==false){
+            NF_ClearTextLayer16(0,0);
+            //NF_UpdateTextLayers();
             battleHudInit();
             battleInit("cheesyRat");
             initSwitch_b=true;
